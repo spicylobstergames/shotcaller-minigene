@@ -10,7 +10,8 @@ edition = "2018"
 #bracket-lib = { version = "0.8.1", features = ["specs", "threaded"] }
 bracket-lib = { version = "0.8.1", default-features = false, features = ["specs", "threaded", "crossterm"] }
 specs_declaration = { path = "../specs_declaration" }
-game_features = { git = "https://github.com/jojolepro/game_features" }
+#game_features = { git = "https://github.com/jojolepro/game_features" }
+game_features = { path = "../game_features" }
 specs = "0.16.1"
 specs-derive = "0.4.1"
 hibitset = "0.5"

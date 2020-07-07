@@ -8,6 +8,7 @@ extern crate derive_new;
 use bracket_lib::prelude::*;
 use specs::prelude::*;
 use hibitset::BitSet;
+use game_features::*;
 
 const MAP: &[&str] = &[
 "###################################00000000#####################################",
@@ -62,6 +63,13 @@ const MAP: &[&str] = &[
 "###################################00000000#####################################",
 ];
 
+/// Component wrapper for types not implementing Component
+#[derive(new)]
+pub struct Comp<T>(T);
+impl<T: Send+Sync+'static> Component for Comp<T> {
+    type Storage = DenseVecStorage<Self>;
+}
+
 #[derive(Component)]
 pub struct Tower;
 #[derive(Component)]
@@ -95,7 +103,15 @@ pub struct Spawner<F: Fn(&mut World)> {
 #[derive(Component)]
 pub struct Player;
 
-pub GameSpeed(f32);
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Stats {
+    Health,
+    Defense,
+    Attack,
+    Mana,
+}
+
+pub struct GameSpeed(f32);
 
 impl Default for GameSpeed {
     fn default() -> Self {
@@ -354,7 +370,7 @@ struct State {
 }
 impl GameState for State {
     fn tick(&mut self, ctx : &mut BTerm) {
-        self.world.add_resource(ctx.key.clone());
+        self.world.insert(ctx.key.clone());
         self.dispatcher.dispatch(&mut self.world);
         render(ctx, &self.world.read_resource(), self.world.read_storage(), self.world.read_storage(), self.world.read_storage());
         self.world.maintain();
@@ -369,6 +385,7 @@ fn main() -> BError {
     let mut world = World::new();
     world.register::<MultiSprite>();
     world.register::<Sprite>();
+    world.register::<Comp<StatSet<Stats>>>();
     let mut dispatcher = DispatcherBuilder::new()
         .with(CombineCollisionSystem, "combine_collision", &[])
         .with(UpdateCollisionResourceSystem, "update_collision_res", &["combine_collision"])
@@ -380,13 +397,23 @@ fn main() -> BError {
 
     world.insert(CollisionResource::default());
     world.insert(Camera::new(Point::new(0,0), Point::new(80, 50)));
+    let stat_defs = StatDefinitions::from(vec![
+        StatDefinition::new(Stats::Health, String::from("health"), String::from("HP"), 100.0),
+        StatDefinition::new(Stats::Defense, String::from("defense"), String::from("Defense"), 0.0),
+        StatDefinition::new(Stats::Attack, String::from("attack"), String::from("Attack"), 10.0),
+        StatDefinition::new(Stats::Mana, String::from("mana"), String::from("MP"), 100.0),
+    ]);
 
     // player
-    //world.create_entity()
-    //    .with(Point::new(0, 0))
-    //    .with(MultiSprite::new(MultiTileSprite::from_string("@@", 1, 2)))
-    //    .with(Player)
-    //    .build();
+    world.create_entity()
+        .with(Point::new(0, 0))
+        .with(MultiSprite::new(MultiTileSprite::from_string("@@", 1, 2)))
+        .with(Comp(stat_defs.to_statset()))
+        //.with(Player)
+        .build();
+
+    world.insert(stat_defs);
+
     // single tile test
     world.create_entity()
         .with(Point::new(5, 5))

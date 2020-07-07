@@ -589,7 +589,6 @@ checksum = "1b980f2816d6ee8673b6517b52cb0e808a180efc92e5c19d02cdda79066703ef"
 [[package]]
 name = "game_features"
 version = "0.1.0"
-source = "git+https://github.com/jojolepro/game_features#73e32d774204e3a789466e244b74e23324a2e825"
 dependencies = [
  "derive-new",
  "derive_builder",
