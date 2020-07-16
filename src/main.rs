@@ -4,11 +4,15 @@ extern crate specs_declaration;
 extern crate specs_derive;
 #[macro_use]
 extern crate derive_new;
+#[macro_use]
+extern crate bracket_lib;
 
 use bracket_lib::prelude::*;
 use specs::prelude::*;
 use hibitset::BitSet;
 use game_features::*;
+
+add_wasm_support!();
 
 const MAP: &[&str] = &[
 "###################################00000000#####################################",
@@ -370,7 +374,12 @@ struct State {
 }
 impl GameState for State {
     fn tick(&mut self, ctx : &mut BTerm) {
-        self.world.insert(ctx.key.clone());
+        // Input
+        let mut input = INPUT.lock();
+        for key in input.key_pressed_set().iter() {
+            println!("KEYPRESS: {:?}", key);
+        }
+        //self.world.insert(ctx.key.clone());
         self.dispatcher.dispatch(&mut self.world);
         render(ctx, &self.world.read_resource(), self.world.read_storage(), self.world.read_storage(), self.world.read_storage());
         self.world.maintain();
@@ -381,6 +390,8 @@ impl GameState for State {
 fn main() -> BError {
     let context = BTermBuilder::simple80x50()
         .with_title("Shotcaller")
+        .with_vsync(false)
+        .with_advanced_input(true)
         .build()?;
     let mut world = World::new();
     world.register::<MultiSprite>();
