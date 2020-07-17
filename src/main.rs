@@ -117,7 +117,7 @@ system!(CreepSpawnerSystem, |entities: Entities<'a>, positions: WriteStorage<'a,
     });
 });
 
-fn render<'a>(ctx: &mut BTerm, camera: &Camera, positions: ReadStorage<'a, Point>, multi_sprites: ReadStorage<'a, MultiSprite>, sprites: ReadStorage<'a, Sprite>) {
+fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
     let mut i = 0;
     for s in MAP {
@@ -139,7 +139,7 @@ impl GameState for State {
         }
         //self.world.insert(ctx.key.clone());
         self.dispatcher.dispatch(&mut self.world);
-        render(ctx, &self.world.read_resource(), self.world.read_storage(), self.world.read_storage(), self.world.read_storage());
+        render(ctx);
         render_sprites(ctx, &self.world.read_resource(), self.world.read_storage(), self.world.read_storage(), self.world.read_storage());
         self.world.maintain();
         std::thread::sleep(std::time::Duration::from_millis(50));
@@ -147,25 +147,22 @@ impl GameState for State {
 }
 
 fn main() -> BError {
-    let context = BTermBuilder::simple80x50()
-        .with_title("Shotcaller")
-        .with_vsync(false)
-        .with_advanced_input(true)
-        .build()?;
-    let mut world = World::new();
-    world.register::<MultiSprite>();
-    world.register::<Sprite>();
-    world.register::<Comp<StatSet<Stats>>>();
-    let mut dispatcher = DispatcherBuilder::new()
+    let mut builder = DispatcherBuilder::new()
         .with(CombineCollisionSystem, "combine_collision", &[])
         .with(UpdateCollisionResourceSystem, "update_collision_res", &["combine_collision"])
         .with(CreepSpawnerSystem, "creep_spawner", &[])
         .with(AiPathingSystem, "ai_pathing", &["update_collision_res"])
-        .with(AiMovementSystem, "ai_movement", &["ai_pathing"])
-        .build();
+        .with(AiMovementSystem, "ai_movement", &["ai_pathing"]);
+    let (mut world, mut dispatcher, mut context) = 
+        mini_init(80, 50, "Shotcaller", builder);
+
     dispatcher.setup(&mut world);
+    world.register::<MultiSprite>();
+    world.register::<Sprite>();
+    world.register::<Comp<StatSet<Stats>>>();
 
     world.insert(Camera::new(Point::new(0,0), Point::new(80, 50)));
+
     let stat_defs = StatDefinitions::from(vec![
         StatDefinition::new(Stats::Health, String::from("health"), String::from("HP"), 100.0),
         StatDefinition::new(Stats::Defense, String::from("defense"), String::from("Defense"), 0.0),
