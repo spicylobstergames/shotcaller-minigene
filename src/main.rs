@@ -173,7 +173,9 @@ system!(ToggleGameSpeedSystem, |events: Read<'a, EventChannel<InputEvent>>,
         res: WriteExpect<'a, ToggleGameSpeedRes>,
         speed: Write<'a, GameSpeed>| {
     for k in events.read(&mut res.0) {
+        println!("EVENT");
         if k == &InputEvent::SpeedToggle {
+        println!("Speed Toggle!");
             if speed.0 == 1 {
                 speed.0 = 4;
             } else {
@@ -199,9 +201,9 @@ struct State {
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         // Input
-        let mut input = INPUT.lock();
+        let input = INPUT.lock();
         for key in input.key_pressed_set().iter() {
-            println!("KEYPRESS: {:?}", key);
+            self.world.fetch_mut::<EventChannel<VirtualKeyCode>>().single_write(key.clone());
         }
         //self.world.insert(ctx.key.clone());
         self.dispatcher.dispatch(&mut self.world);
@@ -233,7 +235,6 @@ fn main() -> BError {
         .with(ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]);
     let (mut world, mut dispatcher, mut context) = mini_init(80, 50, "Shotcaller", builder);
 
-    dispatcher.setup(&mut world);
     world.register::<MultiSprite>();
     world.register::<Sprite>();
     world.register::<Comp<StatSet<Stats>>>();
@@ -250,7 +251,7 @@ fn main() -> BError {
     keymap.insert(VirtualKeyCode::L, InputEvent::MenuEast);
     keymap.insert(VirtualKeyCode::Return, InputEvent::MenuSelect);
     keymap.insert(VirtualKeyCode::Q, InputEvent::MenuCancel);
-    keymap.insert(VirtualKeyCode::S, InputEvent::ZoomToggle);
+    keymap.insert(VirtualKeyCode::S, InputEvent::SpeedToggle);
     world.insert(keymap);
 
     let mut input_channel = EventChannel::<InputEvent>::new();
