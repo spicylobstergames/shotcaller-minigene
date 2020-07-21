@@ -175,9 +175,7 @@ system!(
      res: WriteExpect<'a, ToggleGameSpeedRes>,
      speed: Write<'a, GameSpeed>| {
         for k in events.read(&mut res.0) {
-            println!("EVENT");
             if k == &InputEvent::SpeedToggle {
-                println!("Speed Toggle!");
                 if speed.0 == 1 {
                     speed.0 = 4;
                 } else {
