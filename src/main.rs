@@ -1,4 +1,5 @@
 use minigene::*;
+use std::collections::HashMap;
 
 const MAP: &[&str] = &[
     "###################################00000000#####################################",
@@ -75,6 +76,27 @@ pub enum Stats {
     Mana,
 }
 
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum InputEvent {
+    MenuNorth,
+    MenuWest,
+    MenuEast,
+    MenuSouth,
+    MenuSelect,
+    MenuCancel,
+    SpeedToggle,
+    ZoomToggle,
+}
+
+// TODO: Replace by minigene's Time after its implemented
+pub struct GameSpeed(pub u32);
+
+impl Default for GameSpeed {
+    fn default() -> Self {
+        GameSpeed(1)
+    }
+}
+
 // non portable
 system!(UpdateCollisionResourceSystem, |global_map: WriteExpect<
     'a,
@@ -145,6 +167,22 @@ system!(
     }
 );
 
+event_reader_res!(ToggleGameSpeedRes, InputEvent);
+
+system!(ToggleGameSpeedSystem, |events: Read<'a, EventChannel<InputEvent>>,
+        res: WriteExpect<'a, ToggleGameSpeedRes>,
+        speed: Write<'a, GameSpeed>| {
+    for k in events.read(&mut res.0) {
+        if k == &InputEvent::SpeedToggle {
+            if speed.0 == 1 {
+                speed.0 = 4;
+            } else {
+                speed.0 = 1;
+            }
+        }
+    }
+});
+
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
     let mut i = 0;
@@ -176,13 +214,14 @@ impl GameState for State {
             self.world.read_storage(),
         );
         self.world.maintain();
-        std::thread::sleep(std::time::Duration::from_millis(50));
+        std::thread::sleep(std::time::Duration::from_millis((50/self.world.fetch::<GameSpeed>().0) as u64));
     }
 }
 
 fn main() -> BError {
     let mut builder = DispatcherBuilder::new()
         .with(CombineCollisionSystem, "combine_collision", &[])
+        .with(InputDriver::<InputEvent>::default(), "input_driver", &[])
         .with(
             UpdateCollisionResourceSystem,
             "update_collision_res",
@@ -190,13 +229,34 @@ fn main() -> BError {
         )
         .with(CreepSpawnerSystem, "creep_spawner", &[])
         .with(AiPathingSystem, "ai_pathing", &["update_collision_res"])
-        .with(AiMovementSystem, "ai_movement", &["ai_pathing"]);
+        .with(AiMovementSystem, "ai_movement", &["ai_pathing"])
+        .with(ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]);
     let (mut world, mut dispatcher, mut context) = mini_init(80, 50, "Shotcaller", builder);
 
     dispatcher.setup(&mut world);
     world.register::<MultiSprite>();
     world.register::<Sprite>();
     world.register::<Comp<StatSet<Stats>>>();
+
+    let mut input_channel = EventChannel::<VirtualKeyCode>::new();
+    let reader = input_channel.register_reader();
+    world.insert(input_channel);
+    world.insert(InputDriverRes(reader));
+
+    let mut keymap = HashMap::new();
+    keymap.insert(VirtualKeyCode::J, InputEvent::MenuSouth);
+    keymap.insert(VirtualKeyCode::K, InputEvent::MenuNorth);
+    keymap.insert(VirtualKeyCode::H, InputEvent::MenuWest);
+    keymap.insert(VirtualKeyCode::L, InputEvent::MenuEast);
+    keymap.insert(VirtualKeyCode::Return, InputEvent::MenuSelect);
+    keymap.insert(VirtualKeyCode::Q, InputEvent::MenuCancel);
+    keymap.insert(VirtualKeyCode::S, InputEvent::ZoomToggle);
+    world.insert(keymap);
+
+    let mut input_channel = EventChannel::<InputEvent>::new();
+    let reader = input_channel.register_reader();
+    world.insert(input_channel);
+    world.insert(ToggleGameSpeedRes(reader));
 
     world.insert(Camera::new(Point::new(0, 0), Point::new(80, 50)));
 
