@@ -169,21 +169,24 @@ system!(
 
 event_reader_res!(ToggleGameSpeedRes, InputEvent);
 
-system!(ToggleGameSpeedSystem, |events: Read<'a, EventChannel<InputEvent>>,
-        res: WriteExpect<'a, ToggleGameSpeedRes>,
-        speed: Write<'a, GameSpeed>| {
-    for k in events.read(&mut res.0) {
-        println!("EVENT");
-        if k == &InputEvent::SpeedToggle {
-        println!("Speed Toggle!");
-            if speed.0 == 1 {
-                speed.0 = 4;
-            } else {
-                speed.0 = 1;
+system!(
+    ToggleGameSpeedSystem,
+    |events: Read<'a, EventChannel<InputEvent>>,
+     res: WriteExpect<'a, ToggleGameSpeedRes>,
+     speed: Write<'a, GameSpeed>| {
+        for k in events.read(&mut res.0) {
+            println!("EVENT");
+            if k == &InputEvent::SpeedToggle {
+                println!("Speed Toggle!");
+                if speed.0 == 1 {
+                    speed.0 = 4;
+                } else {
+                    speed.0 = 1;
+                }
             }
         }
     }
-});
+);
 
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
@@ -203,7 +206,9 @@ impl GameState for State {
         // Input
         let input = INPUT.lock();
         for key in input.key_pressed_set().iter() {
-            self.world.fetch_mut::<EventChannel<VirtualKeyCode>>().single_write(key.clone());
+            self.world
+                .fetch_mut::<EventChannel<VirtualKeyCode>>()
+                .single_write(key.clone());
         }
         //self.world.insert(ctx.key.clone());
         self.dispatcher.dispatch(&mut self.world);
@@ -216,7 +221,9 @@ impl GameState for State {
             self.world.read_storage(),
         );
         self.world.maintain();
-        std::thread::sleep(std::time::Duration::from_millis((50/self.world.fetch::<GameSpeed>().0) as u64));
+        std::thread::sleep(std::time::Duration::from_millis(
+            (50 / self.world.fetch::<GameSpeed>().0) as u64,
+        ));
     }
 }
 
