@@ -1,14 +1,19 @@
 <html>
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type" />
+    <meta http-equiv="Cross-Origin-Oper-Policy" content="same-origin"/>
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin"/>
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp"/>
   </head>
   <body>
     <canvas id="canvas" width="640" height="480"></canvas>
+    <img src="./shotcaller_bg.wasm" crossorigin/>
     <script src="./shotcaller.js"></script>
-    <script>
+    <script src="./index.js"></script>
+    <!-- <script>
       window.addEventListener("load", async () => {
         await wasm_bindgen("./shotcaller_bg.wasm");
       });
-    </script>
+    </script> -->
   </body>
 </html>
