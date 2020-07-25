@@ -1,6 +1,6 @@
 # Shotcaller
 
-An ASCII-rendered RTS/MOBA game. See the [design document](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419).
+An ASCII-rendered RTS / MOBA game. See the [design document](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419) for much more.
 
 ### Summary
 
@@ -15,7 +15,9 @@ But in this game, *all you do* is shotcalling and big-picture strategizing. The 
 
 ### Latest prototype (25. July 2020)
 
-WIP
+![shotcaller-iter2](./media/shotcaller-iter2.png)
+
+There's also a [short mp4 video](./media/shotcaller-prototype.mp4).
 
 
 ## Install / Play
