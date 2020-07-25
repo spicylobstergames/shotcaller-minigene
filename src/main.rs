@@ -3,6 +3,11 @@ use std::collections::HashMap;
 
 add_wasm_support!();
 
+const PLAY_WIDTH: u32 = 81;
+const PLAY_HEIGHT: u32 = 50;
+const SCREEN_WIDTH: u32 = 100;
+const SCREEN_HEIGHT: u32 = 50;
+
 const MAP: &[&str] = &[
     "###################################00000000#####################################",
     "###################################00000000#####################################",
@@ -59,6 +64,10 @@ const MAP: &[&str] = &[
 #[derive(Component)]
 pub struct Tower;
 #[derive(Component)]
+pub struct Core;
+#[derive(Component)]
+pub struct Barracks;
+#[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
 pub struct CreepSpawner(u32);
@@ -70,12 +79,18 @@ pub struct Spawner<F: Fn(&mut World)> {
 #[derive(Component)]
 pub struct Player;
 
+#[derive(Component)]
+pub enum Team {
+    Me, Other,
+}
+
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Stats {
     Health,
     Defense,
     Attack,
     Mana,
+    AttackSpeed,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -240,10 +255,11 @@ fn main() -> BError {
         .with(AiPathingSystem, "ai_pathing", &["update_collision_res"])
         .with(AiMovementSystem, "ai_movement", &["ai_pathing"])
         .with(ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]);
-    let (mut world, mut dispatcher, mut context) = mini_init(80, 50, "Shotcaller", builder);
+    let (mut world, mut dispatcher, mut context) = mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder);
 
     world.register::<MultiSprite>();
     world.register::<Sprite>();
+    world.register::<Team>();
     world.register::<Comp<StatSet<Stats>>>();
 
     let mut input_channel = EventChannel::<VirtualKeyCode>::new();
@@ -266,7 +282,7 @@ fn main() -> BError {
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
 
-    world.insert(Camera::new(Point::new(0, 0), Point::new(80, 50)));
+    world.insert(Camera::new(Point::new(0, 0), Point::new(PLAY_WIDTH, PLAY_HEIGHT)));
 
     let stat_defs = StatDefinitions::from(vec![
         StatDefinition::new(
@@ -287,10 +303,17 @@ fn main() -> BError {
             String::from("Attack"),
             10.0,
         ),
+        StatDefinition::new(
+            Stats::AttackSpeed,
+            String::from("attack_speed"),
+            String::from("Attack Speed"),
+            10.0,
+        ),
         StatDefinition::new(Stats::Mana, String::from("mana"), String::from("MP"), 100.0),
     ]);
 
     // player
+    // TODO remove
     world
         .create_entity()
         .with(Point::new(0, 0))
@@ -301,11 +324,12 @@ fn main() -> BError {
 
     world.insert(stat_defs);
     world.insert(CollisionResource::new(
-        CollisionMap::new(80, 50),
+        CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
         Point::new(0, 0),
     ));
 
     // single tile test
+    // TODO remove
     world
         .create_entity()
         .with(Point::new(5, 5))
@@ -316,6 +340,7 @@ fn main() -> BError {
         })
         .build();
     // creep spawner
+    // TODO move from hardcoded to dyn position
     world
         .create_entity()
         .with(Point::new(55, 10))
@@ -326,6 +351,35 @@ fn main() -> BError {
         .with(Point::new(25, 10))
         .with(CreepSpawner(0))
         .build();
+
+    // Create barracks
+    for i in -1..=1 {
+        world
+            .create_entity()
+            .with(Point::new(PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 6 * i as i32, PLAY_HEIGHT as i32 / 6))
+            .with(Sprite {
+                glyph: to_cp437('B'),
+                fg: RGBA::named(YELLOW),
+                bg: RGBA::named(RED),
+            })
+            .with(Team::Other)
+            .build();
+    }
+
+    for i in -1..=1 {
+        world
+            .create_entity()
+            .with(Point::new(PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 6 * i, PLAY_HEIGHT as i32 - PLAY_HEIGHT as i32 / 6))
+            .with(Sprite {
+                glyph: to_cp437('B'),
+                fg: RGBA::named(YELLOW),
+                bg: RGBA::named(RED),
+            })
+            .with(Team::Me)
+            .build();
+    }
+
+
     //for i in 10..30 {
     //    world.create_entity()
     //        .with(Point::new(i, 49))
