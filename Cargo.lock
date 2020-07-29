@@ -938,7 +938,6 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.1.0"
-source = "git+https://github.com/jojolepro/minigene#d4bf8b85f9ce0e483fbbc7b927b000982bd9d03e"
 dependencies = [
  "bracket-lib",
  "derive-new",

@@ -225,7 +225,7 @@ fn render<'a>(ctx: &mut BTerm) {
 
 struct State {
     pub world: World,
-    pub dispatcher: Dispatcher<'static, 'static>,
+    pub dispatcher: Box<dyn UnifiedDispatcher + 'static>,
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
@@ -237,7 +237,7 @@ impl GameState for State {
                 .single_write(key.clone());
         }
         //self.world.insert(ctx.key.clone());
-        self.dispatcher.dispatch(&mut self.world);
+        self.dispatcher.run_now(&mut self.world);
         render(ctx);
         render_sprites(
             ctx,
@@ -247,6 +247,8 @@ impl GameState for State {
             self.world.read_storage(),
         );
         self.world.maintain();
+
+        #[cfg(not(target_arch = "wasm32"))]
         std::thread::sleep(std::time::Duration::from_millis(
             (50 / self.world.fetch::<GameSpeed>().0) as u64,
         ));
@@ -254,19 +256,20 @@ impl GameState for State {
 }
 
 fn main() -> BError {
-    let mut builder = DispatcherBuilder::new()
-        .with(CombineCollisionSystem, "combine_collision", &[])
-        .with(InputDriver::<InputEvent>::default(), "input_driver", &[])
-        .with(
+    let mut world = World::new();
+    let mut builder = dispatcher!(world,
+        (CombineCollisionSystem, "combine_collision", &[]),
+        (InputDriver::<InputEvent>, "input_driver", &[]),
+        (
             UpdateCollisionResourceSystem,
             "update_collision_res",
             &["combine_collision"],
-        )
-        .with(CreepSpawnerSystem, "creep_spawner", &[])
-        .with(AiPathingSystem, "ai_pathing", &["update_collision_res"])
-        .with(AiMovementSystem, "ai_movement", &["ai_pathing"])
-        .with(ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]);
-    let (mut world, mut dispatcher, mut context) = mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder);
+        ),
+        (CreepSpawnerSystem, "creep_spawner", &[]),
+        (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
+        (AiMovementSystem, "ai_movement", &["ai_pathing"]),
+        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]));
+    let (mut world, mut dispatcher, mut context) = mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
 
     world.register::<MultiSprite>();
     world.register::<Sprite>();
@@ -275,6 +278,20 @@ fn main() -> BError {
     world.register::<Tower>();
     world.register::<Core>();
     world.register::<Comp<StatSet<Stats>>>();
+
+    // WASM REGISTER
+    world.register::<Point>();
+    world.register::<AiPath>();
+    world.register::<AiDestination>();
+    world.register::<Creep>();
+    world.register::<Player>();
+    world.register::<CollisionMap>();
+    world.register::<CreepSpawner>();
+    world.register::<Tower>();
+    world.register::<Barrack>();
+    world.register::<Core>();
+    world.register::<Collision>();
+    world.insert(GameSpeed::default());
 
     let mut input_channel = EventChannel::<VirtualKeyCode>::new();
     let reader = input_channel.register_reader();
