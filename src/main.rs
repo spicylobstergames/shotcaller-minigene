@@ -82,7 +82,8 @@ pub struct Player;
 
 #[derive(Component, PartialEq, Eq, Copy, Clone, Debug)]
 pub enum Team {
-    Me, Other,
+    Me,
+    Other,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -176,11 +177,12 @@ system!(
                 .insert(creep, AiPath::new(NavigationPath::new()))
                 .unwrap();
             ai_destinations
-                .insert(creep, AiDestination::new(Point::new(PLAY_WIDTH / 2, PLAY_HEIGHT / 2)))
+                .insert(
+                    creep,
+                    AiDestination::new(Point::new(PLAY_WIDTH / 2, PLAY_HEIGHT / 2)),
+                )
                 .unwrap();
-            teams
-                .insert(creep, team)
-                .unwrap();
+            teams.insert(creep, team).unwrap();
             sprites
                 .insert(
                     creep,
@@ -257,7 +259,8 @@ impl GameState for State {
 
 fn main() -> BError {
     let mut world = World::new();
-    let mut builder = dispatcher!(world,
+    let mut builder = dispatcher!(
+        world,
         (CombineCollisionSystem, "combine_collision", &[]),
         (InputDriver::<InputEvent>, "input_driver", &[]),
         (
@@ -268,8 +271,10 @@ fn main() -> BError {
         (CreepSpawnerSystem, "creep_spawner", &[]),
         (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
-        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]));
-    let (mut world, mut dispatcher, mut context) = mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
+        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"])
+    );
+    let (mut world, mut dispatcher, mut context) =
+        mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
 
     world.register::<MultiSprite>();
     world.register::<Sprite>();
@@ -313,7 +318,10 @@ fn main() -> BError {
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
 
-    world.insert(Camera::new(Point::new(0, 0), Point::new(PLAY_WIDTH, PLAY_HEIGHT)));
+    world.insert(Camera::new(
+        Point::new(0, 0),
+        Point::new(PLAY_WIDTH, PLAY_HEIGHT),
+    ));
 
     let stat_defs = StatDefinitions::from(vec![
         StatDefinition::new(
@@ -413,7 +421,10 @@ fn main() -> BError {
         let y = PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8;
         world
             .create_entity()
-            .with(Point::new(PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 8 * i, PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8))
+            .with(Point::new(
+                PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 8 * i,
+                PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8,
+            ))
             .with(Sprite {
                 glyph: to_cp437('B'),
                 fg: RGBA::named(YELLOW),
@@ -430,13 +441,16 @@ fn main() -> BError {
             .with(Team::Me)
             .build();
     }
-    
+
     // Create towers
     for i in -1..=1 {
         for j in 1..=2 {
             world
                 .create_entity()
-                .with(Point::new(PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i, PLAY_HEIGHT as i32 * j / 6))
+                .with(Point::new(
+                    PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i,
+                    PLAY_HEIGHT as i32 * j / 6,
+                ))
                 .with(Sprite {
                     glyph: to_cp437('T'),
                     fg: RGBA::named(GREEN),
@@ -451,7 +465,10 @@ fn main() -> BError {
         for j in 1..=2 {
             world
                 .create_entity()
-                .with(Point::new(PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i, PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 * j / 6))
+                .with(Point::new(
+                    PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i,
+                    PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 * j / 6,
+                ))
                 .with(Sprite {
                     glyph: to_cp437('T'),
                     fg: RGBA::named(GREEN),
