@@ -109,7 +109,10 @@ pub enum InputEvent {
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Winner {
-    None, Me, Other, Draw,
+    None,
+    Me,
+    Other,
+    Draw,
 }
 
 impl Default for Winner {
@@ -234,19 +237,28 @@ system!(
         }
         match (me, you) {
             (false, false) => *winner = Winner::None,
-            (false, true) =>  *winner = Winner::Other,
-            (true, false) =>  *winner = Winner::Me,
-            (true, true) =>   *winner = Winner::Draw,
+            (false, true) => *winner = Winner::Other,
+            (true, false) => *winner = Winner::Me,
+            (true, true) => *winner = Winner::Draw,
         }
-});
+    }
+);
 
 system!(
     CreepAiSystem,
-    |entities: Entities<'a>, creeps: ReadStorage<'a, Creep>, teams: ReadStorage<'a, Team>, targets: WriteStorage<'a, AiDestination>, positions: ReadStorage<'a, Point>| {
+    |entities: Entities<'a>,
+     creeps: ReadStorage<'a, Creep>,
+     teams: ReadStorage<'a, Team>,
+     targets: WriteStorage<'a, AiDestination>,
+     positions: ReadStorage<'a, Point>| {
         for (e, _, team, pos) in (&*entities, &creeps, &teams, &positions).join() {
             // find closest in other team
             // TODO: optimize
-            let mut vec = (&teams, &positions).join().filter(|(t, _)| **t != *team).map(|(_, p)| (dist(pos, p), p.clone())).collect::<Vec<_>>();
+            let mut vec = (&teams, &positions)
+                .join()
+                .filter(|(t, _)| **t != *team)
+                .map(|(_, p)| (dist(pos, p), p.clone()))
+                .collect::<Vec<_>>();
             vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
             let closest = vec.into_iter().next().map(|(d, p)| p);
             if let Some(c) = closest {
@@ -255,7 +267,8 @@ system!(
                 targets.remove(e);
             }
         }
-});
+    }
+);
 
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
