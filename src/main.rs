@@ -241,7 +241,7 @@ system!(
 });
 
 system!(
-    CreepAi,
+    CreepAiSystem,
     |entities: Entities<'a>, creeps: ReadStorage<'a, Creep>, teams: ReadStorage<'a, Team>, targets: WriteStorage<'a, AiDestination>, positions: ReadStorage<'a, Point>| {
         for (e, _, team, pos) in (&*entities, &creeps, &teams, &positions).join() {
             // find closest in other team
@@ -313,7 +313,8 @@ fn main() -> BError {
         (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
-        (WinConditionSystem, "win_cond", &[])
+        (WinConditionSystem, "win_cond", &[]),
+        (CreepAiSystem, "creep_ai", &[])
     );
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
@@ -334,9 +335,6 @@ fn main() -> BError {
     world.register::<Player>();
     world.register::<CollisionMap>();
     world.register::<CreepSpawner>();
-    world.register::<Tower>();
-    world.register::<Barrack>();
-    world.register::<Core>();
     world.register::<Collision>();
     world.insert(GameSpeed::default());
 
@@ -436,7 +434,7 @@ fn main() -> BError {
 
     // Create barracks
     for i in -1..=1 {
-        let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 8 * i as i32;
+        let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 7 * i as i32;
         let y = PLAY_HEIGHT as i32 / 8;
         world
             .create_entity()
@@ -459,14 +457,11 @@ fn main() -> BError {
     }
 
     for i in -1..=1 {
-        let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 8 * i;
+        let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 7 * i;
         let y = PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8;
         world
             .create_entity()
-            .with(Point::new(
-                PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 8 * i,
-                PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8,
-            ))
+            .with(Point::new(x, y))
             .with(Sprite {
                 glyph: to_cp437('B'),
                 fg: RGBA::named(YELLOW),
@@ -498,7 +493,7 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(RED),
                 })
-                .with(Team::Me)
+                .with(Team::Other)
                 .build();
         }
     }
@@ -516,7 +511,7 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(RED),
                 })
-                .with(Team::Other)
+                .with(Team::Me)
                 .build();
         }
     }
