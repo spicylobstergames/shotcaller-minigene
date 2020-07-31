@@ -107,6 +107,17 @@ pub enum InputEvent {
     ZoomToggle,
 }
 
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Winner {
+    None, Me, Other, Draw,
+}
+
+impl Default for Winner {
+    fn default() -> Self {
+        Winner::None
+    }
+}
+
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub enum GameEvent {
     GameWon(Team),
@@ -176,12 +187,6 @@ system!(
             ai_paths
                 .insert(creep, AiPath::new(NavigationPath::new()))
                 .unwrap();
-            ai_destinations
-                .insert(
-                    creep,
-                    AiDestination::new(Point::new(PLAY_WIDTH / 2, PLAY_HEIGHT / 2)),
-                )
-                .unwrap();
             teams.insert(creep, team).unwrap();
             sprites
                 .insert(
@@ -215,6 +220,42 @@ system!(
         }
     }
 );
+
+system!(
+    WinConditionSystem,
+    |core: ReadStorage<'a, Core>, team: ReadStorage<'a, Team>, winner: Write<'a, Winner>| {
+        let mut me = false;
+        let mut you = false;
+        for (_, t) in (&core, &team).join() {
+            match *t {
+                Team::Me => me = true,
+                Team::Other => you = true,
+            }
+        }
+        match (me, you) {
+            (false, false) => *winner = Winner::None,
+            (false, true) =>  *winner = Winner::Other,
+            (true, false) =>  *winner = Winner::Me,
+            (true, true) =>   *winner = Winner::Draw,
+        }
+});
+
+system!(
+    CreepAi,
+    |entities: Entities<'a>, creeps: ReadStorage<'a, Creep>, teams: ReadStorage<'a, Team>, targets: WriteStorage<'a, AiDestination>, positions: ReadStorage<'a, Point>| {
+        for (e, _, team, pos) in (&*entities, &creeps, &teams, &positions).join() {
+            // find closest in other team
+            // TODO: optimize
+            let mut vec = (&teams, &positions).join().filter(|(t, _)| **t != *team).map(|(_, p)| (dist(pos, p), p.clone())).collect::<Vec<_>>();
+            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+            let closest = vec.into_iter().next().map(|(d, p)| p);
+            if let Some(c) = closest {
+                targets.insert(e, AiDestination::new(c.clone())).unwrap();
+            } else {
+                targets.remove(e);
+            }
+        }
+});
 
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
@@ -271,7 +312,8 @@ fn main() -> BError {
         (CreepSpawnerSystem, "creep_spawner", &[]),
         (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
-        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"])
+        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
+        (WinConditionSystem, "win_cond", &[])
     );
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
