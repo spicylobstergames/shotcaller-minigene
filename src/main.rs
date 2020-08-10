@@ -1,5 +1,6 @@
 use minigene::*;
 use std::collections::HashMap;
+use std::ops::Deref;
 
 add_wasm_support!();
 
@@ -9,6 +10,8 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
+const TOWER_RANGE: f32 = 5.0;
+const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -288,10 +291,12 @@ system!(
 system!(
     TowerAiSystem,
     |entities: Entities<'a>,
+     stat_def: ReadExpect<'a, StatDefinitions<Stats>>,
      towers: ReadStorage<'a, Tower>,
      teams: WriteStorage<'a, Team>,
      tower_projectiles: WriteStorage<'a, TowerProjectile>,
      sprites: WriteStorage<'a, Sprite>,
+     stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
      goto_positions: WriteStorage<'a, GotoStraight>,
      positions: WriteStorage<'a, Point>| {
         let mut v = vec![];
@@ -302,7 +307,7 @@ system!(
                 .join()
                 .filter(|(t, _)| **t != *team)
                 .map(|(_, p)| (dist(pos, p), p.clone()))
-                .filter(|(d, _)| *d < 5.0)
+                .filter(|(d, _)| *d < TOWER_RANGE)
                 .collect::<Vec<_>>();
             vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
             let closest = vec.into_iter().next().map(|(d, p)| p);
@@ -315,6 +320,7 @@ system!(
             positions.insert(n, source).unwrap();
             tower_projectiles.insert(n, TowerProjectile).unwrap();
             teams.insert(n, team).unwrap();
+            stats.insert(n, Comp(stat_def.to_statset())).unwrap();
             sprites
                 .insert(
                     n,
@@ -364,20 +370,66 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
         }
     }
 
-    for (target, damage) in v.into_iter() {
-        let mut health_inst = stats
-            .get_mut(target)
-            .unwrap()
-            .0
-            .stats
-            .get_mut(&Stats::Health)
-            .unwrap();
-        health_inst.value -= damage;
-        if health_inst.value <= 0.0 {
+    for (target, dmg) in v.into_iter() {
+        if damage(&mut stats.get_mut(target).unwrap().0, dmg) {
             entities.delete(target).unwrap();
         }
     }
 });
+
+system!(TowerProjectileSystem,
+        |projectiles: ReadStorage<'a, TowerProjectile>,
+        entities: Entities<'a>,
+        positions: ReadStorage<'a, Point>,
+        teams: ReadStorage<'a, Team>,
+        gotos: ReadStorage<'a, GotoStraight>,
+        stats: WriteStorage<'a, Comp<StatSet<Stats>>>| {
+            for (e, pos, goto, _, team) in (&*entities, &positions, &gotos, &projectiles, &teams).join() {
+                let dmg = stats.get(e).expect("Add a statset to the projectile.").0.stats.get(&Stats::Attack).unwrap().value;
+                if *pos == goto.target {
+                    for (e, _, _) in entities_in_radius(pos, &*entities, &positions, 
+                                                        |e, p| teams.get(e).map(|t| t == team).unwrap_or(false),
+                                                        |e, p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS) {
+                        // damage around
+                        if let Some(mut stat) = stats.get_mut(e).as_mut().map(|c| &mut c.0) {
+                            if damage(&mut stat, dmg) {
+                                entities.delete(e).unwrap();
+                            }
+                        }
+                    }
+                }
+            }
+});
+
+pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
+        let mut health_inst = stat_set.stats
+            .get_mut(&Stats::Health)
+            .unwrap();
+        health_inst.value -= damage;
+        health_inst.value <= 0.0
+}
+
+                          //pre_filter: Box<dyn FnOnce(Entity, Point) -> bool>,
+                          //post_filter: Box<dyn FnOnce(Entity, Point, f32) -> bool>,
+pub fn entities_in_radius<D: Deref<Target = MaskedStorage<Point>>,
+    F1: Fn(Entity, Point) -> bool,
+    F2: Fn(Entity, Point, f32) -> bool>(
+    around: &Point,
+    entities: &EntitiesRes, 
+    positions: &Storage<'_, Point, D>,
+    pre_filter: F1,
+    post_filter: F2,
+    ) -> Vec<(Entity, Point, f32)> {
+        let mut vec = (&*entities, positions)
+            .join()
+            .filter(|(e, p)| pre_filter(*e, **p))
+            .map(|(e, p)| (e, p.clone(), dist(around, p)))
+            .filter(|(e, p, d)| post_filter(*e, *p, *d))
+            .collect::<Vec<_>>();
+        // Sort by distance
+        vec.sort_by(|e1, e2| e1.2.partial_cmp(&e2.2).unwrap());
+        vec
+}
 
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
@@ -401,7 +453,6 @@ impl GameState for State {
                 .fetch_mut::<EventChannel<VirtualKeyCode>>()
                 .single_write(key.clone());
         }
-        //self.world.insert(ctx.key.clone());
         self.dispatcher.run_now(&mut self.world);
         render(ctx);
         render_sprites(
@@ -439,6 +490,7 @@ fn main() -> BError {
         (CreepAiSystem, "creep_ai", &[]),
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),
+        (TowerProjectileSystem, "tower_projectile", &[]),
         (GotoStraightSystem, "goto_straight", &[])
     );
     let (mut world, mut dispatcher, mut context) =
@@ -604,7 +656,8 @@ fn main() -> BError {
         world
             .create_entity()
             .with(Point::new(x, y - 1))
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
+            // TODO put back to normal
+            .with(CreepSpawner(0, CREEP_SPAWN_TICKS - 5))
             .with(Team::Me)
             .build();
     }
