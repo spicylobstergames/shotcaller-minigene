@@ -584,8 +584,7 @@ fn main() -> BError {
         world
             .create_entity()
             .with(Point::new(x, y - 1))
-            // TODO SET ME BACK TO NORMAL
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS - 5))
+            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
             .with(Team::Me)
             .build();
     }
