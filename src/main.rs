@@ -8,6 +8,7 @@ const PLAY_HEIGHT: u32 = 50;
 const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
+const CREEP_ATTACK_RADIUS: f32 = 2.1;
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -64,6 +65,12 @@ const MAP: &[&str] = &[
 
 #[derive(Component)]
 pub struct Tower;
+#[derive(Component, new)]
+pub struct ProximityAttack {
+    pub radius: f32,
+}
+#[derive(Component)]
+pub struct TowerProjectile;
 #[derive(Component)]
 pub struct Core;
 #[derive(Component)]
@@ -171,6 +178,9 @@ system!(
      spawners: WriteStorage<'a, CreepSpawner>,
      creeps: WriteStorage<'a, Creep>,
      ai_destinations: WriteStorage<'a, AiDestination>,
+     proximity_attacks: WriteStorage<'a, ProximityAttack>,
+     stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
+     stat_def: ReadExpect<'a, StatDefinitions<Stats>>,
      ai_paths: WriteStorage<'a, AiPath>,
      teams: WriteStorage<'a, Team>,
      sprites: WriteStorage<'a, Sprite>| {
@@ -191,6 +201,8 @@ system!(
                 .insert(creep, AiPath::new(NavigationPath::new()))
                 .unwrap();
             teams.insert(creep, team).unwrap();
+            stats.insert(creep, Comp(stat_def.to_statset())).unwrap();
+            proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS)).unwrap();
             sprites
                 .insert(
                     creep,
@@ -250,14 +262,15 @@ system!(
      creeps: ReadStorage<'a, Creep>,
      teams: ReadStorage<'a, Team>,
      targets: WriteStorage<'a, AiDestination>,
+     stats: ReadStorage<'a, Comp<StatSet<Stats>>>,
      positions: ReadStorage<'a, Point>| {
         for (e, _, team, pos) in (&*entities, &creeps, &teams, &positions).join() {
             // find closest in other team
             // TODO: optimize
-            let mut vec = (&teams, &positions)
+            let mut vec = (&teams, &positions, &stats)
                 .join()
-                .filter(|(t, _)| **t != *team)
-                .map(|(_, p)| (dist(pos, p), p.clone()))
+                .filter(|(t, _, _)| **t != *team)
+                .map(|(_, p, _)| (dist(pos, p), p.clone()))
                 .collect::<Vec<_>>();
             vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
             let closest = vec.into_iter().next().map(|(d, p)| p);
@@ -269,6 +282,82 @@ system!(
         }
     }
 );
+
+system!(
+    TowerAiSystem,
+    |entities: Entities<'a>,
+     towers: ReadStorage<'a, Tower>,
+     teams: WriteStorage<'a, Team>,
+     tower_projectiles: WriteStorage<'a, TowerProjectile>,
+     sprites: WriteStorage<'a, Sprite>,
+     goto_positions: WriteStorage<'a, GotoStraight>,
+     positions: WriteStorage<'a, Point>| {
+        let mut v = vec![];
+        for (_, team, pos) in (&towers, &teams, &positions).join() {
+            // find closest in other team
+            // TODO: optimize
+            let mut vec = (&teams, &positions)
+                .join()
+                .filter(|(t, _)| **t != *team)
+                .map(|(_, p)| (dist(pos, p), p.clone()))
+                .filter(|(d, _)| *d < 5.0)
+                .collect::<Vec<_>>();
+            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+            let closest = vec.into_iter().next().map(|(d, p)| p);
+            if let Some(c) = closest {
+                v.push((pos.clone(), *team, c.clone()))
+            }
+        }
+        for (source, team, target) in v.into_iter() {
+            let n = entities.create();
+            positions.insert(n, source).unwrap();
+            tower_projectiles.insert(n, TowerProjectile).unwrap();
+            teams.insert(n, team).unwrap();
+            sprites
+                .insert(
+                    n,
+                    Sprite {
+                        glyph: to_cp437('X'),
+                        fg: RGBA::named(RED),
+                        bg: RGBA::named(WHITE),
+                    },
+                )
+                .unwrap();
+            goto_positions.insert(n, GotoStraight::new(target.clone(), 1.0)).unwrap();
+        }
+    }
+);
+
+system!(ProximityAttackSystem,
+        |entities: Entities<'a>, 
+        proximity_attacks: ReadStorage<'a, ProximityAttack>,
+        stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
+        teams: ReadStorage<'a, Team>,
+        positions: ReadStorage<'a, Point>| {
+        let mut v = vec![];
+        for (e, proximity, stat, pos, team) in (&*entities, &proximity_attacks, &stats, &positions, &teams).join() {
+            let mut vec = (&*entities, &teams, &positions, &stats)
+                .join()
+                .filter(|(e, t, _, _)| **t != *team)
+                .map(|(e, _, p, _)| (dist(pos, p), e))
+                .filter(|(d, _)| *d < proximity.radius)
+                .collect::<Vec<_>>();
+            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+            let closest = vec.into_iter().next().map(|(d, p)| p);
+            if let Some(target) = closest {
+                let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
+                v.push((target.clone(), damage));
+            }
+        }
+
+        for (target, damage) in v.into_iter() {
+            let mut health_inst = stats.get_mut(target).unwrap().0.stats.get_mut(&Stats::Health).unwrap();
+            health_inst.value -= damage;
+            if health_inst.value <= 0.0 {
+                entities.delete(target).unwrap();
+            }
+        }
+});
 
 fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
@@ -327,7 +416,10 @@ fn main() -> BError {
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
         (WinConditionSystem, "win_cond", &[]),
-        (CreepAiSystem, "creep_ai", &[])
+        (CreepAiSystem, "creep_ai", &[]),
+        (TowerAiSystem, "tower_ai", &[]),
+        (ProximityAttackSystem, "proximity_attack", &[]),
+        (GotoStraightSystem, "goto_straight", &[])
     );
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
@@ -403,6 +495,7 @@ fn main() -> BError {
         ),
         StatDefinition::new(Stats::Mana, String::from("mana"), String::from("MP"), 100.0),
     ]);
+    let default_stats = stat_defs.to_statset();
 
     // player
     // TODO remove
@@ -431,6 +524,7 @@ fn main() -> BError {
         })
         .with(Team::Other)
         .with(Core)
+        .with(Comp(default_stats.clone()))
         .build();
 
     world
@@ -443,6 +537,7 @@ fn main() -> BError {
         })
         .with(Team::Me)
         .with(Core)
+        .with(Comp(default_stats.clone()))
         .build();
 
     // Create barracks
@@ -459,6 +554,7 @@ fn main() -> BError {
             })
             .with(Team::Other)
             .with(Barrack)
+            .with(Comp(default_stats.clone()))
             .build();
         // Creep spawners
         world
@@ -482,12 +578,14 @@ fn main() -> BError {
             })
             .with(Team::Me)
             .with(Barrack)
+            .with(Comp(default_stats.clone()))
             .build();
         // Creep spawners
         world
             .create_entity()
             .with(Point::new(x, y - 1))
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
+            // TODO SET ME BACK TO NORMAL
+            .with(CreepSpawner(0, CREEP_SPAWN_TICKS - 5))
             .with(Team::Me)
             .build();
     }
@@ -507,6 +605,7 @@ fn main() -> BError {
                     bg: RGBA::named(RED),
                 })
                 .with(Team::Other)
+                .with(Comp(default_stats.clone()))
                 .build();
         }
     }
@@ -525,6 +624,7 @@ fn main() -> BError {
                     bg: RGBA::named(RED),
                 })
                 .with(Team::Me)
+                .with(Comp(default_stats.clone()))
                 .build();
         }
     }
@@ -544,3 +644,4 @@ fn main() -> BError {
 
     main_loop(context, gs)
 }
+
