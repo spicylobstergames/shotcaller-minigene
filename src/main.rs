@@ -377,58 +377,80 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
     }
 });
 
-system!(TowerProjectileSystem,
-        |projectiles: ReadStorage<'a, TowerProjectile>,
-        entities: Entities<'a>,
-        positions: ReadStorage<'a, Point>,
-        teams: ReadStorage<'a, Team>,
-        gotos: ReadStorage<'a, GotoStraight>,
-        stats: WriteStorage<'a, Comp<StatSet<Stats>>>| {
-            for (e, pos, goto, _, team) in (&*entities, &positions, &gotos, &projectiles, &teams).join() {
-                let dmg = stats.get(e).expect("Add a statset to the projectile.").0.stats.get(&Stats::Attack).unwrap().value;
-                if *pos == goto.target {
-                    for (e, _, _) in entities_in_radius(pos, &*entities, &positions, 
-                                                        |e, p| teams.get(e).map(|t| t == team).unwrap_or(false),
-                                                        |e, p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS) {
-                        // damage around
-                        if let Some(mut stat) = stats.get_mut(e).as_mut().map(|c| &mut c.0) {
-                            if damage(&mut stat, dmg) {
-                                entities.delete(e).unwrap();
-                            }
-                        }
+system!(TowerProjectileSystem, |projectiles: ReadStorage<
+    'a,
+    TowerProjectile,
+>,
+                                entities: Entities<'a>,
+                                positions: ReadStorage<
+    'a,
+    Point,
+>,
+                                teams: ReadStorage<'a, Team>,
+                                gotos: ReadStorage<
+    'a,
+    GotoStraight,
+>,
+                                stats: WriteStorage<
+    'a,
+    Comp<StatSet<Stats>>,
+>| {
+    for (e, pos, goto, _, team) in (&*entities, &positions, &gotos, &projectiles, &teams).join() {
+        let dmg = stats
+            .get(e)
+            .expect("Add a statset to the projectile.")
+            .0
+            .stats
+            .get(&Stats::Attack)
+            .unwrap()
+            .value;
+        if *pos == goto.target {
+            for (e, _, _) in entities_in_radius(
+                pos,
+                &*entities,
+                &positions,
+                |e, p| teams.get(e).map(|t| t == team).unwrap_or(false),
+                |e, p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS,
+            ) {
+                // damage around
+                if let Some(mut stat) = stats.get_mut(e).as_mut().map(|c| &mut c.0) {
+                    if damage(&mut stat, dmg) {
+                        entities.delete(e).unwrap();
                     }
                 }
             }
+        }
+    }
 });
 
 pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
-        let mut health_inst = stat_set.stats
-            .get_mut(&Stats::Health)
-            .unwrap();
-        health_inst.value -= damage;
-        health_inst.value <= 0.0
+    let mut health_inst = stat_set.stats.get_mut(&Stats::Health).unwrap();
+    health_inst.value -= damage;
+    health_inst.value <= 0.0
 }
 
-                          //pre_filter: Box<dyn FnOnce(Entity, Point) -> bool>,
-                          //post_filter: Box<dyn FnOnce(Entity, Point, f32) -> bool>,
-pub fn entities_in_radius<D: Deref<Target = MaskedStorage<Point>>,
+//pre_filter: Box<dyn FnOnce(Entity, Point) -> bool>,
+//post_filter: Box<dyn FnOnce(Entity, Point, f32) -> bool>,
+pub fn entities_in_radius<
+    D: Deref<Target = MaskedStorage<Point>>,
     F1: Fn(Entity, Point) -> bool,
-    F2: Fn(Entity, Point, f32) -> bool>(
+    F2: Fn(Entity, Point, f32) -> bool,
+>(
     around: &Point,
-    entities: &EntitiesRes, 
+    entities: &EntitiesRes,
     positions: &Storage<'_, Point, D>,
     pre_filter: F1,
     post_filter: F2,
-    ) -> Vec<(Entity, Point, f32)> {
-        let mut vec = (&*entities, positions)
-            .join()
-            .filter(|(e, p)| pre_filter(*e, **p))
-            .map(|(e, p)| (e, p.clone(), dist(around, p)))
-            .filter(|(e, p, d)| post_filter(*e, *p, *d))
-            .collect::<Vec<_>>();
-        // Sort by distance
-        vec.sort_by(|e1, e2| e1.2.partial_cmp(&e2.2).unwrap());
-        vec
+) -> Vec<(Entity, Point, f32)> {
+    let mut vec = (&*entities, positions)
+        .join()
+        .filter(|(e, p)| pre_filter(*e, **p))
+        .map(|(e, p)| (e, p.clone(), dist(around, p)))
+        .filter(|(e, p, d)| post_filter(*e, *p, *d))
+        .collect::<Vec<_>>();
+    // Sort by distance
+    vec.sort_by(|e1, e2| e1.2.partial_cmp(&e2.2).unwrap());
+    vec
 }
 
 fn render<'a>(ctx: &mut BTerm) {
