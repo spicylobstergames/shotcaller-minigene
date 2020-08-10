@@ -202,7 +202,9 @@ system!(
                 .unwrap();
             teams.insert(creep, team).unwrap();
             stats.insert(creep, Comp(stat_def.to_statset())).unwrap();
-            proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS)).unwrap();
+            proximity_attacks
+                .insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS))
+                .unwrap();
             sprites
                 .insert(
                     creep,
@@ -323,40 +325,58 @@ system!(
                     },
                 )
                 .unwrap();
-            goto_positions.insert(n, GotoStraight::new(target.clone(), 1.0)).unwrap();
+            goto_positions
+                .insert(n, GotoStraight::new(target.clone(), 1.0))
+                .unwrap();
         }
     }
 );
 
-system!(ProximityAttackSystem,
-        |entities: Entities<'a>, 
-        proximity_attacks: ReadStorage<'a, ProximityAttack>,
-        stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
-        teams: ReadStorage<'a, Team>,
-        positions: ReadStorage<'a, Point>| {
-        let mut v = vec![];
-        for (e, proximity, stat, pos, team) in (&*entities, &proximity_attacks, &stats, &positions, &teams).join() {
-            let mut vec = (&*entities, &teams, &positions, &stats)
-                .join()
-                .filter(|(e, t, _, _)| **t != *team)
-                .map(|(e, _, p, _)| (dist(pos, p), e))
-                .filter(|(d, _)| *d < proximity.radius)
-                .collect::<Vec<_>>();
-            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            let closest = vec.into_iter().next().map(|(d, p)| p);
-            if let Some(target) = closest {
-                let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
-                v.push((target.clone(), damage));
-            }
+system!(ProximityAttackSystem, |entities: Entities<'a>,
+                                proximity_attacks: ReadStorage<
+    'a,
+    ProximityAttack,
+>,
+                                stats: WriteStorage<
+    'a,
+    Comp<StatSet<Stats>>,
+>,
+                                teams: ReadStorage<'a, Team>,
+                                positions: ReadStorage<
+    'a,
+    Point,
+>| {
+    let mut v = vec![];
+    for (e, proximity, stat, pos, team) in
+        (&*entities, &proximity_attacks, &stats, &positions, &teams).join()
+    {
+        let mut vec = (&*entities, &teams, &positions, &stats)
+            .join()
+            .filter(|(e, t, _, _)| **t != *team)
+            .map(|(e, _, p, _)| (dist(pos, p), e))
+            .filter(|(d, _)| *d < proximity.radius)
+            .collect::<Vec<_>>();
+        vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+        let closest = vec.into_iter().next().map(|(d, p)| p);
+        if let Some(target) = closest {
+            let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
+            v.push((target.clone(), damage));
         }
+    }
 
-        for (target, damage) in v.into_iter() {
-            let mut health_inst = stats.get_mut(target).unwrap().0.stats.get_mut(&Stats::Health).unwrap();
-            health_inst.value -= damage;
-            if health_inst.value <= 0.0 {
-                entities.delete(target).unwrap();
-            }
+    for (target, damage) in v.into_iter() {
+        let mut health_inst = stats
+            .get_mut(target)
+            .unwrap()
+            .0
+            .stats
+            .get_mut(&Stats::Health)
+            .unwrap();
+        health_inst.value -= damage;
+        if health_inst.value <= 0.0 {
+            entities.delete(target).unwrap();
         }
+    }
 });
 
 fn render<'a>(ctx: &mut BTerm) {
@@ -643,4 +663,3 @@ fn main() -> BError {
 
     main_loop(context, gs)
 }
-
