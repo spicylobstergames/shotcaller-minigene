@@ -453,11 +453,16 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
     }
 });
 
-system!(UpdateEnemiesAroundSystem, |
-    entities: Entities<'a>,
-    positions: ReadStorage<'a, Point>,
-    teams: ReadStorage<'a, Team>,
-    stats: WriteStorage<'a, Comp<StatSet<Stats>>>| {
+system!(UpdateEnemiesAroundSystem, |entities: Entities<'a>,
+                                    positions: ReadStorage<
+    'a,
+    Point,
+>,
+                                    teams: ReadStorage<'a, Team>,
+                                    stats: WriteStorage<
+    'a,
+    Comp<StatSet<Stats>>,
+>| {
     for (e, pos, stat, team) in (&*entities, &positions, &mut stats, &teams).join() {
         let c = entities_in_radius(
             pos,
@@ -465,7 +470,8 @@ system!(UpdateEnemiesAroundSystem, |
             &positions,
             |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
             |_, _, d| d <= AOE_RADIUS,
-        ).len() as f64;
+        )
+        .len() as f64;
         stat.0
             .stats
             .get_mut(&Stats::EnemiesAround)
