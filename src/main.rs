@@ -120,6 +120,16 @@ pub enum Skills {
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum SkillEvents {
+    AOETrigger,
+}
+
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Effectors {
+    TripleDamage,
+}
+
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum InputEvent {
     MenuNorth,
     MenuWest,
@@ -603,7 +613,7 @@ fn main() -> BError {
     ]);
     let default_stats = stat_defs.to_statset();
 
-    let skill_definitions = SkillDefinitions::from(vec![
+    let skill_definitions = SkillDefinitions::<_, _, _, (), _>::from(vec![
         SkillDefinition::new(
             Skills::AOE,
             String::from("AOE"),
@@ -639,7 +649,7 @@ fn main() -> BError {
             ],
             vec![],
             vec![
-                Effectors::TripleAttack,
+                Effectors::TripleDamage,
             ],
             vec![],
         ),
