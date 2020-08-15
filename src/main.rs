@@ -116,7 +116,7 @@ pub enum Stats {
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Skills {
     AOE,
-    TripleDamage,
+    DoubleDamage,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -126,7 +126,7 @@ pub enum SkillEvents {
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
-    TripleDamage,
+    DoubleDamage,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -433,7 +433,7 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
                 pos,
                 &*entities,
                 &positions,
-                |e, p| teams.get(e).map(|t| t == team).unwrap_or(false),
+                |e, p| teams.get(e).map(|t| t != team).unwrap_or(false),
                 |e, p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS,
             ) {
                 // damage around
@@ -444,6 +444,33 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
                 }
             }
         }
+    }
+});
+
+system!(UpdateEnemiesAroundSystem, |
+    entities: Entities<'a>,
+                                positions: ReadStorage<
+    'a,
+    Point,
+>,
+                                teams: ReadStorage<'a, Team>,
+                                stats: WriteStorage<
+    'a,
+    Comp<StatSet<Stats>>,
+>| {
+    for (e, pos, stats, team) in (&*entities, &positions, &mut stats, &teams).join() {
+        let mut entities_around = &mut stats.0
+            .stats
+            .get_mut(&Stats::EnemiesAround)
+            .unwrap()
+            .value;
+        *entities_around = entities_in_radius(
+            pos,
+            &*entities,
+            &positions,
+            |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
+            |_, _, d| d <= AOE_RADIUS,
+        ).len();
     }
 });
 
@@ -535,6 +562,7 @@ fn main() -> BError {
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
+        (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
         (GotoStraightSystem, "goto_straight", &[])
     );
     let (mut world, mut dispatcher, mut context) =
@@ -635,9 +663,9 @@ fn main() -> BError {
             ],
         ),
         SkillDefinition::new(
-            Skills::TripleDamage,
-            String::from("Triple Damage"),
-            String::from("triple_damage"),
+            Skills::DoubleDamage,
+            String::from("Double Damage"),
+            String::from("double_damage"),
             String::from("Each 3 attacks, deal double damage."),
             0.0,
             true,
@@ -649,7 +677,7 @@ fn main() -> BError {
             ],
             vec![],
             vec![
-                Effectors::TripleDamage,
+                Effectors::DoubleDamage,
             ],
             vec![],
         ),
