@@ -780,10 +780,7 @@ fn main() -> BError {
     // Create generic hero 1
     world
         .create_entity()
-        .with(Point::new(
-            PLAY_WIDTH as i32 / 2,
-            PLAY_HEIGHT as i32 - 11,
-        ))
+        .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
             glyph: to_cp437('L'),
             fg: RGBA::named(GREEN),
