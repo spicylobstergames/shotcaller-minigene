@@ -79,6 +79,10 @@ pub struct Core;
 #[derive(Component)]
 pub struct Barrack;
 #[derive(Component)]
+pub struct Leader(u32);
+#[derive(Component)]
+pub struct Name(String);
+#[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
 pub struct CreepSpawner(u32, u32);
@@ -103,6 +107,16 @@ pub enum Stats {
     Attack,
     Mana,
     AttackSpeed,
+    EnemiesAround,
+    AttacksDealt,
+    AttacksReceived,
+    DamageDealt,
+    DamageReceived,
+}
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Skills {
+    AOE,
+    TripleDamage,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -429,8 +443,6 @@ pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
     health_inst.value <= 0.0
 }
 
-//pre_filter: Box<dyn FnOnce(Entity, Point) -> bool>,
-//post_filter: Box<dyn FnOnce(Entity, Point, f32) -> bool>,
 pub fn entities_in_radius<
     D: Deref<Target = MaskedStorage<Point>>,
     F1: Fn(Entity, Point) -> bool,
@@ -591,6 +603,48 @@ fn main() -> BError {
     ]);
     let default_stats = stat_defs.to_statset();
 
+    let skill_definitions = SkillDefinitions::from(vec![
+        SkillDefinition::new(
+            Skills::AOE,
+            String::from("AOE"),
+            String::from("aoe"),
+            String::from("Does 100 damage to all enemy entities around. Actives only if 3 or more enemy entities are present. Cooldown of 12s."),
+            12.0,
+            true,
+            vec![
+                // enemies around >= 3
+                StatCondition::new(
+                    Stats::EnemiesAround,
+                    StatConditionType::MinValue(3.0),
+                ),
+            ],
+            vec![],
+            vec![],
+            vec![
+                SkillEvents::AOETrigger,
+            ],
+        ),
+        SkillDefinition::new(
+            Skills::TripleDamage,
+            String::from("Triple Damage"),
+            String::from("triple_damage"),
+            String::from("Each 3 attacks, deal double damage."),
+            0.0,
+            true,
+            vec![
+                StatCondition::new(
+                    Stats::AttacksDealt,
+                    StatConditionType::Custom(std::sync::Arc::new(Box::new(|v| v as i32 % 3 == 0))),
+                ),
+            ],
+            vec![],
+            vec![
+                Effectors::TripleAttack,
+            ],
+            vec![],
+        ),
+    ]);
+
     // player
     // TODO remove
     //world
@@ -722,6 +776,24 @@ fn main() -> BError {
                 .build();
         }
     }
+
+    // Create generic hero 1
+    world
+        .create_entity()
+        .with(Point::new(
+            PLAY_WIDTH as i32 / 2,
+            PLAY_HEIGHT as i32 - 11,
+        ))
+        .with(Sprite {
+            glyph: to_cp437('L'),
+            fg: RGBA::named(GREEN),
+            bg: RGBA::named(RED),
+        })
+        .with(Team::Me)
+        .with(Leader(0))
+        .with(Name("Generic Leader 1".to_string()))
+        .with(Comp(default_stats.clone()))
+        .build();
 
     //for i in 10..30 {
     //    world.create_entity()
