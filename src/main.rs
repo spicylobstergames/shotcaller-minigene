@@ -10,6 +10,7 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
+const AOE_RADIUS: f32 = 4.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 
@@ -232,13 +233,18 @@ system!(
             proximity_attacks
                 .insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS))
                 .unwrap();
+            let bg = if team == Team::Me {
+                RGBA::named(GREEN)
+            } else {
+                RGBA::named(RED)
+            };
             sprites
                 .insert(
                     creep,
                     Sprite {
                         glyph: to_cp437('c'),
                         fg: RGBA::named(YELLOW),
-                        bg: RGBA::named(BLACK),
+                        bg,
                     },
                 )
                 .unwrap();
@@ -449,28 +455,22 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
 
 system!(UpdateEnemiesAroundSystem, |
     entities: Entities<'a>,
-                                positions: ReadStorage<
-    'a,
-    Point,
->,
-                                teams: ReadStorage<'a, Team>,
-                                stats: WriteStorage<
-    'a,
-    Comp<StatSet<Stats>>,
->| {
-    for (e, pos, stats, team) in (&*entities, &positions, &mut stats, &teams).join() {
-        let mut entities_around = &mut stats.0
-            .stats
-            .get_mut(&Stats::EnemiesAround)
-            .unwrap()
-            .value;
-        *entities_around = entities_in_radius(
+    positions: ReadStorage<'a, Point>,
+    teams: ReadStorage<'a, Team>,
+    stats: WriteStorage<'a, Comp<StatSet<Stats>>>| {
+    for (e, pos, stat, team) in (&*entities, &positions, &mut stats, &teams).join() {
+        let c = entities_in_radius(
             pos,
             &*entities,
             &positions,
             |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
             |_, _, d| d <= AOE_RADIUS,
-        ).len();
+        ).len() as f64;
+        stat.0
+            .stats
+            .get_mut(&Stats::EnemiesAround)
+            .expect("Failed to get EnemiesAround stat")
+            .value = c;
     }
 });
 
@@ -574,6 +574,8 @@ fn main() -> BError {
     world.register::<Barrack>();
     world.register::<Tower>();
     world.register::<Core>();
+    world.register::<Leader>();
+    world.register::<Name>();
     world.register::<Comp<StatSet<Stats>>>();
 
     // WASM REGISTER
@@ -630,6 +632,18 @@ fn main() -> BError {
             String::from("attack"),
             String::from("Attack"),
             10.0,
+        ),
+        StatDefinition::new(
+            Stats::EnemiesAround,
+            String::from("enemies_around"),
+            String::from("Enemies Around"),
+            0.0,
+        ),
+        StatDefinition::new(
+            Stats::AttacksDealt,
+            String::from("attacks_dealt"),
+            String::from("Attacks Dealt"),
+            0.0,
         ),
         StatDefinition::new(
             Stats::AttackSpeed,
@@ -719,7 +733,7 @@ fn main() -> BError {
         .with(Sprite {
             glyph: to_cp437('C'),
             fg: RGBA::named(BLUE),
-            bg: RGBA::named(RED),
+            bg: RGBA::named(GREEN),
         })
         .with(Team::Me)
         .with(Core)
@@ -760,7 +774,7 @@ fn main() -> BError {
             .with(Sprite {
                 glyph: to_cp437('B'),
                 fg: RGBA::named(YELLOW),
-                bg: RGBA::named(RED),
+                bg: RGBA::named(GREEN),
             })
             .with(Team::Me)
             .with(Barrack)
@@ -807,7 +821,7 @@ fn main() -> BError {
                 .with(Sprite {
                     glyph: to_cp437('T'),
                     fg: RGBA::named(GREEN),
-                    bg: RGBA::named(RED),
+                    bg: RGBA::named(GREEN),
                 })
                 .with(Team::Me)
                 .with(Comp(default_stats.clone()))
@@ -822,7 +836,7 @@ fn main() -> BError {
         .with(Sprite {
             glyph: to_cp437('L'),
             fg: RGBA::named(GREEN),
-            bg: RGBA::named(RED),
+            bg: RGBA::named(GREEN),
         })
         .with(Team::Me)
         .with(Leader(0))
