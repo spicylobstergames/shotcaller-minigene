@@ -10,6 +10,7 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
+const LEADER_ATTACK_RADIUS: f32 = 2.1;
 const AOE_RADIUS: f32 = 4.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
@@ -83,6 +84,8 @@ pub struct Barrack;
 pub struct Leader(u32);
 #[derive(Component)]
 pub struct Name(String);
+#[derive(Component)]
+pub struct SimpleMovement;
 #[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
@@ -205,6 +208,7 @@ system!(
      positions: WriteStorage<'a, Point>,
      spawners: WriteStorage<'a, CreepSpawner>,
      creeps: WriteStorage<'a, Creep>,
+     simple_movements: WriteStorage<'a, SimpleMovement>,
      ai_destinations: WriteStorage<'a, AiDestination>,
      proximity_attacks: WriteStorage<'a, ProximityAttack>,
      stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
@@ -225,6 +229,7 @@ system!(
             let creep = entities.create();
             positions.insert(creep, pos.clone()).unwrap();
             creeps.insert(creep, Creep).unwrap();
+            simple_movements.insert(creep, SimpleMovement).unwrap();
             ai_paths
                 .insert(creep, AiPath::new(NavigationPath::new()))
                 .unwrap();
@@ -292,14 +297,14 @@ system!(
 );
 
 system!(
-    CreepAiSystem,
+    SimpleMovementSystem,
     |entities: Entities<'a>,
-     creeps: ReadStorage<'a, Creep>,
+     simple_movements: ReadStorage<'a, SimpleMovement>,
      teams: ReadStorage<'a, Team>,
      targets: WriteStorage<'a, AiDestination>,
      stats: ReadStorage<'a, Comp<StatSet<Stats>>>,
      positions: ReadStorage<'a, Point>| {
-        for (e, _, team, pos) in (&*entities, &creeps, &teams, &positions).join() {
+        for (e, _, team, pos) in (&*entities, &simple_movements, &teams, &positions).join() {
             // find closest in other team
             // TODO: optimize
             let mut vec = (&teams, &positions, &stats)
@@ -396,11 +401,12 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
         let closest = vec.into_iter().next().map(|(d, p)| p);
         if let Some(target) = closest {
             let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
-            v.push((target.clone(), damage));
+            v.push((e.clone(), target.clone(), damage));
         }
     }
 
-    for (target, dmg) in v.into_iter() {
+    for (attacker, target, dmg) in v.into_iter() {
+        increment_attacks_dealt(&mut stats.get_mut(attacker).unwrap().0);
         if damage(&mut stats.get_mut(target).unwrap().0, dmg) {
             entities.delete(target).unwrap();
         }
@@ -479,6 +485,10 @@ system!(UpdateEnemiesAroundSystem, |entities: Entities<'a>,
             .value = c;
     }
 });
+
+pub fn increment_attacks_dealt(stat_set: &mut StatSet<Stats>) {
+    stat_set.stats.get_mut(&Stats::AttacksDealt).unwrap().value += 1.0;
+}
 
 pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
     let mut health_inst = stat_set.stats.get_mut(&Stats::Health).unwrap();
@@ -564,7 +574,7 @@ fn main() -> BError {
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
         (WinConditionSystem, "win_cond", &[]),
-        (CreepAiSystem, "creep_ai", &[]),
+        (SimpleMovementSystem, "simple_movement", &[]),
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
@@ -586,6 +596,7 @@ fn main() -> BError {
 
     // WASM REGISTER
     world.register::<Point>();
+    world.register::<SimpleMovement>();
     world.register::<AiPath>();
     world.register::<AiDestination>();
     world.register::<Creep>();
@@ -841,11 +852,14 @@ fn main() -> BError {
         .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
             glyph: to_cp437('L'),
-            fg: RGBA::named(GREEN),
+            fg: RGBA::named(YELLOW),
             bg: RGBA::named(GREEN),
         })
         .with(Team::Me)
+        .with(SimpleMovement)
+        .with(AiPath::new(NavigationPath::new()))
         .with(Leader(0))
+        .with(ProximityAttack::new(LEADER_ATTACK_RADIUS))
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
         .build();
