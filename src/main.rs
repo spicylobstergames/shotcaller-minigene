@@ -530,7 +530,12 @@ fn render<'a>(ctx: &mut BTerm) {
 struct DefaultState;
 
 impl minigene::State for DefaultState {
-    fn update(&mut self, world: &mut World, dispatcher: &mut MiniDispatcher, ctx: &mut BTerm) -> Trans{
+    fn update(
+        &mut self,
+        world: &mut World,
+        dispatcher: &mut MiniDispatcher,
+        ctx: &mut BTerm,
+    ) -> Trans {
         render(ctx);
         render_sprites(
             ctx,
@@ -551,7 +556,12 @@ struct State {
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
         if self.state_machine.is_running() {
-            mini_frame(&mut self.world, &mut self.dispatcher, ctx, &mut self.state_machine);
+            mini_frame(
+                &mut self.world,
+                &mut self.dispatcher,
+                ctx,
+                &mut self.state_machine,
+            );
         }
         // Input
         /*let input = INPUT.lock();
@@ -900,7 +910,11 @@ fn main() -> BError {
 
     //mini_loop(&mut world, &mut dispatcher, &mut context, DefaultState);
 
-    let gs = State { world, dispatcher, state_machine };
+    let gs = State {
+        world,
+        dispatcher,
+        state_machine,
+    };
 
     main_loop(context, gs)
 }
