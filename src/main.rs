@@ -527,14 +527,34 @@ fn render<'a>(ctx: &mut BTerm) {
     }
 }
 
+struct DefaultState;
+
+impl minigene::State for DefaultState {
+    fn update(&mut self, world: &mut World, dispatcher: &mut MiniDispatcher, ctx: &mut BTerm) -> Trans{
+        render(ctx);
+        render_sprites(
+            ctx,
+            &world.read_resource(),
+            world.read_storage(),
+            world.read_storage(),
+            world.read_storage(),
+        );
+        Trans::None
+    }
+}
+
 struct State {
     pub world: World,
     pub dispatcher: Box<dyn UnifiedDispatcher + 'static>,
+    pub state_machine: StateMachine,
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
+        if self.state_machine.is_running() {
+            mini_frame(&mut self.world, &mut self.dispatcher, ctx, &mut self.state_machine);
+        }
         // Input
-        let input = INPUT.lock();
+        /*let input = INPUT.lock();
         for key in input.key_pressed_set().iter() {
             self.world
                 .fetch_mut::<EventChannel<VirtualKeyCode>>()
@@ -554,7 +574,7 @@ impl GameState for State {
         #[cfg(not(target_arch = "wasm32"))]
         std::thread::sleep(std::time::Duration::from_millis(
             (50 / self.world.fetch::<GameSpeed>().0) as u64,
-        ));
+        ));*/
     }
 }
 
@@ -583,6 +603,9 @@ fn main() -> BError {
     );
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
+
+    let mut state_machine = StateMachine::new(DefaultState);
+    state_machine.start(&mut world, &mut dispatcher, &mut context);
 
     world.register::<MultiSprite>();
     world.register::<Sprite>();
@@ -875,7 +898,9 @@ fn main() -> BError {
     //        .build();
     //}
 
-    let gs = State { world, dispatcher };
+    //mini_loop(&mut world, &mut dispatcher, &mut context, DefaultState);
+
+    let gs = State { world, dispatcher, state_machine };
 
     main_loop(context, gs)
 }
