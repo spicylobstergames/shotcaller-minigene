@@ -563,28 +563,6 @@ impl GameState for State {
                 &mut self.state_machine,
             );
         }
-        // Input
-        /*let input = INPUT.lock();
-        for key in input.key_pressed_set().iter() {
-            self.world
-                .fetch_mut::<EventChannel<VirtualKeyCode>>()
-                .single_write(key.clone());
-        }
-        self.dispatcher.run_now(&mut self.world);
-        render(ctx);
-        render_sprites(
-            ctx,
-            &self.world.read_resource(),
-            self.world.read_storage(),
-            self.world.read_storage(),
-            self.world.read_storage(),
-        );
-        self.world.maintain();
-
-        #[cfg(not(target_arch = "wasm32"))]
-        std::thread::sleep(std::time::Duration::from_millis(
-            (50 / self.world.fetch::<GameSpeed>().0) as u64,
-        ));*/
     }
 }
 
@@ -896,19 +874,6 @@ fn main() -> BError {
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
         .build();
-
-    //for i in 10..30 {
-    //    world.create_entity()
-    //        .with(Point::new(i, 49))
-    //        .with(CreepSpawner(i))
-    //        .build();
-    //    world.create_entity()
-    //        .with(Point::new(i, 1))
-    //        .with(CreepSpawner(i))
-    //        .build();
-    //}
-
-    //mini_loop(&mut world, &mut dispatcher, &mut context, DefaultState);
 
     let gs = State {
         world,
