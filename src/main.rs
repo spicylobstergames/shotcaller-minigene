@@ -587,6 +587,10 @@ fn main() -> BError {
         (ProximityAttackSystem, "proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
         (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
+        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, (), SkillEvents>, "trigger_passives", &[]),
+        (ExecSkillSystem::<Stats, Effectors, Skills, (), SkillEvents>, "exec_skills", &[]),
+        (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
+        (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (GotoStraightSystem, "goto_straight", &[])
     );
     let (mut world, mut dispatcher, mut context) =
@@ -604,6 +608,8 @@ fn main() -> BError {
     world.register::<Leader>();
     world.register::<Name>();
     world.register::<Comp<StatSet<Stats>>>();
+    world.register::<Comp<EffectorSet<Effectors>>>();
+    world.register::<Comp<SkillSet<Skills>>>();
 
     // WASM REGISTER
     world.register::<Point>();
@@ -636,6 +642,11 @@ fn main() -> BError {
     let reader = input_channel.register_reader();
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
+
+    let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
+    let reader = skill_channel.register_reader();
+    world.insert(skill_channel);
+    world.insert(ExecSkillRes(reader));
 
     world.insert(Camera::new(
         Point::new(0, 0),
@@ -683,7 +694,7 @@ fn main() -> BError {
     ]);
     let default_stats = stat_defs.to_statset();
 
-    let skill_definitions = SkillDefinitions::<_, _, _, (), _>::from(vec![
+    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, (), SkillEvents>::from(vec![
         SkillDefinition::new(
             Skills::AOE,
             String::from("AOE"),
@@ -714,7 +725,7 @@ fn main() -> BError {
             vec![
                 StatCondition::new(
                     Stats::AttacksDealt,
-                    StatConditionType::Custom(std::sync::Arc::new(Box::new(|v| v as i32 % 3 == 0))),
+                    StatConditionType::Custom(|v| v as i32 % 3 == 0),
                 ),
             ],
             vec![],
@@ -724,6 +735,17 @@ fn main() -> BError {
             vec![],
         ),
     ]);
+    world.insert(skill_definitions);
+
+    let effector_defs = EffectorDefinitions::from(vec![
+        EffectorDefinition::new(
+            Effectors::DoubleDamage,
+            Some(0.0),
+            vec![(Stats::Attack, EffectorType::MultiplicativeMultiplier(2.0))],
+        ),
+    ]);
+
+    world.insert(effector_defs);
 
     // player
     // TODO remove
@@ -857,8 +879,12 @@ fn main() -> BError {
         }
     }
 
+    // hero1 skill set
+    let mut skillset = SkillSet::new(HashMap::new());
+    skillset.skills.insert(Skills::DoubleDamage, SkillInstance::new(Skills::DoubleDamage, 0.0));
+
     // Create generic hero 1
-    world
+    let hero1 = world
         .create_entity()
         .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
@@ -868,12 +894,18 @@ fn main() -> BError {
         })
         .with(Team::Me)
         .with(SimpleMovement)
+        .with(Comp(skillset))
         .with(AiPath::new(NavigationPath::new()))
         .with(Leader(0))
         .with(ProximityAttack::new(LEADER_ATTACK_RADIUS))
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
+        .with(Comp(EffectorSet::<Effectors>::default()))
         .build();
+
+    // Make hero HP really high
+    // TODO remove
+    //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000.0;
 
     let gs = State {
         world,
