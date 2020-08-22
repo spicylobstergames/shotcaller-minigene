@@ -12,6 +12,7 @@ const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
 const LEADER_ATTACK_RADIUS: f32 = 2.1;
 const AOE_RADIUS: f32 = 4.0;
+const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 
@@ -121,11 +122,6 @@ pub enum Stats {
 pub enum Skills {
     AOE,
     DoubleDamage,
-}
-
-#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
-pub enum SkillEvents {
-    AOETrigger,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -486,6 +482,31 @@ system!(UpdateEnemiesAroundSystem, |entities: Entities<'a>,
     }
 });
 
+event_reader_res!(AoeDamageRes, SkillTriggerEvent<Skills>);
+system!(AoeDamageSystem, |res: WriteExpect<'a, AoeDamageRes>,
+        stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
+        positions: ReadStorage<'a, Point>,
+        teams: ReadStorage<'a, Team>,
+        entities: Entities<'a>,
+        events: Read<'a, EventChannel<SkillTriggerEvent<Skills>>>| {
+    for ev in events.read(&mut res.0) {
+        if ev.1 == Skills::AOE {
+            // Damage around
+            if let (Some(from), Some(team)) = (positions.get(ev.0), teams.get(ev.0)) {
+                for (e, _, _) in entities_in_radius(from, &*entities, &positions, 
+                                            |e,_| teams.get(e).map(|t| t != team).unwrap_or(false), |_,_,d| d <= AOE_RADIUS) {
+                    if let Some(stat) = stats.get_mut(e) {
+                        damage(&mut stat.0, AOE_DAMAGE);
+                        if stat.0.stats.get(&Stats::Health).unwrap().value <= 0.0 {
+                            entities.delete(e);
+                        }
+                    }
+                }
+            }
+        }
+    }
+});
+
 pub fn increment_attacks_dealt(stat_set: &mut StatSet<Stats>) {
     stat_set.stats.get_mut(&Stats::AttacksDealt).unwrap().value += 1.0;
 }
@@ -587,10 +608,12 @@ fn main() -> BError {
         (ProximityAttackSystem, "proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
         (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
-        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, (), SkillEvents>, "trigger_passives", &[]),
-        (ExecSkillSystem::<Stats, Effectors, Skills, (), SkillEvents>, "exec_skills", &[]),
+        (SkillCooldownSystem::<Skills>, "cooldown_system", &[]),
+        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, ()>, "trigger_passives", &[]),
+        (ExecSkillSystem::<Stats, Effectors, Skills, ()>, "exec_skills", &[]),
         (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
+        (AoeDamageSystem, "aoe_damage", &[]),
         (GotoStraightSystem, "goto_straight", &[])
     );
     let (mut world, mut dispatcher, mut context) =
@@ -645,8 +668,10 @@ fn main() -> BError {
 
     let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
     let reader = skill_channel.register_reader();
+    let reader2 = skill_channel.register_reader();
     world.insert(skill_channel);
     world.insert(ExecSkillRes(reader));
+    world.insert(AoeDamageRes(reader2));
 
     world.insert(Camera::new(
         Point::new(0, 0),
@@ -694,7 +719,7 @@ fn main() -> BError {
     ]);
     let default_stats = stat_defs.to_statset();
 
-    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, (), SkillEvents>::from(vec![
+    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, ()>::from(vec![
         SkillDefinition::new(
             Skills::AOE,
             String::from("AOE"),
@@ -711,9 +736,6 @@ fn main() -> BError {
             ],
             vec![],
             vec![],
-            vec![
-                SkillEvents::AOETrigger,
-            ],
         ),
         SkillDefinition::new(
             Skills::DoubleDamage,
@@ -732,7 +754,6 @@ fn main() -> BError {
             vec![
                 Effectors::DoubleDamage,
             ],
-            vec![],
         ),
     ]);
     world.insert(skill_definitions);
@@ -810,7 +831,8 @@ fn main() -> BError {
         world
             .create_entity()
             .with(Point::new(x, y + 1))
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
+            //.with(CreepSpawner(0, CREEP_SPAWN_TICKS))
+            .with(CreepSpawner(0, 2))
             .with(Team::Other)
             .build();
     }
@@ -882,6 +904,7 @@ fn main() -> BError {
     // hero1 skill set
     let mut skillset = SkillSet::new(HashMap::new());
     skillset.skills.insert(Skills::DoubleDamage, SkillInstance::new(Skills::DoubleDamage, 0.0));
+    skillset.skills.insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
     // Create generic hero 1
     let hero1 = world
@@ -905,7 +928,7 @@ fn main() -> BError {
 
     // Make hero HP really high
     // TODO remove
-    //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000.0;
+    world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
 
     let gs = State {
         world,
