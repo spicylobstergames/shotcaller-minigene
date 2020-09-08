@@ -82,7 +82,7 @@ pub struct Core;
 #[derive(Component)]
 pub struct Barrack;
 #[derive(Component)]
-pub struct Leader(u32);
+pub struct Leader(u8);
 #[derive(Component)]
 pub struct Name(String);
 #[derive(Component)]
@@ -139,6 +139,7 @@ pub enum InputEvent {
     MenuCancel,
     SpeedToggle,
     ZoomToggle,
+    Teleport(u8),
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -254,7 +255,6 @@ system!(
 );
 
 event_reader_res!(ToggleGameSpeedRes, InputEvent);
-
 system!(
     ToggleGameSpeedSystem,
     |events: Read<'a, EventChannel<InputEvent>>,
@@ -288,6 +288,41 @@ system!(
             (false, true) => *winner = Winner::Other,
             (true, false) => *winner = Winner::Me,
             (true, true) => *winner = Winner::Draw,
+        }
+    }
+);
+
+pub struct HeroTeleportRes {
+    pub reader: ReaderId<InputEvent>,
+    pub selected_hero: Option<u8>,
+}
+system!(
+    HeroTeleportSystem,
+    |events: Read<'a, EventChannel<InputEvent>>,
+     res: WriteExpect<'a, HeroTeleportRes>,
+     positions: WriteStorage<'a, Point>,
+     leaders: ReadStorage<'a, Leader>| {
+        for k in events.read(&mut res.reader) {
+            if let &InputEvent::Teleport(n) = k {
+                if let Some(hero) = res.selected_hero {
+                    if n >= 1 && n <= 3 {
+                        for (mut pos, leader) in (&mut positions, &leaders).join() {
+                            if leader.0 == hero {
+                                // teleport to n
+                                let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 7 * (n as i32 - 2);
+                                let y = PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8;
+                                pos.x = x;
+                                pos.y = y;
+                            }
+                        }
+                        res.selected_hero = None;
+                    }
+                } else {
+                    if n >= 1 && n <= 5 {
+                        res.selected_hero = Some(n);
+                    }
+                }
+            }
         }
     }
 );
@@ -614,7 +649,8 @@ fn main() -> BError {
         (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
-        (GotoStraightSystem, "goto_straight", &[])
+        (GotoStraightSystem, "goto_straight", &[]),
+        (HeroTeleportSystem, "hero_teleport", &[])
     );
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
@@ -659,12 +695,19 @@ fn main() -> BError {
     keymap.insert(VirtualKeyCode::Return, InputEvent::MenuSelect);
     keymap.insert(VirtualKeyCode::Q, InputEvent::MenuCancel);
     keymap.insert(VirtualKeyCode::S, InputEvent::SpeedToggle);
+    keymap.insert(VirtualKeyCode::Key1, InputEvent::Teleport(1));
+    keymap.insert(VirtualKeyCode::Key2, InputEvent::Teleport(2));
+    keymap.insert(VirtualKeyCode::Key3, InputEvent::Teleport(3));
+    keymap.insert(VirtualKeyCode::Key4, InputEvent::Teleport(4));
+    keymap.insert(VirtualKeyCode::Key5, InputEvent::Teleport(5));
     world.insert(keymap);
 
     let mut input_channel = EventChannel::<InputEvent>::new();
     let reader = input_channel.register_reader();
+    let reader2 = input_channel.register_reader();
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
+    world.insert(HeroTeleportRes{reader: reader2, selected_hero: None});
 
     let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
     let reader = skill_channel.register_reader();
@@ -831,8 +874,8 @@ fn main() -> BError {
         world
             .create_entity()
             .with(Point::new(x, y + 1))
-            //.with(CreepSpawner(0, CREEP_SPAWN_TICKS))
-            .with(CreepSpawner(0, 2))
+            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
+            //.with(CreepSpawner(0, 2))
             .with(Team::Other)
             .build();
     }
@@ -912,14 +955,15 @@ fn main() -> BError {
         .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
             glyph: to_cp437('L'),
-            fg: RGBA::named(YELLOW),
+            //fg: RGBA::named(YELLOW),
+            fg: RGBA::named(RED),
             bg: RGBA::named(GREEN),
         })
         .with(Team::Me)
         .with(SimpleMovement)
         .with(Comp(skillset))
         .with(AiPath::new(NavigationPath::new()))
-        .with(Leader(0))
+        .with(Leader(1))
         .with(ProximityAttack::new(LEADER_ATTACK_RADIUS))
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
