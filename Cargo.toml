@@ -1,6 +1,6 @@
 [package]
 name = "shotcaller"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Joël Lupien (Jojolepro) <jojolepro@jojolepro.com>"]
 edition = "2018"
 
@@ -10,7 +10,7 @@ crossterm = ["minigene/crossterm"]
 wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook"]
 
 [dependencies]
-minigene = { path = "../minigene", default-features = false }
-#minigene = { git = "https://github.com/jojolepro/minigene", default-features = false }
+#minigene = { path = "../minigene", default-features = false }
+minigene = { git = "https://github.com/jojolepro/minigene", default-features = false }
 wasm-bindgen = { version = "0.2", optional = true }
 console_error_panic_hook = { version = "0.1.6", optional = true }
