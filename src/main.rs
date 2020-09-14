@@ -118,10 +118,16 @@ pub enum Stats {
     DamageDealt,
     DamageReceived,
 }
+
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Skills {
     AOE,
     DoubleDamage,
+}
+
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Items {
+    TestItem,
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -644,8 +650,8 @@ fn main() -> BError {
         (TowerProjectileSystem, "tower_projectile", &[]),
         (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
         (SkillCooldownSystem::<Skills>, "cooldown_system", &[]),
-        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, ()>, "trigger_passives", &[]),
-        (ExecSkillSystem::<Stats, Effectors, Skills, ()>, "exec_skills", &[]),
+        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, Items, (), ()>, "trigger_passives", &[]),
+        (ExecSkillSystem::<Stats, Effectors, Skills, Items>, "exec_skills", &[]),
         (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
@@ -669,6 +675,7 @@ fn main() -> BError {
     world.register::<Comp<StatSet<Stats>>>();
     world.register::<Comp<EffectorSet<Effectors>>>();
     world.register::<Comp<SkillSet<Skills>>>();
+    world.register::<Comp<Inventory<Items, (), ()>>>();
 
     // WASM REGISTER
     world.register::<Point>();
@@ -762,7 +769,7 @@ fn main() -> BError {
     ]);
     let default_stats = stat_defs.to_statset();
 
-    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, ()>::from(vec![
+    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, Items>::from(vec![
         SkillDefinition::new(
             Skills::AOE,
             String::from("AOE"),
@@ -808,8 +815,21 @@ fn main() -> BError {
             vec![(Stats::Attack, EffectorType::MultiplicativeMultiplier(2.0))],
         ),
     ]);
-
     world.insert(effector_defs);
+
+    let item_defs = ItemDefinitions::<_, _, ()>::from(vec![
+        ItemDefinition::new(
+            Items::TestItem,
+            (),
+            String::from("Test Item"),
+            String::from("test_item"),
+            String::from("A simple test item to check conditions."),
+            None,
+            None,
+        ),
+    ]);
+    world.insert(item_defs);
+
 
     // player
     // TODO remove
@@ -949,6 +969,8 @@ fn main() -> BError {
     skillset.skills.insert(Skills::DoubleDamage, SkillInstance::new(Skills::DoubleDamage, 0.0));
     skillset.skills.insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
+    let default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
+
     // Create generic hero 1
     let hero1 = world
         .create_entity()
@@ -961,6 +983,7 @@ fn main() -> BError {
         })
         .with(Team::Me)
         .with(SimpleMovement)
+        .with(Comp(default_inventory.clone()))
         .with(Comp(skillset))
         .with(AiPath::new(NavigationPath::new()))
         .with(Leader(1))
