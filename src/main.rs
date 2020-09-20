@@ -594,6 +594,23 @@ fn render<'a>(ctx: &mut BTerm) {
     }
 }
 
+fn create_map_bg<'a>(world: &mut World) {
+    let mut i = 0;
+    for s in MAP {
+        let mut j = 0;
+        for c in s.chars() {
+            if c == '#' {
+                world.create_entity()
+                    .with(SpriteIndex(55))
+                    .with(Point::new(j, i))
+                    .build();
+            }
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+}
+
 struct DefaultState;
 
 impl minigene::State for DefaultState {
@@ -670,10 +687,10 @@ fn main() -> BError {
         (HeroTeleportSystem, "hero_teleport", &[])
     );
     let mut spritesheet = SpriteSheet::new(SPRITESHEET_PATH);
-    for i in 0..10 {
-        for j in 0..10 {
+    for j in 0..10 {
+        for i in 0..10 {
             spritesheet = spritesheet.add_sprite(
-                Rect::with_exact(i*8, j*8, 8, 8)
+                Rect::with_size(i*8, (9-j)*8, 8, 8)
             );
         }
     }
@@ -1023,6 +1040,8 @@ fn main() -> BError {
     // Make hero HP really high
     // TODO remove
     world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
+
+    create_map_bg(&mut world);
 
     let gs = State {
         world,
