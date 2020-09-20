@@ -15,6 +15,7 @@ const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
+const SPRITESHEET_PATH: &str = "./assets/tilemap/colored_tilemap_packed.png";
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -218,7 +219,8 @@ system!(
      stat_def: ReadExpect<'a, StatDefinitions<Stats>>,
      ai_paths: WriteStorage<'a, AiPath>,
      teams: WriteStorage<'a, Team>,
-     sprites: WriteStorage<'a, Sprite>| {
+     sprites: WriteStorage<'a, Sprite>,
+     sprite_indices: WriteStorage<'a, SpriteIndex>| {
         let mut v = vec![];
         for (pos, mut spawner, team) in (&positions, &mut spawners, &teams).join() {
             if spawner.0 == 0 {
@@ -256,6 +258,7 @@ system!(
                     },
                 )
                 .unwrap();
+            sprite_indices.insert(creep, SpriteIndex(9)).unwrap();
         });
     }
 );
@@ -368,6 +371,7 @@ system!(
      teams: WriteStorage<'a, Team>,
      tower_projectiles: WriteStorage<'a, TowerProjectile>,
      sprites: WriteStorage<'a, Sprite>,
+     sprite_indices: WriteStorage<'a, SpriteIndex>,
      stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
      goto_positions: WriteStorage<'a, GotoStraight>,
      positions: WriteStorage<'a, Point>| {
@@ -403,6 +407,7 @@ system!(
                     },
                 )
                 .unwrap();
+            sprite_indices.insert(n, SpriteIndex(85)).unwrap();
             goto_positions
                 .insert(n, GotoStraight::new(target.clone(), 1.0))
                 .unwrap();
@@ -599,10 +604,16 @@ impl minigene::State for DefaultState {
         ctx: &mut BTerm,
     ) -> Trans {
         render(ctx);
-        render_sprites(
+        render_ascii(
             ctx,
             &world.read_resource(),
             world.read_storage(),
+            world.read_storage(),
+            world.read_storage(),
+        );
+        render_sprites(
+            ctx,
+            &world.read_resource(),
             world.read_storage(),
             world.read_storage(),
         );
@@ -658,8 +669,16 @@ fn main() -> BError {
         (GotoStraightSystem, "goto_straight", &[]),
         (HeroTeleportSystem, "hero_teleport", &[])
     );
+    let mut spritesheet = SpriteSheet::new(SPRITESHEET_PATH);
+    for i in 0..10 {
+        for j in 0..10 {
+            spritesheet = spritesheet.add_sprite(
+                Rect::with_exact(i*8, j*8, 8, 8)
+            );
+        }
+    }
     let (mut world, mut dispatcher, mut context) =
-        mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", builder, world);
+        mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", Some(spritesheet), builder, world);
 
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
@@ -672,6 +691,7 @@ fn main() -> BError {
     world.register::<Core>();
     world.register::<Leader>();
     world.register::<Name>();
+    world.register::<SpriteIndex>();
     world.register::<Comp<StatSet<Stats>>>();
     world.register::<Comp<EffectorSet<Effectors>>>();
     world.register::<Comp<SkillSet<Skills>>>();
@@ -856,6 +876,7 @@ fn main() -> BError {
             fg: RGBA::named(BLUE),
             bg: RGBA::named(RED),
         })
+        .with(SpriteIndex(66))
         .with(Team::Other)
         .with(Core)
         .with(Comp(default_stats.clone()))
@@ -869,6 +890,7 @@ fn main() -> BError {
             fg: RGBA::named(BLUE),
             bg: RGBA::named(GREEN),
         })
+        .with(SpriteIndex(66))
         .with(Team::Me)
         .with(Core)
         .with(Comp(default_stats.clone()))
@@ -886,6 +908,7 @@ fn main() -> BError {
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(RED),
             })
+            .with(SpriteIndex(69))
             .with(Team::Other)
             .with(Barrack)
             .with(Comp(default_stats.clone()))
@@ -911,6 +934,7 @@ fn main() -> BError {
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(GREEN),
             })
+            .with(SpriteIndex(69))
             .with(Team::Me)
             .with(Barrack)
             .with(Comp(default_stats.clone()))
@@ -939,6 +963,7 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(RED),
                 })
+                .with(SpriteIndex(80))
                 .with(Team::Other)
                 .with(Comp(default_stats.clone()))
                 .build();
@@ -958,6 +983,7 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(GREEN),
                 })
+                .with(SpriteIndex(80))
                 .with(Team::Me)
                 .with(Comp(default_stats.clone()))
                 .build();
@@ -981,6 +1007,7 @@ fn main() -> BError {
             fg: RGBA::named(RED),
             bg: RGBA::named(GREEN),
         })
+        .with(SpriteIndex(6))
         .with(Team::Me)
         .with(SimpleMovement)
         .with(Comp(default_inventory.clone()))
