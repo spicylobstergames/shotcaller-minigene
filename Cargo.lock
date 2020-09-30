@@ -966,6 +966,7 @@ name = "minigene"
 version = "0.2.0"
 dependencies = [
  "bracket-lib",
+ "crossterm",
  "derive-new",
  "game_features",
  "game_time",

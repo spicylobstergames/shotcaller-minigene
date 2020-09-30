@@ -5,8 +5,8 @@ authors = ["Joël Lupien (Jojolepro) <jojolepro@jojolepro.com>"]
 edition = "2018"
 
 [features]
-default = ["crossterm"]
-crossterm = ["minigene/crossterm"]
+default = ["terminal"]
+terminal = ["minigene/terminal"]
 opengl = ["minigene/opengl"]
 wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook"]
 
