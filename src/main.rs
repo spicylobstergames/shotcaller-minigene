@@ -657,6 +657,8 @@ impl GameState for State {
 }
 
 fn main() -> BError {
+    // Load spritesheet
+    EMBED.lock().add_resource(SPRITESHEET_PATH.to_string(), include_bytes!("../assets/tilemap/colored_tilemap_packed.png"));
     let mut world = World::new();
     let mut builder = dispatcher!(
         world,
@@ -724,7 +726,12 @@ fn main() -> BError {
     world.register::<CollisionMap>();
     world.register::<CreepSpawner>();
     world.register::<Collision>();
+    world.register::<ProximityAttack>();
+    world.register::<TowerProjectile>();
+    world.register::<GotoStraight>();
+    world.register::<GotoEntity>();
     world.insert(GameSpeed::default());
+    world.insert(Winner::None);
 
     let mut input_channel = EventChannel::<VirtualKeyCode>::new();
     let reader = input_channel.register_reader();
