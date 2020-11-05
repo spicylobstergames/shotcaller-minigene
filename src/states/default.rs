@@ -1,4 +1,6 @@
-struct DefaultState;
+use crate::*;
+
+pub struct DefaultState;
 
 impl minigene::State for DefaultState {
     fn update(

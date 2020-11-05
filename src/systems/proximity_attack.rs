@@ -1,3 +1,5 @@
+use crate::*;
+
 system!(ProximityAttackSystem, |entities: Entities<'a>,
                                 proximity_attacks: ReadStorage<
     'a,

@@ -1,4 +1,6 @@
-fn render<'a>(ctx: &mut BTerm) {
+use crate::*;
+
+pub fn render<'a>(ctx: &mut BTerm) {
     ctx.cls();
     let mut i = 0;
     for s in MAP {
@@ -7,7 +9,7 @@ fn render<'a>(ctx: &mut BTerm) {
     }
 }
 
-fn create_map_bg<'a>(world: &mut World) {
+pub fn create_map_bg<'a>(world: &mut World) {
     let mut i = 0;
     for s in MAP {
         let mut j = 0;

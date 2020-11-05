@@ -71,6 +71,7 @@ const MAP: &[&str] = &[
 ];
 
 
+mod components;
 mod events;
 mod ids;
 mod render_map;
@@ -78,6 +79,7 @@ mod resources;
 mod states;
 mod systems;
 mod utils;
+pub use self::components::*;
 pub use self::events::*;
 pub use self::ids::*;
 pub use self::render_map::*;

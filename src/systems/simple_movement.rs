@@ -1,3 +1,5 @@
+use crate::*;
+
 system!(
     SimpleMovementSystem,
     |entities: Entities<'a>,

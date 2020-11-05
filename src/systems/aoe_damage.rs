@@ -1,3 +1,5 @@
+use crate::*;
+
 event_reader_res!(AoeDamageRes, SkillTriggerEvent<Skills>);
 system!(AoeDamageSystem, |res: WriteExpect<'a, AoeDamageRes>,
         stats: WriteStorage<'a, Comp<StatSet<Stats>>>,

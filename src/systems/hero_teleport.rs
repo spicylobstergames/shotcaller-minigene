@@ -1,3 +1,5 @@
+use crate::*;
+
 pub struct HeroTeleportRes {
     pub reader: ReaderId<InputEvent>,
     pub selected_hero: Option<u8>,

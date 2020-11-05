@@ -1,3 +1,5 @@
+use crate::*;
+
 pub fn increment_attacks_dealt(stat_set: &mut StatSet<Stats>) {
     stat_set.stats.get_mut(&Stats::AttacksDealt).unwrap().value += 1.0;
 }
