@@ -5,7 +5,7 @@ authors = ["Joël Lupien (Jojolepro) <jojolepro@jojolepro.com>"]
 edition = "2018"
 
 [features]
-default = ["terminal"]
+default = ["opengl"]
 terminal = ["minigene/terminal"]
 opengl = ["minigene/opengl"]
 wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook"]
