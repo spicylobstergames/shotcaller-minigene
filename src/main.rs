@@ -88,15 +88,6 @@ pub use self::states::*;
 pub use self::systems::*;
 pub use self::utils::*;
 
-// TODO: Replace by minigene's Time after its implemented
-/*pub struct GameSpeed(pub u32);
-
-impl Default for GameSpeed {
-    fn default() -> Self {
-        GameSpeed(1)
-    }
-}*/
-
 // Bridge between bracket-lib and minigene
 struct State {
     pub world: World,
@@ -196,6 +187,7 @@ fn main() -> BError {
     world.register::<GotoEntity>();
     world.insert(GameSpeed::default());
     world.insert(Winner::None);
+    world.insert(QuitGame::default());
 
     let mut input_channel = EventChannel::<VirtualKeyCode>::new();
     let reader = input_channel.register_reader();
@@ -341,17 +333,6 @@ fn main() -> BError {
     ]);
     world.insert(item_defs);
 
-
-    // player
-    // TODO remove
-    //world
-    //    .create_entity()
-    //    .with(Point::new(0, 0))
-    //    .with(MultiSprite::new(MultiTileSprite::from_string("@@", 1, 2)))
-    //    .with(Comp(stat_defs.to_statset()))
-    //    //.with(Player)
-    //    .build();
-
     world.insert(stat_defs);
     world.insert(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
@@ -434,8 +415,7 @@ fn main() -> BError {
         world
             .create_entity()
             .with(Point::new(x, y - 1))
-            // TODO put back to normal
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS - 5))
+            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
             .with(Team::Me)
             .build();
     }
