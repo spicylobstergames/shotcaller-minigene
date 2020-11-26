@@ -105,7 +105,10 @@ struct State {
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        if self.state_machine.is_running() {
+        if self.world.read_resource::<QuitGame>().0 {
+            ctx.quitting = true;
+        }
+        if self.state_machine.is_running() && !ctx.quitting {
             mini_frame(
                 &mut self.world,
                 &mut self.dispatcher,
@@ -120,7 +123,7 @@ fn main() -> BError {
     // Load spritesheet
     EMBED.lock().add_resource(SPRITESHEET_PATH.to_string(), include_bytes!("../assets/tilemap/colored_tilemap_packed.png"));
     let mut world = World::new();
-    let mut builder = dispatcher!(
+    let builder = dispatcher!(
         world,
         (CombineCollisionSystem, "combine_collision", &[]),
         (InputDriver::<InputEvent>, "input_driver", &[]),
@@ -146,7 +149,8 @@ fn main() -> BError {
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
         (GotoStraightSystem, "goto_straight", &[]),
-        (HeroTeleportSystem, "hero_teleport", &[])
+        (HeroTeleportSystem, "hero_teleport", &[]),
+        (QuitGameSystem, "quit_game", &[])
     );
     let mut spritesheet = SpriteSheet::new(SPRITESHEET_PATH);
     for j in 0..10 {
@@ -199,6 +203,7 @@ fn main() -> BError {
     world.insert(InputDriverRes(reader));
 
     let mut keymap = HashMap::new();
+    keymap.insert(VirtualKeyCode::Escape, InputEvent::Quit);
     keymap.insert(VirtualKeyCode::J, InputEvent::MenuSouth);
     keymap.insert(VirtualKeyCode::K, InputEvent::MenuNorth);
     keymap.insert(VirtualKeyCode::H, InputEvent::MenuWest);
@@ -216,9 +221,11 @@ fn main() -> BError {
     let mut input_channel = EventChannel::<InputEvent>::new();
     let reader = input_channel.register_reader();
     let reader2 = input_channel.register_reader();
+    let reader3 = input_channel.register_reader();
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
     world.insert(HeroTeleportRes{reader: reader2, selected_hero: None});
+    world.insert(QuitGameRes(reader3));
 
     let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
     let reader = skill_channel.register_reader();
@@ -504,9 +511,8 @@ fn main() -> BError {
         .with(Comp(EffectorSet::<Effectors>::default()))
         .build();
 
-    // Make hero HP really high
-    // TODO remove
-    world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
+    // Make hero HP really high. Used for testing win conditions.
+    //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
 
     create_map_bg(&mut world);
 

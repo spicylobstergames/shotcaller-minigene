@@ -2,6 +2,7 @@ use crate::*;
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum InputEvent {
+    Quit,
     MenuNorth,
     MenuWest,
     MenuEast,
