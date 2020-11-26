@@ -1,6 +1,6 @@
 # Shotcaller
 
-An ASCII-rendered RTS / MOBA game. See the [design document](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419) for much more.
+An RTS / MOBA game with multiple frontends: ASCII-rendered or tiles-rendered. See the [design document](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419) for much more.
 
 ### Summary
 
@@ -13,9 +13,9 @@ Everyone on the team can play the part of Shotcaller on occasion. The act of sho
 But in this game, *all you do* is shotcalling and big-picture strategizing. The game plays as if you were controlling the 6th-person-in-the-booth “coach” player, and your team (of AI-played bots) actually follows your instructions to the letter, within their designed constraints.
 
 
-### Latest prototype (25. July 2020)
+### Latest prototype (25. November 2020)
 
-![shotcaller-iter2](./media/shotcaller-iter2.png)
+![shotcaller-2guis](./media/shotcaller-2guis.png)
 
 There's also a [short mp4 video](./media/shotcaller-prototype.mp4).
 
@@ -32,17 +32,16 @@ If you run into issues please report them here or on our [#shotcaller](https://d
 
 ### Online
 
-We intend to be playable in the browser (using WASM) soon!
+https://shotcaller.jojolepro.com/
 
 ## Get involved
 
 Starter pack:
 
 * [Game Design Doc](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419)
-* [Modding system](https://www.notion.so/erlendsh/Modding-system-7634b7cd978241ccbadfbf5e5ee407eb) (notes about scripting here)
-* [Old prototype](https://github.com/Maxgy/text-rts) (playable in browser)
-* [Active prototype](https://github.com/amethyst/shotcaller) (playable with 'cargo run' - soon in browser)
-* [MVP Roadmap](https://github.com/amethyst/shotcaller/issues/4) (many stubs so far; please ask questions!)
+* Make a new :supervillain: [Leader](https://github.com/amethyst/shotcaller/issues/6) or :package: [Item](https://github.com/amethyst/shotcaller/issues/8)!
+* [Modding system](https://www.notion.so/erlendsh/Modding-system-7634b7cd978241ccbadfbf5e5ee407eb) (WIP notes about scripting here)
+* [MVP Roadmap](https://github.com/amethyst/shotcaller/issues/4) (please ask questions!)
 * [Discord channel](https://discord.gg/qvJyTYM) (#shotcaller on http://discord.gg/amethyst)
 
 ## License
