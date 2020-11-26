@@ -468,8 +468,10 @@ fn main() -> BError {
 
     let default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
+    // TODO re-enable de the hero
+    // currently disabled to make the game balanced
     // Create generic hero 1
-    let hero1 = world
+    /*let hero1 = world
         .create_entity()
         .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
@@ -489,7 +491,7 @@ fn main() -> BError {
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
         .with(Comp(EffectorSet::<Effectors>::default()))
-        .build();
+        .build();*/
 
     // Make hero HP really high. Used for testing win conditions.
     //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
