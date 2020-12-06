@@ -38,9 +38,9 @@ https://shotcaller.jojolepro.com/
 
 Starter pack:
 
+- [CONTRIBUTING.md](https://github.com/amethyst/shotcaller/blob/master/contributing.md)
 * [Game Design Doc](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419)
 * Make a new :supervillain: [Leader](https://github.com/amethyst/shotcaller/issues/6) or :package: [Item](https://github.com/amethyst/shotcaller/issues/8)!
-* [Modding system](https://www.notion.so/erlendsh/Modding-system-7634b7cd978241ccbadfbf5e5ee407eb) (WIP notes about scripting here)
 * [MVP Roadmap](https://github.com/amethyst/shotcaller/issues/4) (please ask questions!)
 * [Discord channel](https://discord.gg/qvJyTYM) (#shotcaller on http://discord.gg/amethyst)
 
