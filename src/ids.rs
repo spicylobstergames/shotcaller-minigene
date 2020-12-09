@@ -18,14 +18,17 @@ pub enum Stats {
 pub enum Skills {
     AOE,
     DoubleDamage,
+    DoubleAttackSpeed
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Items {
     TestItem,
+    Coffee
 }
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
     DoubleDamage,
+    DoubleAttackSpeed
 }

@@ -308,6 +308,19 @@ fn main() -> BError {
                 Effectors::DoubleDamage,
             ],
         ),
+        SkillDefinition::new(
+            Skills::DoubleAttackSpeed,
+            String::from("Double Attack Speed"),
+            String::from("double_attack_speed"),
+            String::from("Double the attack speed."),
+            0.0,
+            false,
+            vec![],
+            vec![(Items::Coffee, 1,UseMode::Consume)],
+            vec![
+                Effectors::DoubleAttackSpeed,
+            ],
+        ),
     ]);
     world.insert(skill_definitions);
 
@@ -317,6 +330,11 @@ fn main() -> BError {
             Some(0.0),
             vec![(Stats::Attack, EffectorType::MultiplicativeMultiplier(2.0))],
         ),
+        EffectorDefinition::new(
+            Effectors::DoubleAttackSpeed,
+            Some(5.0),
+            vec![(Stats::AttackSpeed, EffectorType::MultiplicativeMultiplier(2.0))],
+        )
     ]);
     world.insert(effector_defs);
 
@@ -327,6 +345,15 @@ fn main() -> BError {
             String::from("Test Item"),
             String::from("test_item"),
             String::from("A simple test item to check conditions."),
+            None,
+            None,
+        ),
+        ItemDefinition::new(
+            Items::Coffee,
+            (),
+            String::from("Coffee"),
+            String::from("coffee"),
+            String::from("A cup of coffee. Drinking this will double attack speed for 5 seconds."),
             None,
             None,
         ),
