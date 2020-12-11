@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate serde;
+
 use minigene::*;
 use std::collections::HashMap;
 use std::ops::Deref;
@@ -194,7 +197,7 @@ fn main() -> BError {
     world.insert(input_channel);
     world.insert(InputDriverRes(reader));
 
-    let mut keymap = HashMap::new();
+    /*let mut keymap = HashMap::new();
     keymap.insert(VirtualKeyCode::Escape, InputEvent::Quit);
     keymap.insert(VirtualKeyCode::J, InputEvent::MenuSouth);
     keymap.insert(VirtualKeyCode::K, InputEvent::MenuNorth);
@@ -208,6 +211,11 @@ fn main() -> BError {
     keymap.insert(VirtualKeyCode::Key3, InputEvent::Teleport(3));
     keymap.insert(VirtualKeyCode::Key4, InputEvent::Teleport(4));
     keymap.insert(VirtualKeyCode::Key5, InputEvent::Teleport(5));
+    serde_yaml::to_writer(std::fs::File::create("./assets/keymap.yaml").unwrap(), &keymap);*/
+    let keymap: HashMap<VirtualKeyCode, InputEvent> = 
+        serde_yaml::from_reader(
+            std::fs::File::open("./assets/keymap.yaml")
+            .expect("Failed to load keymap file")).expect("Failed to load keymap.");
     world.insert(keymap);
 
     let mut input_channel = EventChannel::<InputEvent>::new();
