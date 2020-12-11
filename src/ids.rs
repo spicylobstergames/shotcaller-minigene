@@ -1,6 +1,6 @@
 use crate::*;
 
-#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Stats {
     Health,
     Defense,
@@ -14,20 +14,20 @@ pub enum Stats {
     DamageReceived,
 }
 
-#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Skills {
     AOE,
     DoubleDamage,
     DoubleAttackSpeed
 }
 
-#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Items {
     TestItem,
     Coffee
 }
 
-#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed

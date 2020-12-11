@@ -197,21 +197,6 @@ fn main() -> BError {
     world.insert(input_channel);
     world.insert(InputDriverRes(reader));
 
-    /*let mut keymap = HashMap::new();
-    keymap.insert(VirtualKeyCode::Escape, InputEvent::Quit);
-    keymap.insert(VirtualKeyCode::J, InputEvent::MenuSouth);
-    keymap.insert(VirtualKeyCode::K, InputEvent::MenuNorth);
-    keymap.insert(VirtualKeyCode::H, InputEvent::MenuWest);
-    keymap.insert(VirtualKeyCode::L, InputEvent::MenuEast);
-    keymap.insert(VirtualKeyCode::Return, InputEvent::MenuSelect);
-    keymap.insert(VirtualKeyCode::Q, InputEvent::MenuCancel);
-    keymap.insert(VirtualKeyCode::S, InputEvent::SpeedToggle);
-    keymap.insert(VirtualKeyCode::Key1, InputEvent::Teleport(1));
-    keymap.insert(VirtualKeyCode::Key2, InputEvent::Teleport(2));
-    keymap.insert(VirtualKeyCode::Key3, InputEvent::Teleport(3));
-    keymap.insert(VirtualKeyCode::Key4, InputEvent::Teleport(4));
-    keymap.insert(VirtualKeyCode::Key5, InputEvent::Teleport(5));
-    serde_yaml::to_writer(std::fs::File::create("./assets/keymap.yaml").unwrap(), &keymap);*/
     let keymap: HashMap<VirtualKeyCode, InputEvent> = 
         serde_yaml::from_reader(
             std::fs::File::open("./assets/keymap.yaml")
@@ -239,45 +224,7 @@ fn main() -> BError {
         Point::new(PLAY_WIDTH, PLAY_HEIGHT),
     ));
 
-    let stat_defs = StatDefinitions::from(vec![
-        StatDefinition::new(
-            Stats::Health,
-            String::from("health"),
-            String::from("HP"),
-            100.0,
-        ),
-        StatDefinition::new(
-            Stats::Defense,
-            String::from("defense"),
-            String::from("Defense"),
-            0.0,
-        ),
-        StatDefinition::new(
-            Stats::Attack,
-            String::from("attack"),
-            String::from("Attack"),
-            10.0,
-        ),
-        StatDefinition::new(
-            Stats::EnemiesAround,
-            String::from("enemies_around"),
-            String::from("Enemies Around"),
-            0.0,
-        ),
-        StatDefinition::new(
-            Stats::AttacksDealt,
-            String::from("attacks_dealt"),
-            String::from("Attacks Dealt"),
-            0.0,
-        ),
-        StatDefinition::new(
-            Stats::AttackSpeed,
-            String::from("attack_speed"),
-            String::from("Attack Speed"),
-            10.0,
-        ),
-        StatDefinition::new(Stats::Mana, String::from("mana"), String::from("MP"), 100.0),
-    ]);
+    let stat_defs: StatDefinitions<Stats> = serde_yaml::from_reader(std::fs::File::open("./assets/stat_defs.yaml").expect("Failed to load yaml file")).expect("Failed to parse yaml file into the requested type.");
     let default_stats = stat_defs.to_statset();
 
     let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, Items>::from(vec![

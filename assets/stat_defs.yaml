@@ -1,0 +1,58 @@
+---
+defs:
+  Mana:
+    key: Mana
+    name: mana
+    friendly_name: MP
+    default_value: 100.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  Health:
+    key: Health
+    name: health
+    friendly_name: HP
+    default_value: 100.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  EnemiesAround:
+    key: EnemiesAround
+    name: enemies_around
+    friendly_name: Enemies Around
+    default_value: 0.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  AttackSpeed:
+    key: AttackSpeed
+    name: attack_speed
+    friendly_name: Attack Speed
+    default_value: 10.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  AttacksDealt:
+    key: AttacksDealt
+    name: attacks_dealt
+    friendly_name: Attacks Dealt
+    default_value: 0.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  Defense:
+    key: Defense
+    name: defense
+    friendly_name: Defense
+    default_value: 0.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
+  Attack:
+    key: Attack
+    name: attack
+    friendly_name: Attack
+    default_value: 10.0
+    min_value: ~
+    max_value: ~
+    icon_path: ~
