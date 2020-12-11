@@ -1,0 +1,14 @@
+---
+defs:
+  DoubleDamage:
+    key: DoubleDamage
+    duration: 0.0
+    effects:
+      - - Attack
+        - MultiplicativeMultiplier: 2.0
+  DoubleAttackSpeed:
+    key: DoubleAttackSpeed
+    duration: 5.0
+    effects:
+      - - AttackSpeed
+        - MultiplicativeMultiplier: 2.0

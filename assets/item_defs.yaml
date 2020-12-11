@@ -1,0 +1,20 @@
+---
+defs:
+  TestItem:
+    key: TestItem
+    slot_type: ~
+    name: Test Item
+    friendly_name: test_item
+    description: A simple test item to check conditions.
+    maximum_stack: ~
+    maximum_durability: ~
+    user_data: ~
+  Coffee:
+    key: Coffee
+    slot_type: ~
+    name: Coffee
+    friendly_name: coffee
+    description: A cup of coffee. Drinking this will double attack speed for 5 seconds.
+    maximum_stack: ~
+    maximum_durability: ~
+    user_data: ~

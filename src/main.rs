@@ -18,7 +18,6 @@ const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
-const SPRITESHEET_PATH: &str = "./assets/tilemap/colored_tilemap_packed.png";
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -113,9 +112,17 @@ impl GameState for State {
     }
 }
 
+macro_rules! add_embed {
+    ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
+}
+
 fn main() -> BError {
     // Load spritesheet
-    EMBED.lock().add_resource(SPRITESHEET_PATH.to_string(), include_bytes!("../assets/tilemap/colored_tilemap_packed.png"));
+    #[cfg(features="wasm")]
+    add_embed!("../assets/tilemap/colored_tilemap_packed.png", "../assets/skill_defs.yaml",
+        "../assets/effector_defs.yaml", "../assets/keymap.yaml", "../assets/item_defs.yaml",
+        "../assets/stat_defs.yaml");
+    //add_embed!("../assets/skill_defs.yaml");
     let mut world = World::new();
     let builder = dispatcher!(
         world,
@@ -146,7 +153,7 @@ fn main() -> BError {
         (HeroTeleportSystem, "hero_teleport", &[]),
         (QuitGameSystem, "quit_game", &[])
     );
-    let mut spritesheet = SpriteSheet::new(SPRITESHEET_PATH);
+    let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
     for j in 0..10 {
         for i in 0..10 {
             spritesheet = spritesheet.add_sprite(
@@ -197,10 +204,7 @@ fn main() -> BError {
     world.insert(input_channel);
     world.insert(InputDriverRes(reader));
 
-    let keymap: HashMap<VirtualKeyCode, InputEvent> = 
-        serde_yaml::from_reader(
-            std::fs::File::open("./assets/keymap.yaml")
-            .expect("Failed to load keymap file")).expect("Failed to load keymap.");
+    let keymap: HashMap<VirtualKeyCode, InputEvent> = load_yaml("assets/keymap.yaml");
     world.insert(keymap);
 
     let mut input_channel = EventChannel::<InputEvent>::new();
@@ -224,95 +228,16 @@ fn main() -> BError {
         Point::new(PLAY_WIDTH, PLAY_HEIGHT),
     ));
 
-    let stat_defs: StatDefinitions<Stats> = serde_yaml::from_reader(std::fs::File::open("./assets/stat_defs.yaml").expect("Failed to load yaml file")).expect("Failed to parse yaml file into the requested type.");
+    let stat_defs: StatDefinitions<Stats> = load_yaml("assets/stat_defs.yaml");
     let default_stats = stat_defs.to_statset();
 
-    let skill_definitions = SkillDefinitions::<Stats, Effectors, Skills, Items>::from(vec![
-        SkillDefinition::new(
-            Skills::AOE,
-            String::from("AOE"),
-            String::from("aoe"),
-            String::from("Does 100 damage to all enemy entities around. Actives only if 3 or more enemy entities are present. Cooldown of 12s."),
-            12.0,
-            true,
-            vec![
-                // enemies around >= 3
-                StatCondition::new(
-                    Stats::EnemiesAround,
-                    StatConditionType::MinValue(3.0),
-                ),
-            ],
-            vec![],
-            vec![],
-        ),
-        SkillDefinition::new(
-            Skills::DoubleDamage,
-            String::from("Double Damage"),
-            String::from("double_damage"),
-            String::from("Each 3 attacks, deal double damage."),
-            0.0,
-            true,
-            vec![
-                StatCondition::new(
-                    Stats::AttacksDealt,
-                    StatConditionType::Custom(|v| v as i32 % 3 == 0),
-                ),
-            ],
-            vec![],
-            vec![
-                Effectors::DoubleDamage,
-            ],
-        ),
-        SkillDefinition::new(
-            Skills::DoubleAttackSpeed,
-            String::from("Double Attack Speed"),
-            String::from("double_attack_speed"),
-            String::from("Double the attack speed."),
-            0.0,
-            false,
-            vec![],
-            vec![(Items::Coffee, 1,UseMode::Consume)],
-            vec![
-                Effectors::DoubleAttackSpeed,
-            ],
-        ),
-    ]);
+    let skill_definitions: SkillDefinitions<Stats, Effectors, Skills, Items> = load_yaml("assets/skill_defs.yaml");
     world.insert(skill_definitions);
 
-    let effector_defs = EffectorDefinitions::from(vec![
-        EffectorDefinition::new(
-            Effectors::DoubleDamage,
-            Some(0.0),
-            vec![(Stats::Attack, EffectorType::MultiplicativeMultiplier(2.0))],
-        ),
-        EffectorDefinition::new(
-            Effectors::DoubleAttackSpeed,
-            Some(5.0),
-            vec![(Stats::AttackSpeed, EffectorType::MultiplicativeMultiplier(2.0))],
-        )
-    ]);
+    let effector_defs: EffectorDefinitions<Stats, Effectors> = load_yaml("assets/effector_defs.yaml");
     world.insert(effector_defs);
 
-    let item_defs = ItemDefinitions::<_, _, ()>::from(vec![
-        ItemDefinition::new(
-            Items::TestItem,
-            (),
-            String::from("Test Item"),
-            String::from("test_item"),
-            String::from("A simple test item to check conditions."),
-            None,
-            None,
-        ),
-        ItemDefinition::new(
-            Items::Coffee,
-            (),
-            String::from("Coffee"),
-            String::from("coffee"),
-            String::from("A cup of coffee. Drinking this will double attack speed for 5 seconds."),
-            None,
-            None,
-        ),
-    ]);
+    let item_defs: ItemDefinitions<Items, (), ()> = load_yaml("assets/item_defs.yaml");
     world.insert(item_defs);
 
     world.insert(stat_defs);

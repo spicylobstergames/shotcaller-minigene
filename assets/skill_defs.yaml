@@ -1,0 +1,43 @@
+---
+defs:
+  DoubleAttackSpeed:
+    key: DoubleAttackSpeed
+    name: Double Attack Speed
+    friendly_name: double_attack_speed
+    description: Double the attack speed.
+    cooldown: 0.0
+    passive: false
+    conditions: []
+    item_conditions:
+      - - Coffee
+        - 1
+        - Consume
+    stat_effectors:
+      - DoubleAttackSpeed
+  DoubleDamage:
+    key: DoubleDamage
+    name: Double Damage
+    friendly_name: double_damage
+    description: "Each 3 attacks, deal double damage."
+    cooldown: 0.0
+    passive: true
+    conditions:
+      - stat_key: AttacksDealt
+        condition:
+          DivisibleBy: 3
+    item_conditions: []
+    stat_effectors:
+      - DoubleDamage
+  AOE:
+    key: AOE
+    name: AOE
+    friendly_name: aoe
+    description: Does 100 damage to all enemy entities around. Actives only if 3 or more enemy entities are present. Cooldown of 12s.
+    cooldown: 12.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 3.0
+    item_conditions: []
+    stat_effectors: []

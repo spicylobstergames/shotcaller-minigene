@@ -31,3 +31,15 @@ pub fn entities_in_radius<
     vec.sort_by(|e1, e2| e1.2.partial_cmp(&e2.2).unwrap());
     vec
 }
+
+#[cfg(not(features="wasm"))]
+pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
+    return serde_yaml::from_reader(std::fs::File::open(filepath).expect("Failed to load yaml file")).expect("Failed to parse yaml file into the requested type.");
+}
+
+#[cfg(features="wasm")]
+pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
+    let content_bytes = EMBED.lock().get_resource(filepath.to_string()).expect("Yaml file isn't embedded into the binary.");
+    let content = String::from_utf8(content_bytes.to_vec()).unwrap();
+    return serde_yaml::from_str(&content).expect("Failed to parse yaml file into the requested type.");
+}
