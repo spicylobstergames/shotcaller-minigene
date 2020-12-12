@@ -118,6 +118,10 @@ macro_rules! add_embed {
     ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
 }
 
+macro_rules! register {
+    ($world:ident, $($types:ty),*$(,)?) => {$($world.register::<$types>();)*}
+}
+
 fn main() -> BError {
     // Load spritesheet
     #[cfg(features="wasm")]
@@ -170,34 +174,12 @@ fn main() -> BError {
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
 
-    world.register::<MultiSprite>();
-    world.register::<Sprite>();
-    world.register::<Team>();
-    world.register::<Barrack>();
-    world.register::<Tower>();
-    world.register::<Core>();
-    world.register::<Leader>();
-    world.register::<Name>();
-    world.register::<SpriteIndex>();
-    world.register::<Comp<StatSet<Stats>>>();
-    world.register::<Comp<EffectorSet<Effectors>>>();
-    world.register::<Comp<SkillSet<Skills>>>();
-    world.register::<Comp<Inventory<Items, (), ()>>>();
+    register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
+    Name, SpriteIndex, Comp<StatSet<Stats>>, Comp<EffectorSet<Effectors>>,
+    Comp<SkillSet<Skills>>, Comp<Inventory<Items, (), ()>>, Point, SimpleMovement,
+    AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
+    ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);
 
-    // WASM REGISTER
-    world.register::<Point>();
-    world.register::<SimpleMovement>();
-    world.register::<AiPath>();
-    world.register::<AiDestination>();
-    world.register::<Creep>();
-    world.register::<Player>();
-    world.register::<CollisionMap>();
-    world.register::<CreepSpawner>();
-    world.register::<Collision>();
-    world.register::<ProximityAttack>();
-    world.register::<TowerProjectile>();
-    world.register::<GotoStraight>();
-    world.register::<GotoEntity>();
     world.insert(GameSpeed::default());
     world.insert(Winner::None);
     world.insert(QuitGame::default());
