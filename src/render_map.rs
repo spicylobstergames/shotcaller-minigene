@@ -1,7 +1,6 @@
 use crate::*;
 
 pub fn render<'a>(ctx: &mut BTerm) {
-    ctx.cls();
     let mut i = 0;
     for s in MAP {
         ctx.print(0, i, s);
