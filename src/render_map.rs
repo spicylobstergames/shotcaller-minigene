@@ -43,5 +43,14 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
 
     ctx.print(PLAY_WIDTH+1, selected+4, ">");
 
+    ctx.print(PLAY_WIDTH+1, 17, "Keybinds");
+
+    let hm = world.fetch::<HashMap<VirtualKeyCode, InputEvent>>();
+    let mut keybinds = hm.iter().collect::<Vec<_>>();
+    keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
+    for (idx, (k, v)) in keybinds.iter().enumerate(){
+        ctx.print(PLAY_WIDTH+1, 18+idx, format!("{:?}:{:?}", k, v));
+    }
+
     ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-2, "12345678901234567890");
 }
