@@ -23,6 +23,7 @@ impl minigene::State for DefaultState {
             world.read_storage(),
             world.read_storage(),
         );
+        render_ui(world, ctx);
         Trans::None
     }
 }

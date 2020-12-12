@@ -25,3 +25,24 @@ pub fn create_map_bg<'a>(world: &mut World) {
         i = i + 1;
     }
 }
+
+pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
+    ctx.draw_box(PLAY_WIDTH, 0, SCREEN_WIDTH-PLAY_WIDTH-1, SCREEN_HEIGHT-1, WHITE, BLACK);
+    ctx.print(PLAY_WIDTH+1, 1, "Leaders");
+    ctx.print(PLAY_WIDTH+1, 3, "My Team");
+
+    // TODO tmp
+    let selected = 3;
+
+    for i in 0..5 {
+        ctx.print(PLAY_WIDTH+1, i+4, format!(" Leader {}", i));
+    }
+    ctx.print(PLAY_WIDTH+1, 10, "Enemy Team");
+    for i in 0..5 {
+        ctx.print(PLAY_WIDTH+1, i+11, format!(" Leader {}", i));
+    }
+
+    ctx.print(PLAY_WIDTH+1, selected+4, ">");
+
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-2, "12345678901234567890");
+}
