@@ -19,6 +19,8 @@ pub struct Name(pub String);
 #[derive(Component)]
 pub struct SimpleMovement;
 #[derive(Component)]
+pub struct Hero1SimpleMovement;
+#[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
 pub struct CreepSpawner(pub u32, pub u32);

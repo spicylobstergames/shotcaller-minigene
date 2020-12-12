@@ -139,6 +139,7 @@ fn main() -> BError {
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
         (WinConditionSystem, "win_cond", &[]),
         (SimpleMovementSystem, "simple_movement", &[]),
+        (Hero1SimpleMovementSystem, "hero1_simple_ai", &[]),
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
@@ -389,7 +390,7 @@ fn main() -> BError {
         })
         .with(SpriteIndex(6))
         .with(Team::Me)
-        .with(SimpleMovement)
+        .with(Hero1SimpleMovement)
         .with(Comp(default_inventory.clone()))
         .with(Comp(skillset))
         .with(AiPath::new(NavigationPath::new()))
