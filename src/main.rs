@@ -75,6 +75,7 @@ const MAP: &[&str] = &[
 
 mod components;
 mod events;
+mod heroes;
 mod ids;
 mod render_map;
 mod resources;
@@ -83,6 +84,7 @@ mod systems;
 mod utils;
 pub use self::components::*;
 pub use self::events::*;
+pub use self::heroes::*;
 pub use self::ids::*;
 pub use self::render_map::*;
 pub use self::resources::*;
@@ -239,6 +241,9 @@ fn main() -> BError {
 
     let item_defs: ItemDefinitions<Items, (), ()> = load_yaml("assets/item_defs.yaml");
     world.insert(item_defs);
+
+    let hero_defs: HeroDefinitions = load_yaml("assets/hero_defs.yaml");
+    world.insert(hero_defs);
 
     world.insert(stat_defs);
     world.insert(CollisionResource::new(

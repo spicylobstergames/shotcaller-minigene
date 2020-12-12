@@ -18,17 +18,22 @@ pub enum Stats {
 pub enum Skills {
     AOE,
     DoubleDamage,
-    DoubleAttackSpeed
+    DoubleAttackSpeed,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Items {
     TestItem,
-    Coffee
+    Coffee,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
     DoubleDamage,
-    DoubleAttackSpeed
+    DoubleAttackSpeed,
+}
+
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum Heroes {
+    Generic1,
 }

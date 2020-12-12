@@ -1,0 +1,8 @@
+---
+definitions:
+  Generic1:
+    key: Generic1
+    name: "Hero1"
+    skills:
+      - DoubleDamage
+      - AOE
