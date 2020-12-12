@@ -6,3 +6,15 @@ definitions:
     skills:
       - DoubleDamage
       - AOE
+  Generic2:
+    key: Generic2
+    name: "Hero2"
+    skills:
+      - DoubleDamage
+      - AOE
+  Generic3:
+    key: Generic3
+    name: "Hero3"
+    skills:
+      - DoubleDamage
+      - AOE

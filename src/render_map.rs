@@ -30,15 +30,16 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
     ctx.print(PLAY_WIDTH+1, 1, "Leaders");
     ctx.print(PLAY_WIDTH+1, 3, "My Team");
 
-    // TODO tmp
-    let selected = 3;
+    let selected = world.fetch::<SelectedHero>().0;
 
-    for i in 0..5 {
-        ctx.print(PLAY_WIDTH+1, i+4, format!(" Leader {}", i));
+    for (i, key) in world.fetch::<TeamHeroes>().me.iter().enumerate() {
+        let name = world.fetch::<HeroDefinitions>().definitions.get(key).unwrap().name.clone();
+        ctx.print(PLAY_WIDTH+1, i+4, format!(" {}", name));
     }
     ctx.print(PLAY_WIDTH+1, 10, "Enemy Team");
-    for i in 0..5 {
-        ctx.print(PLAY_WIDTH+1, i+11, format!(" Leader {}", i));
+    for (i, key) in world.fetch::<TeamHeroes>().me.iter().enumerate() {
+        let name = world.fetch::<HeroDefinitions>().definitions.get(key).unwrap().name.clone();
+        ctx.print(PLAY_WIDTH+1, i+11, format!(" Leader {}", name));
     }
 
     ctx.print(PLAY_WIDTH+1, selected+4, ">");

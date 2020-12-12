@@ -36,4 +36,6 @@ pub enum Effectors {
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Heroes {
     Generic1,
+    Generic2,
+    Generic3,
 }

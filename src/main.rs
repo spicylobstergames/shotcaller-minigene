@@ -152,6 +152,7 @@ fn main() -> BError {
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
         (GotoStraightSystem, "goto_straight", &[]),
+        (SelectHeroSystem, "select_hero", &[]),
         (HeroTeleportSystem, "hero_teleport", &[]),
         (QuitGameSystem, "quit_game", &[])
     );
@@ -213,10 +214,12 @@ fn main() -> BError {
     let reader = input_channel.register_reader();
     let reader2 = input_channel.register_reader();
     let reader3 = input_channel.register_reader();
+    let reader4 = input_channel.register_reader();
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
-    world.insert(HeroTeleportRes{reader: reader2, selected_hero: None});
-    world.insert(QuitGameRes(reader3));
+    world.insert(HeroTeleportRes{reader: reader2});
+    world.insert(SelectHeroRes{reader: reader3});
+    world.insert(QuitGameRes(reader4));
 
     let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
     let reader = skill_channel.register_reader();
@@ -252,7 +255,7 @@ fn main() -> BError {
     ));
 
     // Create cores
-    world
+    /*world
         .create_entity()
         .with(Point::new(PLAY_WIDTH as i32 / 2, 1))
         .with(Sprite {
@@ -264,7 +267,19 @@ fn main() -> BError {
         .with(Team::Other)
         .with(Core)
         .with(Comp(default_stats.clone()))
-        .build();
+        .build();*/
+
+    centity!(world,
+        Point::new(PLAY_WIDTH as i32 / 2, 1),
+        Sprite {
+            glyph: to_cp437('C'),
+            fg: RGBA::named(BLUE),
+            bg: RGBA::named(RED),
+        },
+        SpriteIndex(66),
+        Team::Other,
+        Core,
+        Comp(default_stats.clone()),);
 
     world
         .create_entity()
@@ -379,6 +394,9 @@ fn main() -> BError {
     skillset.skills.insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
     let default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
+
+    let team_heroes = TeamHeroes::new(vec![Heroes::Generic1; 5], vec![Heroes::Generic2; 5]);
+    world.insert(team_heroes);
 
     // TODO re-enable de the hero
     // currently disabled to make the game balanced

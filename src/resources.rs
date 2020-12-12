@@ -22,3 +22,6 @@ pub struct TeamHeroes {
     pub me: Vec<Heroes>,
     pub other: Vec<Heroes>,
 }
+
+#[derive(Clone, Default, new)]
+pub struct SelectedHero(pub u8);
