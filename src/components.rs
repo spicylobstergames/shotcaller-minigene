@@ -21,6 +21,8 @@ pub struct SimpleMovement;
 #[derive(Component)]
 pub struct Hero1SimpleMovement;
 #[derive(Component)]
+pub struct FleeToBase(pub f64);
+#[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
 pub struct CreepSpawner(pub u32, pub u32);

@@ -399,6 +399,7 @@ fn main() -> BError {
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
         .with(Comp(EffectorSet::<Effectors>::default()))
+        .with(FleeToBase(50.0))
         .build();*/
 
     // Make hero HP really high. Used for testing win conditions.
