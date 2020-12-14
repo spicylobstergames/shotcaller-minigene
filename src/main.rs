@@ -145,8 +145,10 @@ fn main() -> BError {
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
         (WinConditionSystem, "win_cond", &[]),
         (SimpleMovementSystem, "simple_movement", &[]),
+        (Hero1SimpleMovementSystem, "hero1_simple_movement", &[]),
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),
+        (Hero1ProximityAttackSystem, "hero1_proximity_attack", &[]),
         (TowerProjectileSystem, "tower_projectile", &[]),
         (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
         (SkillCooldownSystem::<Skills>, "cooldown_system", &[]),
@@ -394,15 +396,17 @@ fn main() -> BError {
         })
         .with(SpriteIndex(6))
         .with(Team::Me)
-        .with(SimpleMovement)
+        .with(Hero1SimpleMovement)
         .with(Comp(default_inventory.clone()))
         .with(Comp(skillset))
         .with(AiPath::new(NavigationPath::new()))
         .with(Leader(1))
-        .with(ProximityAttack::new(LEADER_ATTACK_RADIUS))
+        .with(Hero1ProximityAttack::new(LEADER_ATTACK_RADIUS))
         .with(Name("Generic Leader 1".to_string()))
         .with(Comp(default_stats.clone()))
         .with(Comp(EffectorSet::<Effectors>::default()))
+        .with(FleeToBase(50.0))
+        .with(IsCaught(false))
         .build();*/
 
     // Make hero HP really high. Used for testing win conditions.

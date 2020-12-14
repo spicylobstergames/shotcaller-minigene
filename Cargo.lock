@@ -1752,6 +1752,7 @@ version = "0.3.0"
 dependencies = [
  "console_error_panic_hook",
  "minigene",
+ "rand 0.7.3",
  "serde",
  "serde_yaml",
  "wasm-bindgen",
