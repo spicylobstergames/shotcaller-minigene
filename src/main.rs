@@ -75,6 +75,7 @@ const MAP: &[&str] = &[
 
 mod components;
 mod events;
+mod heroes;
 mod ids;
 mod render_map;
 mod resources;
@@ -83,6 +84,7 @@ mod systems;
 mod utils;
 pub use self::components::*;
 pub use self::events::*;
+pub use self::heroes::*;
 pub use self::ids::*;
 pub use self::render_map::*;
 pub use self::resources::*;
@@ -114,6 +116,10 @@ impl GameState for State {
 
 macro_rules! add_embed {
     ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
+}
+
+macro_rules! register {
+    ($world:ident, $($types:ty),*$(,)?) => {$($world.register::<$types>();)*}
 }
 
 fn main() -> BError {
@@ -152,6 +158,7 @@ fn main() -> BError {
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
         (GotoStraightSystem, "goto_straight", &[]),
+        (SelectHeroSystem, "select_hero", &[]),
         (HeroTeleportSystem, "hero_teleport", &[]),
         (QuitGameSystem, "quit_game", &[])
     );
@@ -169,34 +176,12 @@ fn main() -> BError {
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
 
-    world.register::<MultiSprite>();
-    world.register::<Sprite>();
-    world.register::<Team>();
-    world.register::<Barrack>();
-    world.register::<Tower>();
-    world.register::<Core>();
-    world.register::<Leader>();
-    world.register::<Name>();
-    world.register::<SpriteIndex>();
-    world.register::<Comp<StatSet<Stats>>>();
-    world.register::<Comp<EffectorSet<Effectors>>>();
-    world.register::<Comp<SkillSet<Skills>>>();
-    world.register::<Comp<Inventory<Items, (), ()>>>();
+    register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
+    Name, SpriteIndex, Comp<StatSet<Stats>>, Comp<EffectorSet<Effectors>>,
+    Comp<SkillSet<Skills>>, Comp<Inventory<Items, (), ()>>, Point, SimpleMovement,
+    AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
+    ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);
 
-    // WASM REGISTER
-    world.register::<Point>();
-    world.register::<SimpleMovement>();
-    world.register::<AiPath>();
-    world.register::<AiDestination>();
-    world.register::<Creep>();
-    world.register::<Player>();
-    world.register::<CollisionMap>();
-    world.register::<CreepSpawner>();
-    world.register::<Collision>();
-    world.register::<ProximityAttack>();
-    world.register::<TowerProjectile>();
-    world.register::<GotoStraight>();
-    world.register::<GotoEntity>();
     world.insert(GameSpeed::default());
     world.insert(Winner::None);
     world.insert(QuitGame::default());
@@ -213,10 +198,12 @@ fn main() -> BError {
     let reader = input_channel.register_reader();
     let reader2 = input_channel.register_reader();
     let reader3 = input_channel.register_reader();
+    let reader4 = input_channel.register_reader();
     world.insert(input_channel);
     world.insert(ToggleGameSpeedRes(reader));
-    world.insert(HeroTeleportRes{reader: reader2, selected_hero: None});
-    world.insert(QuitGameRes(reader3));
+    world.insert(HeroTeleportRes{reader: reader2});
+    world.insert(SelectHeroRes{reader: reader3});
+    world.insert(QuitGameRes(reader4));
 
     let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
     let reader = skill_channel.register_reader();
@@ -242,6 +229,9 @@ fn main() -> BError {
     let item_defs: ItemDefinitions<Items, (), ()> = load_yaml("assets/item_defs.yaml");
     world.insert(item_defs);
 
+    let hero_defs: HeroDefinitions = load_yaml("assets/hero_defs.yaml");
+    world.insert(hero_defs);
+
     world.insert(stat_defs);
     world.insert(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
@@ -249,7 +239,7 @@ fn main() -> BError {
     ));
 
     // Create cores
-    world
+    /*world
         .create_entity()
         .with(Point::new(PLAY_WIDTH as i32 / 2, 1))
         .with(Sprite {
@@ -261,7 +251,19 @@ fn main() -> BError {
         .with(Team::Other)
         .with(Core)
         .with(Comp(default_stats.clone()))
-        .build();
+        .build();*/
+
+    centity!(world,
+        Point::new(PLAY_WIDTH as i32 / 2, 1),
+        Sprite {
+            glyph: to_cp437('C'),
+            fg: RGBA::named(BLUE),
+            bg: RGBA::named(RED),
+        },
+        SpriteIndex(66),
+        Team::Other,
+        Core,
+        Comp(default_stats.clone()),);
 
     world
         .create_entity()
@@ -376,6 +378,9 @@ fn main() -> BError {
     skillset.skills.insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
     let default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
+
+    let team_heroes = TeamHeroes::new(vec![Heroes::Generic1; 5], vec![Heroes::Generic2; 5]);
+    world.insert(team_heroes);
 
     // TODO re-enable de the hero
     // currently disabled to make the game balanced

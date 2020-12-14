@@ -1,7 +1,6 @@
 use crate::*;
 
 pub fn render<'a>(ctx: &mut BTerm) {
-    ctx.cls();
     let mut i = 0;
     for s in MAP {
         ctx.print(0, i, s);
@@ -24,4 +23,35 @@ pub fn create_map_bg<'a>(world: &mut World) {
         }
         i = i + 1;
     }
+}
+
+pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
+    ctx.draw_box(PLAY_WIDTH, 0, SCREEN_WIDTH-PLAY_WIDTH-1, SCREEN_HEIGHT-1, WHITE, BLACK);
+    ctx.print(PLAY_WIDTH+1, 1, "Leaders");
+    ctx.print(PLAY_WIDTH+1, 3, "My Team");
+
+    let selected = world.fetch::<SelectedHero>().0;
+
+    for (i, key) in world.fetch::<TeamHeroes>().me.iter().enumerate() {
+        let name = world.fetch::<HeroDefinitions>().definitions.get(key).unwrap().name.clone();
+        ctx.print(PLAY_WIDTH+1, i+4, format!(" {}", name));
+    }
+    ctx.print(PLAY_WIDTH+1, 10, "Enemy Team");
+    for (i, key) in world.fetch::<TeamHeroes>().me.iter().enumerate() {
+        let name = world.fetch::<HeroDefinitions>().definitions.get(key).unwrap().name.clone();
+        ctx.print(PLAY_WIDTH+1, i+11, format!(" Leader {}", name));
+    }
+
+    ctx.print(PLAY_WIDTH+1, selected+4, ">");
+
+    ctx.print(PLAY_WIDTH+1, 17, "Keybinds");
+
+    let hm = world.fetch::<HashMap<VirtualKeyCode, InputEvent>>();
+    let mut keybinds = hm.iter().collect::<Vec<_>>();
+    keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
+    for (idx, (k, v)) in keybinds.iter().enumerate(){
+        ctx.print(PLAY_WIDTH+1, 18+idx, format!("{:?}:{:?}", k, v));
+    }
+
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-2, "12345678901234567890");
 }

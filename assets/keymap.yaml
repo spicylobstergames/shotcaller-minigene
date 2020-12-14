@@ -8,10 +8,6 @@ Key2:
   Teleport: 2
 Key3:
   Teleport: 3
-Key4:
-  Teleport: 4
-Key5:
-  Teleport: 5
 L: MenuEast
 Q: MenuCancel
 Return: MenuSelect

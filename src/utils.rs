@@ -43,3 +43,13 @@ pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     let content = String::from_utf8(content_bytes.to_vec()).unwrap();
     return serde_yaml::from_str(&content).expect("Failed to parse yaml file into the requested type.");
 }
+
+#[macro_export]
+macro_rules! centity {
+    ($world:ident, $($comps:expr),*$(,)?) => {
+        $world.create_entity()
+            $(.with($comps))*
+            .build()
+    }
+}
+
