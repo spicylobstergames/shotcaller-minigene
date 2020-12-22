@@ -25,3 +25,9 @@ pub struct TeamHeroes {
 
 #[derive(Clone, Default, new)]
 pub struct SelectedHero(pub u8);
+
+#[derive(Clone, Default)]
+pub struct GameStats {
+    pub kill_count: u32,
+    pub damage_dealt: f64,
+}

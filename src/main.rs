@@ -155,6 +155,7 @@ fn main() -> BError {
         (GotoStraightSystem, "goto_straight", &[]),
         (SelectHeroSystem, "select_hero", &[]),
         (HeroTeleportSystem, "hero_teleport", &[]),
+        (GameStatsUpdaterSystem, "game_stats_updater", &[]),
         (QuitGameSystem, "quit_game", &[])
     );
     let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
@@ -180,6 +181,7 @@ fn main() -> BError {
     world.insert(GameSpeed::default());
     world.insert(Winner::None);
     world.insert(QuitGame::default());
+    world.insert(GameStats::default());
 
     let mut input_channel = EventChannel::<VirtualKeyCode>::new();
     let reader = input_channel.register_reader();
@@ -212,11 +214,13 @@ fn main() -> BError {
     let reader2 = game_channel.register_reader();
     let reader3 = game_channel.register_reader();
     let reader4 = game_channel.register_reader();
+    let reader5 = game_channel.register_reader();
     world.insert(game_channel);
     world.insert(DamageEntityRes(reader));
     world.insert(KillEntityRes(reader2));
     world.insert(SpawnCreepRes(reader3));
     world.insert(SpawnLeaderRes(reader4));
+    world.insert(GameStatsUpdaterRes(reader5));
 
     world.insert(Camera::new(
         Point::new(0, 0),

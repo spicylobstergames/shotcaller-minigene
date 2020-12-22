@@ -53,5 +53,9 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         ctx.print(PLAY_WIDTH+1, 18+idx, format!("{:?}:{:?}", k, v));
     }
 
-    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-2, "12345678901234567890");
+    let game_stats = world.fetch::<GameStats>();
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-5, "Total Damage");
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-4, format!("{:.2}", game_stats.damage_dealt));
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-3, "Kills");
+    ctx.print(PLAY_WIDTH+1, SCREEN_HEIGHT-2, format!("{}", game_stats.kill_count));
 }

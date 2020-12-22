@@ -1,6 +1,7 @@
 mod aoe_damage;
 mod creep_spawner;
 mod damage_entity;
+mod game_stats_updater;
 mod hero1_proximity_attack;
 mod hero1_simple_movement;
 mod hero_teleport;
@@ -20,6 +21,7 @@ mod update_win_condition;
 pub use self::aoe_damage::*;
 pub use self::creep_spawner::*;
 pub use self::damage_entity::*;
+pub use self::game_stats_updater::*;
 pub use self::hero1_proximity_attack::*;
 pub use self::hero1_simple_movement::*;
 pub use self::hero_teleport::*;
