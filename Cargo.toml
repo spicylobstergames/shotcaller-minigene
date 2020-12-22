@@ -18,3 +18,4 @@ wasm-bindgen = { version = "0.2.68", optional = true }
 console_error_panic_hook = { version = "0.1.6", optional = true }
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8.14"
+rand = "0.7.3"

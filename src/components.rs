@@ -6,6 +6,10 @@ pub struct Tower;
 pub struct ProximityAttack {
     pub radius: f32,
 }
+#[derive(Component, new)]
+pub struct Hero1ProximityAttack {
+    pub radius: f32,
+}
 #[derive(Component)]
 pub struct TowerProjectile;
 #[derive(Component)]
@@ -18,6 +22,12 @@ pub struct Leader(pub u8);
 pub struct Name(pub String);
 #[derive(Component)]
 pub struct SimpleMovement;
+#[derive(Component)]
+pub struct Hero1SimpleMovement;
+#[derive(Component)]
+pub struct FleeToBase(pub f64);
+#[derive(Component)]
+pub struct IsCaught(pub bool);
 #[derive(Component)]
 pub struct Creep;
 #[derive(Component)]
