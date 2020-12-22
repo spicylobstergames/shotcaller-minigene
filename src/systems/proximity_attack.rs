@@ -12,8 +12,8 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
                                 teams: ReadStorage<'a, Team>,
                                 positions: ReadStorage<
     'a,
-    Point,
->| {
+    Point>,
+game_events: Write<'a, EventChannel<GameEvent>>| {
     let mut v = vec![];
     for (e, proximity, stat, pos, team) in
         (&*entities, &proximity_attacks, &stats, &positions, &teams).join()
@@ -34,8 +34,6 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
 
     for (attacker, target, dmg) in v.into_iter() {
         increment_attacks_dealt(&mut stats.get_mut(attacker).unwrap().0);
-        if damage(&mut stats.get_mut(target).unwrap().0, dmg) {
-            entities.delete(target).unwrap();
-        }
+        game_events.single_write(GameEvent::DamageEntity(target, dmg));
     }
 });

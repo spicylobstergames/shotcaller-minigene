@@ -14,7 +14,11 @@ pub enum InputEvent {
     Teleport(u8),
 }
 
-#[derive(PartialEq, Eq, Copy, Clone, Debug)]
+#[derive(PartialEq, Copy, Clone, Debug)]
 pub enum GameEvent {
     GameWon(Team),
+    DamageEntity(Entity, f64),
+    KillEntity(Entity),
+    LeaderDied(u8),
+    SpawnCreep(Point, Team),
 }

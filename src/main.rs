@@ -132,6 +132,7 @@ fn main() -> BError {
             &["combine_collision"],
         ),
         (CreepSpawnerSystem, "creep_spawner", &[]),
+        (SpawnCreepSystem, "spawn_creep", &[]),
         (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
         (AiMovementSystem, "ai_movement", &["ai_pathing"]),
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
@@ -149,6 +150,8 @@ fn main() -> BError {
         (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
         (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
         (AoeDamageSystem, "aoe_damage", &[]),
+        (DamageEntitySystem, "damage_entity", &[]),
+        (KillEntitySystem, "kill_entity", &[]),
         (GotoStraightSystem, "goto_straight", &[]),
         (SelectHeroSystem, "select_hero", &[]),
         (HeroTeleportSystem, "hero_teleport", &[]),
@@ -203,6 +206,17 @@ fn main() -> BError {
     world.insert(skill_channel);
     world.insert(ExecSkillRes(reader));
     world.insert(AoeDamageRes(reader2));
+
+    let mut game_channel = EventChannel::<GameEvent>::new();
+    let reader = game_channel.register_reader();
+    let reader2 = game_channel.register_reader();
+    let reader3 = game_channel.register_reader();
+    let reader4 = game_channel.register_reader();
+    world.insert(game_channel);
+    world.insert(DamageEntityRes(reader));
+    world.insert(KillEntityRes(reader2));
+    world.insert(SpawnCreepRes(reader3));
+    world.insert(SpawnLeaderRes(reader4));
 
     world.insert(Camera::new(
         Point::new(0, 0),
