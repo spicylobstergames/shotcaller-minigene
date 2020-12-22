@@ -8,7 +8,7 @@ edition = "2018"
 default = ["opengl"]
 terminal = ["minigene/terminal"]
 opengl = ["minigene/opengl"]
-wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook"]
+wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook", "opengl"]
 
 [dependencies]
 #minigene = { path = "../minigene", default-features = false }

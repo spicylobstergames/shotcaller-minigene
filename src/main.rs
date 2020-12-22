@@ -18,6 +18,7 @@ const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
+const TARGET_FPS: f32 = 20.0;
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -97,6 +98,8 @@ struct State {
     pub world: World,
     pub dispatcher: Box<dyn UnifiedDispatcher + 'static>,
     pub state_machine: StateMachine,
+    #[cfg(not(feature="wasm"))]
+    pub loop_helper: LoopHelper,
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
@@ -104,23 +107,30 @@ impl GameState for State {
             ctx.quitting = true;
         }
         if self.state_machine.is_running() && !ctx.quitting {
+            #[cfg(not(feature="wasm"))]
+            let delta = self.loop_helper.loop_start();
+            #[cfg(feature="wasm")]
+            let delta = std::time::Duration::from_secs_f32(1.0/20.0);
+            let time = self.world.get_mut::<Time>().unwrap();
+            time.advance_frame(delta);
             mini_frame(
                 &mut self.world,
                 &mut self.dispatcher,
                 ctx,
                 &mut self.state_machine,
             );
+            #[cfg(not(feature="wasm"))]
+            self.loop_helper.loop_sleep();
         }
     }
 }
 
 fn main() -> BError {
     // Load spritesheet
-    #[cfg(features="wasm")]
+    #[cfg(feature="wasm")]
     add_embed!("../assets/tilemap/colored_tilemap_packed.png", "../assets/skill_defs.yaml",
         "../assets/effector_defs.yaml", "../assets/keymap.yaml", "../assets/item_defs.yaml",
-        "../assets/stat_defs.yaml");
-    //add_embed!("../assets/skill_defs.yaml");
+        "../assets/stat_defs.yaml", "../assets/hero_defs.yaml");
     let mut world = World::new();
     let builder = dispatcher!(
         world,
@@ -171,6 +181,8 @@ fn main() -> BError {
 
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
+    #[cfg(not(feature="wasm"))]
+    let loop_helper = LoopHelper::builder().build_with_target_rate(TARGET_FPS);
 
     register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
     Name, SpriteIndex, Comp<StatSet<Stats>>, Comp<EffectorSet<Effectors>>,
@@ -428,6 +440,8 @@ fn main() -> BError {
         world,
         dispatcher,
         state_machine,
+        #[cfg(not(feature="wasm"))]
+        loop_helper,
     };
 
     main_loop(context, gs)
