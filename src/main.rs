@@ -13,7 +13,7 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
-const LEADER_ATTACK_RADIUS: f32 = 2.1;
+//const LEADER_ATTACK_RADIUS: f32 = 2.1;
 const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
@@ -112,14 +112,6 @@ impl GameState for State {
             );
         }
     }
-}
-
-macro_rules! add_embed {
-    ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
-}
-
-macro_rules! register {
-    ($world:ident, $($types:ty),*$(,)?) => {$($world.register::<$types>();)*}
 }
 
 fn main() -> BError {
@@ -375,7 +367,7 @@ fn main() -> BError {
     skillset.skills.insert(Skills::DoubleDamage, SkillInstance::new(Skills::DoubleDamage, 0.0));
     skillset.skills.insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
-    let default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
+    let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
     let team_heroes = TeamHeroes::new(vec![Heroes::Generic1; 5], vec![Heroes::Generic2; 5]);
     world.insert(team_heroes);

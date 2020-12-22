@@ -32,8 +32,8 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
                 pos,
                 &*entities,
                 &positions,
-                |e, p| teams.get(e).map(|t| t != team).unwrap_or(false),
-                |e, p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS,
+                |e, _p| teams.get(e).map(|t| t != team).unwrap_or(false),
+                |_e, _p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS,
             ) {
                 // damage around
                 if let Some(mut stat) = stats.get_mut(e).as_mut().map(|c| &mut c.0) {

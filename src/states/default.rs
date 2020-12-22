@@ -6,7 +6,7 @@ impl minigene::State for DefaultState {
     fn update(
         &mut self,
         world: &mut World,
-        dispatcher: &mut MiniDispatcher,
+        _dispatcher: &mut MiniDispatcher,
         ctx: &mut BTerm,
     ) -> Trans {
         ctx.set_active_console(0);

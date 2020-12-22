@@ -10,7 +10,7 @@ system!(UpdateEnemiesAroundSystem, |entities: Entities<'a>,
     'a,
     Comp<StatSet<Stats>>,
 >| {
-    for (e, pos, stat, team) in (&*entities, &positions, &mut stats, &teams).join() {
+    for (pos, stat, team) in (&positions, &mut stats, &teams).join() {
         let c = entities_in_radius(
             pos,
             &*entities,

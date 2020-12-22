@@ -1,5 +1,3 @@
-use crate::*;
-
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Stats {
     Health,

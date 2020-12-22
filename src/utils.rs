@@ -53,3 +53,14 @@ macro_rules! centity {
     }
 }
 
+#[allow(unused)]
+#[macro_export]
+macro_rules! add_embed {
+    ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
+}
+
+#[macro_export]
+macro_rules! register {
+    ($world:ident, $($types:ty),*$(,)?) => {$($world.register::<$types>();)*}
+}
+

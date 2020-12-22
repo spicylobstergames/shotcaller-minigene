@@ -20,12 +20,12 @@ system!(ProximityAttackSystem, |entities: Entities<'a>,
     {
         let mut vec = (&*entities, &teams, &positions, &stats)
             .join()
-            .filter(|(e, t, _, _)| **t != *team)
+            .filter(|(_e, t, _, _)| **t != *team)
             .map(|(e, _, p, _)| (dist(pos, p), e))
             .filter(|(d, _)| *d < proximity.radius)
             .collect::<Vec<_>>();
         vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-        let closest = vec.into_iter().next().map(|(d, p)| p);
+        let closest = vec.into_iter().next().map(|(_d, p)| p);
         if let Some(target) = closest {
             let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
             v.push((e.clone(), target.clone(), damage));

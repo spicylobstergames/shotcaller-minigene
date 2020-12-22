@@ -23,7 +23,7 @@ system!(
                 .filter(|(d, _)| *d < TOWER_RANGE)
                 .collect::<Vec<_>>();
             vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            let closest = vec.into_iter().next().map(|(d, p)| p);
+            let closest = vec.into_iter().next().map(|(_d, p)| p);
             if let Some(c) = closest {
                 v.push((pos.clone(), *team, c.clone()))
             }

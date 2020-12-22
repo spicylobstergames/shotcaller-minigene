@@ -16,7 +16,7 @@ system!(AoeDamageSystem, |res: WriteExpect<'a, AoeDamageRes>,
                     if let Some(stat) = stats.get_mut(e) {
                         damage(&mut stat.0, AOE_DAMAGE);
                         if stat.0.stats.get(&Stats::Health).unwrap().value <= 0.0 {
-                            entities.delete(e);
+                            entities.delete(e).expect("Failed to delete entity after damaging it.");
                         }
                     }
                 }
