@@ -6,7 +6,7 @@ impl minigene::State for DefaultState {
     fn update(
         &mut self,
         world: &mut World,
-        _dispatcher: &mut MiniDispatcher,
+        _dispatcher: &mut Dispatcher,
         ctx: &mut BTerm,
     ) -> Trans {
         ctx.set_active_console(0);
@@ -22,10 +22,10 @@ impl minigene::State for DefaultState {
             render(ctx);
             render_ascii(
                 ctx,
-                &world.read_resource(),
-                world.read_storage(),
-                world.read_storage(),
-                world.read_storage(),
+                &*world.get().unwrap(),
+                *world.get().unwrap(),
+                *world.get().unwrap(),
+                *world.get().unwrap(),
             );
         }
         #[cfg(feature="opengl")]
@@ -33,9 +33,9 @@ impl minigene::State for DefaultState {
             ctx.set_active_console(1);
             render_sprites(
                 ctx,
-                &world.read_resource(),
-                world.read_storage(),
-                world.read_storage(),
+                &*world.get().unwrap(),
+                *world.get().unwrap(),
+                *world.get().unwrap(),
             );
         }
         ctx.set_active_console(0);

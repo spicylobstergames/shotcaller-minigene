@@ -1,31 +1,24 @@
 use crate::*;
 
-system!(
-    TowerAiSystem,
-    |entities: Entities<'a>,
-     stat_def: ReadExpect<'a, StatDefinitions<Stats>>,
-     towers: ReadStorage<'a, Tower>,
-     teams: WriteStorage<'a, Team>,
-     tower_projectiles: WriteStorage<'a, TowerProjectile>,
-     sprites: WriteStorage<'a, Sprite>,
-     sprite_indices: WriteStorage<'a, SpriteIndex>,
-     stats: WriteStorage<'a, Comp<StatSet<Stats>>>,
-     goto_positions: WriteStorage<'a, GotoStraight>,
-     positions: WriteStorage<'a, Point>| {
+pub fn 
+    tower_ai_system(
+     stat_def: &Option<StatDefinitions<Stats>>,
+     towers: &Components<Tower>,
+        entities: &mut Entities,
+     teams: &mut Components<Team>,
+     tower_projectiles: &mut Components<TowerProjectile>,
+     sprites: &mut Components<Sprite>,
+     sprite_indices: &mut Components<SpriteIndex>,
+     stats: &mut Components<StatSet<Stats>>,
+     goto_positions: &mut Components<GotoStraight>,
+     positions: &mut Components<Point>) -> SystemResult {
         let mut v = vec![];
-        for (_, team, pos) in (&towers, &teams, &positions).join() {
+        for (_, team, pos) in join!(&towers && &teams && &positions){
             // find closest in other team
             // TODO: optimize
-            let mut vec = (&teams, &positions)
-                .join()
-                .filter(|(t, _)| **t != *team)
-                .map(|(_, p)| (dist(pos, p), p.clone()))
-                .filter(|(d, _)| *d < TOWER_RANGE)
-                .collect::<Vec<_>>();
-            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            let closest = vec.into_iter().next().map(|(_d, p)| p);
-            if let Some(c) = closest {
-                v.push((pos.clone(), *team, c.clone()))
+            let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
+            if let Some((_, c)) = closest {
+                v.push((pos.unwrap().clone(), *team.unwrap(), c.clone()))
             }
         }
         for (source, team, target) in v.into_iter() {
@@ -33,7 +26,7 @@ system!(
             positions.insert(n, source).unwrap();
             tower_projectiles.insert(n, TowerProjectile).unwrap();
             teams.insert(n, team).unwrap();
-            stats.insert(n, Comp(stat_def.to_statset())).unwrap();
+            stats.insert(n, stat_def.unwrap().to_statset()).unwrap();
             sprites
                 .insert(
                     n,
@@ -49,5 +42,5 @@ system!(
                 .insert(n, GotoStraight::new(target.clone(), 1.0))
                 .unwrap();
         }
+        Ok(())
     }
-);

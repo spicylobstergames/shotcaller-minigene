@@ -1,15 +1,9 @@
 use crate::*;
 
-pub struct SelectHeroRes {
-    pub reader: ReaderId<InputEvent>,
-}
-
-system!(
-    SelectHeroSystem,
-    |events: Read<'a, EventChannel<InputEvent>>,
-     res: WriteExpect<'a, HeroTeleportRes>,
-     selected_hero: Write<'a, SelectedHero>| {
-        for k in events.read(&mut res.reader) {
+pub fn 
+    select_hero_system(events: &Vec<InputEvent>,
+     selected_hero: &mut SelectedHero) -> SystemResult {
+        for k in events.iter() {
             match *k {
                 InputEvent::MenuNorth => {
                     if selected_hero.0 > 0 {
@@ -24,5 +18,5 @@ system!(
                 _ => {}
             }
         }
+        Ok(())
     }
-);

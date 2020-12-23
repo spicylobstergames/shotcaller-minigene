@@ -1,18 +1,15 @@
 use crate::*;
  
 // non portable
-system!(UpdateCollisionResourceSystem, |global_map: WriteExpect<
-    'a,
-    CollisionResource,
->,
-                                        positions: ReadStorage<
-    'a,
+pub fn update_collision_resource_system(
+                                        positions: &Components<
     Point,
 >,
-                                        players: ReadStorage<
-    'a,
-    Player,
->| {
+                                        players: &Components<
+    Player,>,
+    global_map: &mut Option< CollisionResource, >,
+) -> SystemResult{
+    let global_map = global_map.as_mut().unwrap();
     for j in 0..(PLAY_HEIGHT as usize) {
         MAP[j].char_indices().for_each(|(i, c)| {
             if c == '#' {
@@ -23,8 +20,9 @@ system!(UpdateCollisionResourceSystem, |global_map: WriteExpect<
         });
     }
     // TODO fix this
-    for (pos, _) in (&positions, &players).join() {
-        global_map.position.x = pos.x - 40;
-        global_map.position.y = pos.y - 25;
+    for (pos, _) in join!(&positions && &players){
+        global_map.position.x = pos.unwrap().x - 40;
+        global_map.position.y = pos.unwrap().y - 25;
     }
-});
+    Ok(())
+}

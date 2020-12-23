@@ -3,7 +3,6 @@ extern crate serde;
 
 use minigene::*;
 use std::collections::HashMap;
-use std::ops::Deref;
 
 add_wasm_support!();
 
@@ -96,14 +95,14 @@ pub use self::utils::*;
 // Bridge between bracket-lib and minigene
 struct State {
     pub world: World,
-    pub dispatcher: Box<dyn UnifiedDispatcher + 'static>,
+    pub dispatcher: Dispatcher,
     pub state_machine: StateMachine,
     #[cfg(not(feature="wasm"))]
     pub loop_helper: LoopHelper,
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        if self.world.read_resource::<QuitGame>().0 {
+        if self.world.get::<QuitGame>().unwrap().0 {
             ctx.quitting = true;
         }
         if self.state_machine.is_running() && !ctx.quitting {
@@ -125,49 +124,53 @@ impl GameState for State {
     }
 }
 
+macro_rules! dispatcher {
+    ($dispatch:ident, $($sys:expr),*$(,)?) => {
+        $($dispatch = $dispatch.add($sys);)*
+    }
+}
+
 fn main() -> BError {
     // Load spritesheet
     #[cfg(feature="wasm")]
     add_embed!("../assets/tilemap/colored_tilemap_packed.png", "../assets/skill_defs.yaml",
         "../assets/effector_defs.yaml", "../assets/keymap.yaml", "../assets/item_defs.yaml",
         "../assets/stat_defs.yaml", "../assets/hero_defs.yaml");
-    let mut world = World::new();
-    let builder = dispatcher!(
-        world,
-        (CombineCollisionSystem, "combine_collision", &[]),
-        (InputDriver::<InputEvent>, "input_driver", &[]),
-        (
-            UpdateCollisionResourceSystem,
-            "update_collision_res",
-            &["combine_collision"],
-        ),
-        (CreepSpawnerSystem, "creep_spawner", &[]),
-        (SpawnCreepSystem, "spawn_creep", &[]),
-        (AiPathingSystem, "ai_pathing", &["update_collision_res"]),
-        (AiMovementSystem, "ai_movement", &["ai_pathing"]),
-        (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
-        (WinConditionSystem, "win_cond", &[]),
-        (SimpleMovementSystem, "simple_movement", &[]),
-        (Hero1SimpleMovementSystem, "hero1_simple_movement", &[]),
-        (TowerAiSystem, "tower_ai", &[]),
-        (ProximityAttackSystem, "proximity_attack", &[]),
-        (Hero1ProximityAttackSystem, "hero1_proximity_attack", &[]),
-        (TowerProjectileSystem, "tower_projectile", &[]),
-        (UpdateEnemiesAroundSystem, "update_enemies_around", &[]),
-        (SkillCooldownSystem::<Skills>, "cooldown_system", &[]),
-        (TriggerPassiveSkillSystem::<Stats, Effectors, Skills, Items, (), ()>, "trigger_passives", &[]),
-        (ExecSkillSystem::<Stats, Effectors, Skills, Items>, "exec_skills", &[]),
-        (ApplyEffectorSystem::<Stats, Effectors>, "apply_effectors", &[]),
-        (RemoveOutdatedEffectorSystem<Effectors>, "remove_effectors", &[]),
-        (AoeDamageSystem, "aoe_damage", &[]),
-        (DamageEntitySystem, "damage_entity", &[]),
-        (KillEntitySystem, "kill_entity", &[]),
-        (GotoStraightSystem, "goto_straight", &[]),
-        (SelectHeroSystem, "select_hero", &[]),
-        (HeroTeleportSystem, "hero_teleport", &[]),
-        (GameStatsUpdaterSystem, "game_stats_updater", &[]),
-        (QuitGameSystem, "quit_game", &[])
+    let mut world = World::default();
+    let mut dispatcher = DispatcherBuilder::new();
+    dispatcher!(
+        dispatcher,
+        combine_collision_system,
+        input_driver::<InputEvent>,
+        update_collision_resource_system,
+        creep_spawner_system,
+        spawn_creep_system,
+        ai_pathing_system,
+        ai_movement_system,
+        toggle_game_speed_system,
+        win_condition_system,
+        simple_movement_system,
+        hero1_simple_movement_system,
+        tower_ai_system,
+        proximity_attack_system,
+        hero1_proximity_attack_system,
+        tower_projectile_system,
+        update_enemies_around_system,
+        skill_cooldown_system::<Skills>,
+        trigger_passive_skill_system::<Stats, Effectors, Skills, Items, (), ()>,
+        exec_skill_system::<Stats, Effectors, Skills, Items>,
+        apply_effector_system::<Stats, Effectors>,
+        remove_outdated_effector_system::<Effectors>,
+        aoe_damage_system,
+        damage_entity_system,
+        kill_entity_system,
+        goto_straight_system,
+        select_hero_system,
+        hero_teleport_system,
+        game_stats_updater_system,
+        quit_game_system,
     );
+    let dispatcher = dispatcher.build(&mut world);
     let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
     for j in 0..10 {
         for i in 0..10 {
@@ -177,92 +180,41 @@ fn main() -> BError {
         }
     }
     let (mut world, mut dispatcher, mut context) =
-        mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", Some(spritesheet), builder, world);
+        mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", Some(spritesheet), dispatcher, world);
 
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
     #[cfg(not(feature="wasm"))]
     let loop_helper = LoopHelper::builder().build_with_target_rate(TARGET_FPS);
 
-    register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
-    Name, SpriteIndex, Comp<StatSet<Stats>>, Comp<EffectorSet<Effectors>>,
-    Comp<SkillSet<Skills>>, Comp<Inventory<Items, (), ()>>, Point, SimpleMovement,
+    /*register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
+    Name, SpriteIndex, StatSet<Stats>, EffectorSet<Effectors>,
+    SkillSet<Skills>, Inventory<Items, (), ()>, Point, SimpleMovement,
     AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
-    ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);
+    ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);*/
 
-    world.insert(GameSpeed::default());
-    world.insert(Winner::None);
-    world.insert(QuitGame::default());
-    world.insert(GameStats::default());
+    let keymap = load_yaml("assets/keymap.yaml");
+    *world.get_mut::<HashMap<VirtualKeyCode, InputEvent>>().unwrap() = keymap;
 
-    let mut input_channel = EventChannel::<VirtualKeyCode>::new();
-    let reader = input_channel.register_reader();
-    world.insert(input_channel);
-    world.insert(InputDriverRes(reader));
+    let skill_definitions = load_yaml("assets/skill_defs.yaml");
+    *world.get_mut::<SkillDefinitions<Stats, Effectors, Skills, Items>>().unwrap() = skill_definitions;
 
-    let keymap: HashMap<VirtualKeyCode, InputEvent> = load_yaml("assets/keymap.yaml");
-    world.insert(keymap);
+    let effector_defs = load_yaml("assets/effector_defs.yaml");
+    *world.get_mut::<EffectorDefinitions<Stats, Effectors>>().unwrap() = effector_defs;
 
-    let mut input_channel = EventChannel::<InputEvent>::new();
-    let reader = input_channel.register_reader();
-    let reader2 = input_channel.register_reader();
-    let reader3 = input_channel.register_reader();
-    let reader4 = input_channel.register_reader();
-    world.insert(input_channel);
-    world.insert(ToggleGameSpeedRes(reader));
-    world.insert(HeroTeleportRes{reader: reader2});
-    world.insert(SelectHeroRes{reader: reader3});
-    world.insert(QuitGameRes(reader4));
+    let item_defs = load_yaml("assets/item_defs.yaml");
+    *world.get_mut::<ItemDefinitions<Items, (), ()>>().unwrap() = item_defs;
 
-    let mut skill_channel = EventChannel::<SkillTriggerEvent<Skills>>::new();
-    let reader = skill_channel.register_reader();
-    let reader2 = skill_channel.register_reader();
-    world.insert(skill_channel);
-    world.insert(ExecSkillRes(reader));
-    world.insert(AoeDamageRes(reader2));
-
-    let mut game_channel = EventChannel::<GameEvent>::new();
-    let reader = game_channel.register_reader();
-    let reader2 = game_channel.register_reader();
-    let reader3 = game_channel.register_reader();
-    let reader4 = game_channel.register_reader();
-    let reader5 = game_channel.register_reader();
-    world.insert(game_channel);
-    world.insert(DamageEntityRes(reader));
-    world.insert(KillEntityRes(reader2));
-    world.insert(SpawnCreepRes(reader3));
-    world.insert(SpawnLeaderRes(reader4));
-    world.insert(GameStatsUpdaterRes(reader5));
-
-    world.insert(Camera::new(
-        Point::new(0, 0),
-        Point::new(PLAY_WIDTH, PLAY_HEIGHT),
-    ));
+    let hero_defs = load_yaml("assets/hero_defs.yaml");
+    *world.get_mut::<HeroDefinitions>().unwrap() = hero_defs;
 
     let stat_defs: StatDefinitions<Stats> = load_yaml("assets/stat_defs.yaml");
     let default_stats = stat_defs.to_statset();
-
-    let skill_definitions: SkillDefinitions<Stats, Effectors, Skills, Items> = load_yaml("assets/skill_defs.yaml");
-    world.insert(skill_definitions);
-
-    let effector_defs: EffectorDefinitions<Stats, Effectors> = load_yaml("assets/effector_defs.yaml");
-    world.insert(effector_defs);
-
-    let item_defs: ItemDefinitions<Items, (), ()> = load_yaml("assets/item_defs.yaml");
-    world.insert(item_defs);
-
-    let hero_defs: HeroDefinitions = load_yaml("assets/hero_defs.yaml");
-    world.insert(hero_defs);
-
-    world.insert(stat_defs);
-    world.insert(CollisionResource::new(
-        CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
-        Point::new(0, 0),
-    ));
+    *world.get_mut().unwrap() = stat_defs;
 
     // Create cores
     /*world
-        .create_entity()
+        .create()
         .with(Point::new(PLAY_WIDTH as i32 / 2, 1))
         .with(Sprite {
             glyph: to_cp437('C'),
@@ -285,112 +237,105 @@ fn main() -> BError {
         SpriteIndex(66),
         Team::Other,
         Core,
-        Comp(default_stats.clone()),);
+        default_stats.clone(),);
 
-    world
-        .create_entity()
-        .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 2))
-        .with(Sprite {
+    centity!(world,
+        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 2),
+        Sprite {
             glyph: to_cp437('C'),
             fg: RGBA::named(BLUE),
             bg: RGBA::named(GREEN),
-        })
-        .with(SpriteIndex(66))
-        .with(Team::Me)
-        .with(Core)
-        .with(Comp(default_stats.clone()))
-        .build();
+        },
+        SpriteIndex(66),
+        Team::Me,
+        Core,
+        default_stats.clone(),
+        );
 
     // Create barracks
     for i in -1..=1 {
         let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 7 * i as i32;
         let y = PLAY_HEIGHT as i32 / 8;
-        world
-            .create_entity()
-            .with(Point::new(x, y))
-            .with(Sprite {
+        centity!(world,
+            Point::new(x, y),
+            Sprite {
                 glyph: to_cp437('B'),
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(RED),
-            })
-            .with(SpriteIndex(69))
-            .with(Team::Other)
-            .with(Barrack)
-            .with(Comp(default_stats.clone()))
-            .build();
+            },
+            SpriteIndex(69),
+            Team::Other,
+            Barrack,
+            default_stats.clone(),
+            );
         // Creep spawners
-        world
-            .create_entity()
-            .with(Point::new(x, y + 1))
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
-            //.with(CreepSpawner(0, 2))
-            .with(Team::Other)
-            .build();
+        centity!(world,
+            Point::new(x, y + 1),
+            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            //CreepSpawner(0, 2))
+            Team::Other,
+            );
     }
 
     for i in -1..=1 {
         let x = PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 7 * i;
         let y = PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 / 8;
-        world
-            .create_entity()
-            .with(Point::new(x, y))
-            .with(Sprite {
+        centity!(world,
+            Point::new(x, y),
+            Sprite {
                 glyph: to_cp437('B'),
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(GREEN),
-            })
-            .with(SpriteIndex(69))
-            .with(Team::Me)
-            .with(Barrack)
-            .with(Comp(default_stats.clone()))
-            .build();
+            },
+            SpriteIndex(69),
+            Team::Me,
+            Barrack,
+            default_stats.clone(),
+            );
         // Creep spawners
-        world
-            .create_entity()
-            .with(Point::new(x, y - 1))
-            .with(CreepSpawner(0, CREEP_SPAWN_TICKS))
-            .with(Team::Me)
-            .build();
+         centity!(world,
+            Point::new(x, y - 1),
+            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            Team::Me,
+            );
     }
 
     // Create towers
     for i in -1..=1 {
         for j in 1..=2 {
-            world
-                .create_entity()
-                .with(Point::new(
+            centity!(world,
+                Point::new(
                     PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i,
                     PLAY_HEIGHT as i32 * j / 6,
-                ))
-                .with(Sprite {
+                ),
+                Sprite {
                     glyph: to_cp437('T'),
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(RED),
-                })
-                .with(SpriteIndex(80))
-                .with(Team::Other)
-                .with(Comp(default_stats.clone()))
-                .build();
+                },
+                SpriteIndex(80),
+                Team::Other,
+                default_stats.clone(),
+                );
         }
     }
 
     for i in -1..=1 {
         for j in 1..=2 {
-            world
-                .create_entity()
-                .with(Point::new(
+            centity!(world,
+                Point::new(
                     PLAY_WIDTH as i32 / 2 + PLAY_WIDTH as i32 / 4 * i,
                     PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 * j / 6,
-                ))
-                .with(Sprite {
+                ),
+                Sprite {
                     glyph: to_cp437('T'),
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(GREEN),
-                })
-                .with(SpriteIndex(80))
-                .with(Team::Me)
-                .with(Comp(default_stats.clone()))
-                .build();
+                },
+                SpriteIndex(80),
+                Team::Me,
+                default_stats.clone(),
+                );
         }
     }
 
@@ -402,13 +347,13 @@ fn main() -> BError {
     let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
     let team_heroes = TeamHeroes::new(vec![Heroes::Generic1; 5], vec![Heroes::Generic2; 5]);
-    world.insert(team_heroes);
+    *world.get_mut::<TeamHeroes>().unwrap() = team_heroes;
 
     // TODO re-enable de the hero
     // currently disabled to make the game balanced
     // Create generic hero 1
     /*let hero1 = world
-        .create_entity()
+        .create()
         .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
         .with(Sprite {
             glyph: to_cp437('L'),

@@ -1,33 +1,30 @@
 use crate::*;
 
-system!(TowerProjectileSystem, |projectiles: ReadStorage<
-    'a,
+pub fn tower_projectile_system(projectiles: &Components<
     TowerProjectile,
 >,
-                                entities: Entities<'a>,
-                                positions: ReadStorage<
-    'a,
+                                entities: &Entities,
+                                positions: &Components<
     Point,
 >,
-                                teams: ReadStorage<'a, Team>,
-                                gotos: ReadStorage<
-    'a,
+                                teams: &Components<Team>,
+                                gotos: &Components<
     GotoStraight,
 >,
-                                stats: WriteStorage<
-    'a,
-    Comp<StatSet<Stats>>,
->| {
-    for (e, pos, goto, _, team) in (&*entities, &positions, &gotos, &projectiles, &teams).join() {
+                                stats: &mut Components<
+    StatSet<Stats>,
+>) -> SystemResult{
+    for (e, pos, goto, _, team) in join!(&entities && &positions && &gotos && &projectiles && &teams){
+        let pos = pos.unwrap();
+        let team = team.unwrap();
         let dmg = stats
-            .get(e)
+            .get(e.unwrap())
             .expect("Add a statset to the projectile.")
-            .0
             .stats
             .get(&Stats::Attack)
             .unwrap()
             .value;
-        if *pos == goto.target {
+        if *pos == goto.unwrap().target {
             for (e, _, _) in entities_in_radius(
                 pos,
                 &*entities,
@@ -36,12 +33,13 @@ system!(TowerProjectileSystem, |projectiles: ReadStorage<
                 |_e, _p, d| d <= TOWER_PROJECTILE_EXPLOSION_RADIUS,
             ) {
                 // damage around
-                if let Some(mut stat) = stats.get_mut(e).as_mut().map(|c| &mut c.0) {
+                if let Some(mut stat) = stats.get_mut(e).as_mut() {
                     if damage(&mut stat, dmg) {
-                        entities.delete(e).unwrap();
+                        entities.kill(e);
                     }
                 }
             }
         }
     }
-});
+    Ok(())
+}

@@ -1,11 +1,11 @@
 use crate::*;
 
-system!(
-    WinConditionSystem,
-    |core: ReadStorage<'a, Core>, team: ReadStorage<'a, Team>, winner: Write<'a, Winner>| {
+pub fn 
+    win_condition_system(core: &Components<Core>, team: &Components<Team>, winner: &mut Winner) -> SystemResult {
         let mut me = false;
         let mut you = false;
-        for (_, t) in (&core, &team).join() {
+        for (_, t) in join!(&core && &team) {
+            let t = t.unwrap();
             match *t {
                 Team::Me => me = true,
                 Team::Other => you = true,
@@ -17,5 +17,5 @@ system!(
             (true, false) => *winner = Winner::Me,
             (true, true) => *winner = Winner::Draw,
         }
+        Ok(())
     }
-);

@@ -1,18 +1,19 @@
 use crate::*;
 
-system!(
-    CreepSpawnerSystem, |
-     positions: WriteStorage<'a, Point>,
-     spawners: WriteStorage<'a, CreepSpawner>,
-     teams: WriteStorage<'a, Team>,
-     game_events: Write<'a, EventChannel<GameEvent>>| {
-        for (pos, mut spawner, team) in (&positions, &mut spawners, &teams).join() {
+pub fn 
+    creep_spawner_system(
+     positions: &mut Components<Point>,
+     spawners: &mut Components<CreepSpawner>,
+     teams: &mut Components<Team>,
+     game_events: &mut Vec<GameEvent>) -> SystemResult {
+        for (pos, mut spawner, team) in join!(&positions && &mut spawners && &teams) {
+            let spawner = spawner.as_mut().unwrap();
             if spawner.0 == 0 {
                 spawner.0 = spawner.1;
                 // spawn
-                game_events.single_write(GameEvent::SpawnCreep(pos.clone(), team.clone()));
+                game_events.push(GameEvent::SpawnCreep(pos.unwrap().clone(), team.unwrap().clone()));
             }
             spawner.0 -= 1;
         }
+        Ok(())
     }
-);

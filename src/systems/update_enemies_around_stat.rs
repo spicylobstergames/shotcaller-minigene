@@ -1,28 +1,27 @@
 use crate::*;
 
-system!(UpdateEnemiesAroundSystem, |entities: Entities<'a>,
-                                    positions: ReadStorage<
-    'a,
+pub fn update_enemies_around_system(entities: &Entities,
+                                    positions: &Components<
     Point,
 >,
-                                    teams: ReadStorage<'a, Team>,
-                                    stats: WriteStorage<
-    'a,
-    Comp<StatSet<Stats>>,
->| {
-    for (pos, stat, team) in (&positions, &mut stats, &teams).join() {
+                                    teams: &Components<Team>,
+                                    stats: &mut Components<
+    StatSet<Stats>,
+>) -> SystemResult {
+    for (pos, stat, team) in join!(&positions && &mut stats && &teams){
         let c = entities_in_radius(
-            pos,
+            pos.unwrap(),
             &*entities,
             &positions,
-            |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
+            |e, _| teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false),
             |_, _, d| d <= AOE_RADIUS,
         )
         .len() as f64;
-        stat.0
+        stat.unwrap()
             .stats
             .get_mut(&Stats::EnemiesAround)
             .expect("Failed to get EnemiesAround stat")
             .value = c;
     }
-});
+    Ok(())
+}

@@ -1,39 +1,28 @@
 use crate::*;
 
-system!(ProximityAttackSystem, |entities: Entities<'a>,
-                                proximity_attacks: ReadStorage<
-    'a,
+pub fn proximity_attack_system(entities: &Entities,
+                                proximity_attacks: &Components<
     ProximityAttack,
 >,
-                                stats: WriteStorage<
-    'a,
-    Comp<StatSet<Stats>>,
->,
-                                teams: ReadStorage<'a, Team>,
-                                positions: ReadStorage<
-    'a,
+                                teams: &Components<Team>,
+                                positions: &Components<
     Point>,
-game_events: Write<'a, EventChannel<GameEvent>>| {
+                                stats: &mut Components< StatSet<Stats> >,
+game_events: &mut Vec<GameEvent>) -> SystemResult{
     let mut v = vec![];
     for (e, proximity, stat, pos, team) in
-        (&*entities, &proximity_attacks, &stats, &positions, &teams).join()
+        join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
-        let mut vec = (&*entities, &teams, &positions, &stats)
-            .join()
-            .filter(|(_e, t, _, _)| **t != *team)
-            .map(|(e, _, p, _)| (dist(pos, p), e))
-            .filter(|(d, _)| *d < proximity.radius)
-            .collect::<Vec<_>>();
-        vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-        let closest = vec.into_iter().next().map(|(_d, p)| p);
-        if let Some(target) = closest {
-            let damage = stat.0.stats.get(&Stats::Attack).unwrap().value;
-            v.push((e.clone(), target.clone(), damage));
+        let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
+        if let Some((target, _)) = closest {
+            let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
+            v.push((e.unwrap().clone(), target.clone(), damage));
         }
     }
 
     for (attacker, target, dmg) in v.into_iter() {
-        increment_attacks_dealt(&mut stats.get_mut(attacker).unwrap().0);
-        game_events.single_write(GameEvent::DamageEntity(target, dmg));
+        increment_attacks_dealt(&mut stats.get_mut(attacker).unwrap());
+        game_events.push(GameEvent::DamageEntity(target, dmg));
     }
-});
+    Ok(())
+}

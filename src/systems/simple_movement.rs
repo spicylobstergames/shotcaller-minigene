@@ -1,28 +1,22 @@
 use crate::*;
 
-system!(
-    SimpleMovementSystem,
-    |entities: Entities<'a>,
-     simple_movements: ReadStorage<'a, SimpleMovement>,
-     teams: ReadStorage<'a, Team>,
-     targets: WriteStorage<'a, AiDestination>,
-     stats: ReadStorage<'a, Comp<StatSet<Stats>>>,
-     positions: ReadStorage<'a, Point>| {
-        for (e, _, team, pos) in (&*entities, &simple_movements, &teams, &positions).join() {
+pub fn 
+    simple_movement_system(entities: &Entities,
+     simple_movements: &Components<SimpleMovement>,
+     teams: &Components<Team>,
+     stats: &Components<StatSet<Stats>>,
+     positions: &Components<Point>,
+     targets: &mut Components<AiDestination>,
+     ) -> SystemResult {
+        for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions){
             // find closest in other team
             // TODO: optimize
-            let mut vec = (&teams, &positions, &stats)
-                .join()
-                .filter(|(t, _, _)| **t != *team)
-                .map(|(_, p, _)| (dist(pos, p), p.clone()))
-                .collect::<Vec<_>>();
-            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            let closest = vec.into_iter().next().map(|(_d, p)| p);
-            if let Some(c) = closest {
-                targets.insert(e, AiDestination::new(c.clone())).unwrap();
+            let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
+            if let Some((_,c)) = closest {
+                targets.insert(e.unwrap(), AiDestination::new(c.clone())).unwrap();
             } else {
-                targets.remove(e);
+                targets.remove(e.unwrap());
             }
         }
+        Ok(())
     }
-);
