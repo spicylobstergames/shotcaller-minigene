@@ -10,6 +10,8 @@ pub enum Stats {
     AttacksReceived,
     DamageDealt,
     DamageReceived,
+    ActionPoints,
+    ActionPointRefillRate,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
