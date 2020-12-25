@@ -148,6 +148,7 @@ fn main() -> BError {
         (ToggleGameSpeedSystem, "toggle_speed", &["input_driver"]),
         (WinConditionSystem, "win_cond", &[]),
         (SimpleMovementSystem, "simple_movement", &[]),
+        (HandleActionPointsSystem, "handle_action_points", &[]),
         (Hero1SimpleMovementSystem, "hero1_simple_movement", &[]),
         (TowerAiSystem, "tower_ai", &[]),
         (ProximityAttackSystem, "proximity_attack", &[]),

@@ -56,3 +56,20 @@ defs:
     min_value: ~
     max_value: ~
     icon_path: ~
+  ActionPoints:
+    key: ActionPoints
+    name: action_points
+    friendly_name: Action Points
+    default_value: 0
+    min_value: 0
+    max_value: 100.0
+    icon_path: ~
+  ActionPointRefillRate:
+    key: ActionPointRefillRate
+    name: action_point_refill_rate
+    friendly_name: Action Point Refill Rate
+    default_value: 100.0
+    min_value: 0
+    max_value: ~
+    icon_path: ~
+    
