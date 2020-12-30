@@ -110,8 +110,7 @@ impl GameState for State {
             let delta = self.loop_helper.loop_start();
             #[cfg(feature="wasm")]
             let delta = std::time::Duration::from_secs_f32(1.0/20.0);
-            let time = self.world.get_mut::<Time>().unwrap();
-            time.advance_frame(delta);
+            self.world.get_mut::<Time>().unwrap().advance_frame(delta);
             mini_frame(
                 &mut self.world,
                 &mut self.dispatcher,
@@ -182,6 +181,12 @@ fn main() -> BError {
     let (mut world, mut dispatcher, mut context) =
         mini_init(SCREEN_WIDTH, SCREEN_HEIGHT, "Shotcaller", Some(spritesheet), dispatcher, world);
 
+    world.initialize::<Components<Barrack>>();
+    world.initialize::<Components<Core>>();
+    world.initialize::<TeamHeroes>();
+
+    *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(CollisionMap::new(80, 50), Point::new(0, 0)));
+
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
     #[cfg(not(feature="wasm"))]
@@ -203,9 +208,11 @@ fn main() -> BError {
     *world.get_mut::<EffectorDefinitions<Stats, Effectors>>().unwrap() = effector_defs;
 
     let item_defs = load_yaml("assets/item_defs.yaml");
+    world.initialize::<ItemDefinitions<Items, (), ()>>();
     *world.get_mut::<ItemDefinitions<Items, (), ()>>().unwrap() = item_defs;
 
     let hero_defs = load_yaml("assets/hero_defs.yaml");
+    world.initialize::<HeroDefinitions>();
     *world.get_mut::<HeroDefinitions>().unwrap() = hero_defs;
 
     let stat_defs: StatDefinitions<Stats> = load_yaml("assets/stat_defs.yaml");

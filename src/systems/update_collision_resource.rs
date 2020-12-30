@@ -7,7 +7,7 @@ pub fn update_collision_resource_system(
 >,
                                         players: &Components<
     Player,>,
-    global_map: &mut Option< CollisionResource, >,
+    global_map: &mut Option<CollisionResource>,
 ) -> SystemResult{
     let global_map = global_map.as_mut().unwrap();
     for j in 0..(PLAY_HEIGHT as usize) {

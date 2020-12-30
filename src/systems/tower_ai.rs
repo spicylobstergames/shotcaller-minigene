@@ -2,7 +2,7 @@ use crate::*;
 
 pub fn 
     tower_ai_system(
-     stat_def: &Option<StatDefinitions<Stats>>,
+     stat_def: &StatDefinitions<Stats>,
      towers: &Components<Tower>,
         entities: &mut Entities,
      teams: &mut Components<Team>,
@@ -26,7 +26,7 @@ pub fn
             positions.insert(n, source).unwrap();
             tower_projectiles.insert(n, TowerProjectile).unwrap();
             teams.insert(n, team).unwrap();
-            stats.insert(n, stat_def.unwrap().to_statset()).unwrap();
+            stats.insert(n, stat_def.to_statset()).unwrap();
             sprites
                 .insert(
                     n,

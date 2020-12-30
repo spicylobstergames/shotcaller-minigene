@@ -3,7 +3,6 @@ use crate::*;
 pub fn tower_projectile_system(projectiles: &Components<
     TowerProjectile,
 >,
-                                entities: &Entities,
                                 positions: &Components<
     Point,
 >,
@@ -11,9 +10,11 @@ pub fn tower_projectile_system(projectiles: &Components<
                                 gotos: &Components<
     GotoStraight,
 >,
+                                entities: &mut Entities,
                                 stats: &mut Components<
     StatSet<Stats>,
 >) -> SystemResult{
+    let mut kill = vec![];
     for (e, pos, goto, _, team) in join!(&entities && &positions && &gotos && &projectiles && &teams){
         let pos = pos.unwrap();
         let team = team.unwrap();
@@ -35,11 +36,14 @@ pub fn tower_projectile_system(projectiles: &Components<
                 // damage around
                 if let Some(mut stat) = stats.get_mut(e).as_mut() {
                     if damage(&mut stat, dmg) {
-                        entities.kill(e);
+                        kill.push(e);
                     }
                 }
             }
         }
+    }
+    for k in kill {
+        entities.kill(k);
     }
     Ok(())
 }

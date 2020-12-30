@@ -32,12 +32,12 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
     let selected = world.get::<SelectedHero>().unwrap().0;
 
     for (i, key) in world.get::<TeamHeroes>().unwrap().me.iter().enumerate() {
-        let name = world.get::<HeroDefinitions>().unwrap().definitions.get(key).unwrap().name.clone();
+        let name = world.get::<HeroDefinitions>().unwrap().defs.get(key).unwrap().name.clone();
         ctx.print(PLAY_WIDTH+1, i+4, format!(" {}", name));
     }
     ctx.print(PLAY_WIDTH+1, 10, "Enemy Team");
     for (i, key) in world.get::<TeamHeroes>().unwrap().me.iter().enumerate() {
-        let name = world.get::<HeroDefinitions>().unwrap().definitions.get(key).unwrap().name.clone();
+        let name = world.get::<HeroDefinitions>().unwrap().defs.get(key).unwrap().name.clone();
         ctx.print(PLAY_WIDTH+1, i+11, format!(" Leader {}", name));
     }
 

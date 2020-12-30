@@ -10,7 +10,7 @@ pub fn damage_entity_system(
     let mut out_ev = vec![];
     for ev in game_events.iter() {
         if let GameEvent::DamageEntity(e, dmg) = ev {
-            if let Some(stat) = stats.get_mut(*e) {
+            if let Some(mut stat) = stats.get_mut(*e) {
                 damage(&mut stat, *dmg);
                 if stat.stats.get(&Stats::Health).unwrap().value <= 0.0 {
                     out_ev.push(GameEvent::KillEntity(*e));

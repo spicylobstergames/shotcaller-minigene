@@ -8,7 +8,7 @@ pub fn
         positions: &Components<Point>,
         teams: &Components<Team>,
         leaders: &Components<Leader>,
-        entities: &Entities,
+        entities: &mut Entities,
         stats: &mut Components<StatSet<Stats>>,
         events: &mut Vec<GameEvent>) -> SystemResult {
     let mut out_ev = vec![];

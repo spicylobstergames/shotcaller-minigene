@@ -12,6 +12,12 @@ pub enum Stats {
     DamageReceived,
 }
 
+impl Default for Stats {
+    fn default() -> Self {
+        Self::Health
+    }
+}
+
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Skills {
     AOE,

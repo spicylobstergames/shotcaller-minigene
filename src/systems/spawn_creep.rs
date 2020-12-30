@@ -2,8 +2,8 @@ use crate::*;
 
 pub fn 
     spawn_creep_system(
-game_events: &Vec<GameEvent>,
-     stat_def: &Option<StatDefinitions<Stats>>,
+    game_events: &Vec<GameEvent>,
+     stat_def: &StatDefinitions<Stats>,
      entities: &mut Entities,
      positions: &mut Components<Point>,
      spawners: &mut Components<CreepSpawner>,
@@ -27,7 +27,7 @@ game_events: &Vec<GameEvent>,
                     .insert(creep, AiPath::new(NavigationPath::new()))
                     .unwrap();
                 teams.insert(creep, *team).unwrap();
-                stats.insert(creep, stat_def.unwrap().to_statset()).unwrap();
+                stats.insert(creep, stat_def.to_statset()).unwrap();
                 proximity_attacks
                     .insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS))
                     .unwrap();

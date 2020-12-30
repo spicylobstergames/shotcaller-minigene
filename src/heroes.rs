@@ -9,7 +9,15 @@ pub struct HeroDefinition {
 
 #[derive(Serialize, Deserialize, Debug, Clone, new)]
 pub struct HeroDefinitions {
-    pub definitions: HashMap<Heroes, HeroDefinition>,
+    pub defs: HashMap<Heroes, HeroDefinition>,
+}
+
+impl Default for HeroDefinitions {
+    fn default() -> Self {
+        Self {
+            defs: HashMap::default(),
+        }
+    }
 }
 
 impl From<Vec<HeroDefinition>>

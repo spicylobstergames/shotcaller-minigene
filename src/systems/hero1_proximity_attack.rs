@@ -31,7 +31,7 @@ game_events: &mut Vec<GameEvent>) -> SystemResult {
         }
     }
     // 5% chance of getting caught if leaders are in range of each other
-    for (proximity, pos, team, _, caught) in
+    for (proximity, pos, team, _, mut caught) in
         join!(&proximity_attacks && &positions && &teams && &leaders && &mut is_caught)
     {
         let mut vec = join!(&entities && &teams && &positions && &stats && &leaders)
