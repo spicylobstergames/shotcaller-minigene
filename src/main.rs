@@ -169,6 +169,7 @@ fn main() -> BError {
         game_stats_updater_system,
         quit_game_system,
     );
+
     let dispatcher = dispatcher.build(&mut world);
     let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
     for j in 0..10 {
@@ -185,7 +186,7 @@ fn main() -> BError {
     world.initialize::<Components<Core>>();
     world.initialize::<TeamHeroes>();
 
-    *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(CollisionMap::new(80, 50), Point::new(0, 0)));
+    *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT), Point::new(0, 0)));
 
     let mut state_machine = StateMachine::new(DefaultState);
     state_machine.start(&mut world, &mut dispatcher, &mut context);
