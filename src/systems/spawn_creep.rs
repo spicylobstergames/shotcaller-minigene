@@ -6,7 +6,6 @@ pub fn
      stat_def: &StatDefinitions<Stats>,
      entities: &mut Entities,
      positions: &mut Components<Point>,
-     spawners: &mut Components<CreepSpawner>,
      creeps: &mut Components<Creep>,
      simple_movements: &mut Components<SimpleMovement>,
      ai_destinations: &mut Components<AiDestination>,
@@ -20,17 +19,17 @@ pub fn
         for ev in game_events.iter() {
             if let GameEvent::SpawnCreep(pos, team) = ev {
                 let creep = entities.create();
-                positions.insert(creep, pos.clone()).unwrap();
-                creeps.insert(creep, Creep).unwrap();
-                simple_movements.insert(creep, SimpleMovement).unwrap();
+                positions.insert(creep, pos.clone());
+                creeps.insert(creep, Creep);
+                simple_movements.insert(creep, SimpleMovement);
                 ai_paths
                     .insert(creep, AiPath::new(NavigationPath::new()))
-                    .unwrap();
-                teams.insert(creep, *team).unwrap();
-                stats.insert(creep, stat_def.to_statset()).unwrap();
+                    ;
+                teams.insert(creep, *team);
+                stats.insert(creep, stat_def.to_statset());
                 proximity_attacks
                     .insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS))
-                    .unwrap();
+                    ;
                 let bg = if *team == Team::Me {
                     RGBA::named(GREEN)
                 } else {
@@ -45,8 +44,8 @@ pub fn
                             bg,
                         },
                     )
-                    .unwrap();
-                sprite_indices.insert(creep, SpriteIndex(9)).unwrap();
+                    ;
+                sprite_indices.insert(creep, SpriteIndex(9));
         }
     }
         Ok(())

@@ -36,10 +36,10 @@ pub fn find_closest_in_other_team(my_team: &Team, my_pos: &Point, teams: &Compon
             let mut vec = join!(&entities && &teams && &positions && &stats)
                 .filter(|(_, t, _, _)| *t.unwrap() != *my_team)
                 .map(|(e, _, p, _)| (dist(my_pos, p.unwrap()), p.unwrap().clone(), e.unwrap()))
-                .filter(|(d, _, _)| *d < TOWER_RANGE)
+                //.filter(|(d, _, _)| *d < TOWER_RANGE)
                 .collect::<Vec<_>>();
             vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            vec.into_iter().next().map(|(d, p, e)| (e, p))
+            vec.into_iter().next().map(|(_d, p, e)| (e, p))
 }
 
 #[cfg(not(features="wasm"))]

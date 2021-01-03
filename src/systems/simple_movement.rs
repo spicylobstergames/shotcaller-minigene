@@ -13,7 +13,7 @@ pub fn
             // TODO: optimize
             let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
             if let Some((_,c)) = closest {
-                targets.insert(e.unwrap(), AiDestination::new(c.clone())).unwrap();
+                targets.insert(e.unwrap(), AiDestination::new(c.clone()));
             } else {
                 targets.remove(e.unwrap());
             }

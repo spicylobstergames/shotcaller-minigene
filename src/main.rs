@@ -149,10 +149,10 @@ fn main() -> BError {
         toggle_game_speed_system,
         win_condition_system,
         simple_movement_system,
-        hero1_simple_movement_system,
+        //hero1_simple_movement_system, // TODO re-enable
         tower_ai_system,
         proximity_attack_system,
-        hero1_proximity_attack_system,
+        //hero1_proximity_attack_system, // TODO re-enable
         tower_projectile_system,
         update_enemies_around_system,
         skill_cooldown_system::<Skills>,
@@ -169,6 +169,14 @@ fn main() -> BError {
         game_stats_updater_system,
         quit_game_system,
     );
+    // Remove old events at the end of the frame.
+    dispatcher = dispatcher.add(| ev1: &mut Vec<GameEvent>, ev2: &mut Vec<SkillTriggerEvent<Skills>>, ev3: &mut Vec<InputEvent>, ev4: &mut Vec<VirtualKeyCode> | {
+        ev1.clear();
+        ev2.clear();
+        ev3.clear();
+        ev4.clear();
+        Ok(())
+    });
 
     let dispatcher = dispatcher.build(&mut world);
     let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
@@ -185,6 +193,7 @@ fn main() -> BError {
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
     world.initialize::<TeamHeroes>();
+    world.initialize::<Camera>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT), Point::new(0, 0)));
 

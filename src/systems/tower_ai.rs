@@ -18,7 +18,9 @@ pub fn
             // TODO: optimize
             let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
             if let Some((_, c)) = closest {
-                v.push((pos.unwrap().clone(), *team.unwrap(), c.clone()))
+                if dist(&c, pos.unwrap()) <= TOWER_RANGE {
+                    v.push((pos.unwrap().clone(), *team.unwrap(), c.clone()))
+                }
             }
         }
         for (source, team, target) in v.into_iter() {

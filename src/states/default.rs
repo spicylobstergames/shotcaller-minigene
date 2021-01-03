@@ -23,9 +23,9 @@ impl minigene::State for DefaultState {
             render_ascii(
                 ctx,
                 &*world.get().unwrap(),
-                *world.get().unwrap(),
-                *world.get().unwrap(),
-                *world.get().unwrap(),
+                &*world.get().unwrap(),
+                &*world.get().unwrap(),
+                &*world.get().unwrap(),
             );
         }
         #[cfg(feature="opengl")]
@@ -34,8 +34,8 @@ impl minigene::State for DefaultState {
             render_sprites(
                 ctx,
                 &*world.get().unwrap(),
-                *world.get().unwrap(),
-                *world.get().unwrap(),
+                &*world.get().unwrap(),
+                &*world.get().unwrap(),
             );
         }
         ctx.set_active_console(0);
