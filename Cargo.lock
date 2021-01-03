@@ -2288,7 +2288,6 @@ version = "0.99.2"
 dependencies = [
  "derive-new",
  "downcast-rs",
- "rayon",
  "traitcast",
 ]
 

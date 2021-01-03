@@ -42,12 +42,12 @@ pub fn find_closest_in_other_team(my_team: &Team, my_pos: &Point, teams: &Compon
             vec.into_iter().next().map(|(_d, p, e)| (e, p))
 }
 
-#[cfg(not(features="wasm"))]
+#[cfg(not(feature="wasm"))]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     return serde_yaml::from_reader(std::fs::File::open(filepath).expect("Failed to load yaml file")).expect("Failed to parse yaml file into the requested type.");
 }
 
-#[cfg(features="wasm")]
+#[cfg(feature="wasm")]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     let content_bytes = EMBED.lock().get_resource(filepath.to_string()).expect("Yaml file isn't embedded into the binary.");
     let content = String::from_utf8(content_bytes.to_vec()).unwrap();
