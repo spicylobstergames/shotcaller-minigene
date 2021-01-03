@@ -18,6 +18,8 @@ const AOE_DAMAGE: f64 = 100.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
+const ACTION_POINT_MOVE_COST: f64 = 100.0;
+const ACTION_POINT_ATTACK_COST: f64 = 50.0;
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -147,13 +149,14 @@ fn main() -> BError {
         combine_collision_system,
         input_driver::<InputEvent>,
         update_collision_resource_system,
+        handle_action_points_system,
         creep_spawner_system,
         spawn_creep_system,
+        simple_movement_system,
         ai_pathing_system,
         ai_movement_system,
         toggle_game_speed_system,
         win_condition_system,
-        simple_movement_system,
         //hero1_simple_movement_system, // TODO re-enable
         tower_ai_system,
         proximity_attack_system,

@@ -10,6 +10,8 @@ pub enum Stats {
     AttacksReceived,
     DamageDealt,
     DamageReceived,
+    ActionPoints,
+    ActionPointRefillRate,
 }
 
 impl Default for Stats {

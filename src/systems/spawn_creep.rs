@@ -9,7 +9,6 @@ pub fn spawn_creep_system(
     simple_movements: &mut Components<SimpleMovement>,
     proximity_attacks: &mut Components<ProximityAttack>,
     stats: &mut Components<StatSet<Stats>>,
-    ai_paths: &mut Components<AiPath>,
     teams: &mut Components<Team>,
     sprites: &mut Components<Sprite>,
     sprite_indices: &mut Components<SpriteIndex>,
@@ -20,7 +19,6 @@ pub fn spawn_creep_system(
             positions.insert(creep, pos.clone());
             creeps.insert(creep, Creep);
             simple_movements.insert(creep, SimpleMovement);
-            ai_paths.insert(creep, AiPath::new(NavigationPath::new()));
             teams.insert(creep, *team);
             stats.insert(creep, stat_def.to_statset());
             proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
