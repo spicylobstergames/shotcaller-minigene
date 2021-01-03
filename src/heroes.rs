@@ -20,9 +20,7 @@ impl Default for HeroDefinitions {
     }
 }
 
-impl From<Vec<HeroDefinition>>
-    for HeroDefinitions
-{
+impl From<Vec<HeroDefinition>> for HeroDefinitions {
     fn from(t: Vec<HeroDefinition>) -> Self {
         let defs = t
             .into_iter()

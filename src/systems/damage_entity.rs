@@ -1,8 +1,9 @@
 use crate::*;
 
 pub fn damage_entity_system(
-        stats: &mut Components<StatSet<Stats>>,
-        game_events: &mut Vec<GameEvent>) -> SystemResult {
+    stats: &mut Components<StatSet<Stats>>,
+    game_events: &mut Vec<GameEvent>,
+) -> SystemResult {
     let mut out_ev = vec![];
     for ev in game_events.iter() {
         if let GameEvent::DamageEntity(e, dmg) = ev {
@@ -19,4 +20,3 @@ pub fn damage_entity_system(
     }
     Ok(())
 }
-

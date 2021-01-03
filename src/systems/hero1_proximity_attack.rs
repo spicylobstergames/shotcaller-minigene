@@ -2,27 +2,30 @@ use crate::*;
 use rand::thread_rng;
 use rand::Rng;
 
-pub fn hero1_proximity_attack_system(entities: &Entities,
-                                proximity_attacks: &Components<
-    Hero1ProximityAttack,
->,
-                                leaders: &Components<
-    Leader,
->,
-                                teams: &Components<Team>,
-                                positions: &Components<
-    Point,
->,
-                                stats: &mut Components< StatSet<Stats>, >,
-                                is_caught: &mut Components< IsCaught, >,
-game_events: &mut Vec<GameEvent>) -> SystemResult {
+pub fn hero1_proximity_attack_system(
+    entities: &Entities,
+    proximity_attacks: &Components<Hero1ProximityAttack>,
+    leaders: &Components<Leader>,
+    teams: &Components<Team>,
+    positions: &Components<Point>,
+    stats: &mut Components<StatSet<Stats>>,
+    is_caught: &mut Components<IsCaught>,
+    game_events: &mut Vec<GameEvent>,
+) -> SystemResult {
     let mut v = vec![];
     let mut rng = thread_rng();
     for (e, _proximity, stat, pos, team) in
         join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
-        let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);
-        if let Some((target,_)) = closest {
+        let closest = find_closest_in_other_team(
+            team.unwrap(),
+            pos.unwrap(),
+            &teams,
+            &positions,
+            &stats,
+            &entities,
+        );
+        if let Some((target, _)) = closest {
             let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
             v.push((e.unwrap().clone(), target.clone(), damage));
         }

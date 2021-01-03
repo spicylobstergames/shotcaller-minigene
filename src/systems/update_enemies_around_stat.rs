@@ -1,14 +1,12 @@
 use crate::*;
 
-pub fn update_enemies_around_system(entities: &Entities,
-                                    positions: &Components<
-    Point,
->,
-                                    teams: &Components<Team>,
-                                    stats: &mut Components<
-    StatSet<Stats>,
->) -> SystemResult {
-    for (pos, stat, team) in join!(&positions && &mut stats && &teams){
+pub fn update_enemies_around_system(
+    entities: &Entities,
+    positions: &Components<Point>,
+    teams: &Components<Team>,
+    stats: &mut Components<StatSet<Stats>>,
+) -> SystemResult {
+    for (pos, stat, team) in join!(&positions && &mut stats && &teams) {
         let c = entities_in_radius(
             pos.unwrap(),
             &*entities,

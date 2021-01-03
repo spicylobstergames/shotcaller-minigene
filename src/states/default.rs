@@ -11,12 +11,12 @@ impl minigene::State for DefaultState {
     ) -> Trans {
         ctx.set_active_console(0);
         ctx.cls();
-        #[cfg(feature="opengl")]
+        #[cfg(feature = "opengl")]
         {
             ctx.set_active_console(1);
             ctx.cls();
         }
-        #[cfg(not(feature="opengl"))]
+        #[cfg(not(feature = "opengl"))]
         {
             ctx.set_active_console(0);
             render(ctx);
@@ -28,7 +28,7 @@ impl minigene::State for DefaultState {
                 &*world.get().unwrap(),
             );
         }
-        #[cfg(feature="opengl")]
+        #[cfg(feature = "opengl")]
         {
             ctx.set_active_console(1);
             render_sprites(

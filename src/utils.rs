@@ -10,10 +10,7 @@ pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
     health_inst.value <= 0.0
 }
 
-pub fn entities_in_radius<
-    F1: Fn(Entity, Point) -> bool,
-    F2: Fn(Entity, Point, f32) -> bool,
->(
+pub fn entities_in_radius<F1: Fn(Entity, Point) -> bool, F2: Fn(Entity, Point, f32) -> bool>(
     around: &Point,
     entities: &Entities,
     positions: &Components<Point>,
@@ -31,27 +28,40 @@ pub fn entities_in_radius<
     vec
 }
 
-pub fn find_closest_in_other_team(my_team: &Team, my_pos: &Point, teams: &Components<Team>, positions: &Components<Point>, stats: &Components<StatSet<Stats>>,
-    entities: &Entities) -> Option<(Entity,Point)> {
-            let mut vec = join!(&entities && &teams && &positions && &stats)
-                .filter(|(_, t, _, _)| *t.unwrap() != *my_team)
-                .map(|(e, _, p, _)| (dist(my_pos, p.unwrap()), p.unwrap().clone(), e.unwrap()))
-                //.filter(|(d, _, _)| *d < TOWER_RANGE)
-                .collect::<Vec<_>>();
-            vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-            vec.into_iter().next().map(|(_d, p, e)| (e, p))
+pub fn find_closest_in_other_team(
+    my_team: &Team,
+    my_pos: &Point,
+    teams: &Components<Team>,
+    positions: &Components<Point>,
+    stats: &Components<StatSet<Stats>>,
+    entities: &Entities,
+) -> Option<(Entity, Point)> {
+    let mut vec = join!(&entities && &teams && &positions && &stats)
+        .filter(|(_, t, _, _)| *t.unwrap() != *my_team)
+        .map(|(e, _, p, _)| (dist(my_pos, p.unwrap()), p.unwrap().clone(), e.unwrap()))
+        //.filter(|(d, _, _)| *d < TOWER_RANGE)
+        .collect::<Vec<_>>();
+    vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+    vec.into_iter().next().map(|(_d, p, e)| (e, p))
 }
 
-#[cfg(not(feature="wasm"))]
+#[cfg(not(feature = "wasm"))]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
-    return serde_yaml::from_reader(std::fs::File::open(filepath).expect("Failed to load yaml file")).expect("Failed to parse yaml file into the requested type.");
+    return serde_yaml::from_reader(
+        std::fs::File::open(filepath).expect("Failed to load yaml file"),
+    )
+    .expect("Failed to parse yaml file into the requested type.");
 }
 
-#[cfg(feature="wasm")]
+#[cfg(feature = "wasm")]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
-    let content_bytes = EMBED.lock().get_resource(filepath.to_string()).expect("Yaml file isn't embedded into the binary.");
+    let content_bytes = EMBED
+        .lock()
+        .get_resource(filepath.to_string())
+        .expect("Yaml file isn't embedded into the binary.");
     let content = String::from_utf8(content_bytes.to_vec()).unwrap();
-    return serde_yaml::from_str(&content).expect("Failed to parse yaml file into the requested type.");
+    return serde_yaml::from_str(&content)
+        .expect("Failed to parse yaml file into the requested type.");
 }
 
 #[macro_export]
@@ -67,4 +77,3 @@ macro_rules! centity {
 macro_rules! add_embed {
     ($($path:literal),*) => {$(EMBED.lock().add_resource($path.to_string().replace("../", ""), include_bytes!($path));)*}
 }
-

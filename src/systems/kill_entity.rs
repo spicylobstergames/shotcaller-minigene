@@ -1,13 +1,12 @@
 use crate::*;
 
-
 // Kill the entity specified by the event.
 // If it happens to be a leader, set its respawn time and save its inventory.
-pub fn 
-    kill_entity_system(
-        leaders: &Components<Leader>,
-        entities: &mut Entities,
-        events: &mut Vec<GameEvent>) -> SystemResult {
+pub fn kill_entity_system(
+    leaders: &Components<Leader>,
+    entities: &mut Entities,
+    events: &mut Vec<GameEvent>,
+) -> SystemResult {
     let mut out_ev = vec![];
     for ev in events.iter() {
         if let GameEvent::KillEntity(e) = ev {

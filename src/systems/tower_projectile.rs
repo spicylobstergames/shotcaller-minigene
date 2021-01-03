@@ -1,21 +1,17 @@
 use crate::*;
 
-pub fn tower_projectile_system(projectiles: &Components<
-    TowerProjectile,
->,
-                                positions: &Components<
-    Point,
->,
-                                teams: &Components<Team>,
-                                gotos: &Components<
-    GotoStraight,
->,
-                                entities: &mut Entities,
-                                stats: &mut Components<
-    StatSet<Stats>,
->) -> SystemResult{
+pub fn tower_projectile_system(
+    projectiles: &Components<TowerProjectile>,
+    positions: &Components<Point>,
+    teams: &Components<Team>,
+    gotos: &Components<GotoStraight>,
+    entities: &mut Entities,
+    stats: &mut Components<StatSet<Stats>>,
+) -> SystemResult {
     let mut kill = vec![];
-    for (e, pos, goto, _, team) in join!(&entities && &positions && &gotos && &projectiles && &teams){
+    for (e, pos, goto, _, team) in
+        join!(&entities && &positions && &gotos && &projectiles && &teams)
+    {
         let pos = pos.unwrap();
         let team = team.unwrap();
         let dmg = stats

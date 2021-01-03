@@ -1,14 +1,11 @@
 use crate::*;
- 
+
 // non portable
 pub fn update_collision_resource_system(
-                                        positions: &Components<
-    Point,
->,
-                                        players: &Components<
-    Player,>,
+    positions: &Components<Point>,
+    players: &Components<Player>,
     global_map: &mut Option<CollisionResource>,
-) -> SystemResult{
+) -> SystemResult {
     let global_map = global_map.as_mut().unwrap();
     for j in 0..(PLAY_HEIGHT as usize) {
         MAP[j].char_indices().for_each(|(i, c)| {
@@ -20,7 +17,7 @@ pub fn update_collision_resource_system(
         });
     }
     // TODO fix this
-    for (pos, _) in join!(&positions && &players){
+    for (pos, _) in join!(&positions && &players) {
         global_map.position.x = pos.unwrap().x - 40;
         global_map.position.y = pos.unwrap().y - 25;
     }
