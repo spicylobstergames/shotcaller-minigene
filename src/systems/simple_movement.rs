@@ -13,7 +13,15 @@ pub fn simple_movement_system(
         // find closest in other team
         // TODO: optimize
         // TODO: fix assumption that if you have a movement and team you have stats
-        if stats.get(e.unwrap()).unwrap().stats.get(&Stats::ActionPoints).unwrap().value >= ACTION_POINT_MOVE_COST {
+        if stats
+            .get(e.unwrap())
+            .unwrap()
+            .stats
+            .get(&Stats::ActionPoints)
+            .unwrap()
+            .value
+            >= ACTION_POINT_MOVE_COST
+        {
             let closest = find_closest_in_other_team(
                 team.unwrap(),
                 pos.unwrap(),
@@ -23,7 +31,13 @@ pub fn simple_movement_system(
                 &entities,
             );
             if let Some((_, c)) = closest {
-                stats.get_mut(e.unwrap()).unwrap().stats.get_mut(&Stats::ActionPoints).unwrap().value -= ACTION_POINT_MOVE_COST;
+                stats
+                    .get_mut(e.unwrap())
+                    .unwrap()
+                    .stats
+                    .get_mut(&Stats::ActionPoints)
+                    .unwrap()
+                    .value -= ACTION_POINT_MOVE_COST;
                 targets.insert(e.unwrap(), AiDestination::new(c.clone()));
             } else {
                 targets.remove(e.unwrap());
