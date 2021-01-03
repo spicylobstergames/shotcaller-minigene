@@ -48,12 +48,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8052e2d8aabbb8d556d6abbcce2a22b9590996c5f849b9c7ce4544a2e3b984e"
 
 [[package]]
-name = "anymap"
-version = "0.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "33954243bd79057c2de7338850b85983a44588021f8a5fee574a8888c6de4344"
-
-[[package]]
 name = "approx"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -442,16 +436,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ctor"
-version = "0.1.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "373c88d9506e2e9230f6107701b7d8425f4cb3f6df108ec3042a26e936666da5"
-dependencies = [
- "quote 1.0.8",
- "syn 1.0.57",
-]
-
-[[package]]
 name = "darling"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -584,14 +568,13 @@ checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
 name = "entity_component"
-version = "0.99.0"
+version = "0.100.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0088937c2444e3f54e0a84853428c8eb62459f17e05c8e9090b565e463e2104c"
 dependencies = [
  "bitset-core",
- "downcast-rs",
  "itertools",
  "lazy_static",
- "paste",
- "traitcast",
 ]
 
 [[package]]
@@ -691,17 +674,6 @@ dependencies = [
  "libc",
  "wasi",
  "wasm-bindgen",
-]
-
-[[package]]
-name = "ghost"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a5bcf1bbeab73aa4cf2fde60a846858dc036163c7c33bec309f8d17de785479"
-dependencies = [
- "proc-macro2 1.0.24",
- "quote 1.0.8",
- "syn 1.0.57",
 ]
 
 [[package]]
@@ -862,28 +834,6 @@ dependencies = [
  "js-sys",
  "wasm-bindgen",
  "web-sys",
-]
-
-[[package]]
-name = "inventory"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f0f7efb804ec95e33db9ad49e4252f049e37e8b0a4652e3cd61f7999f2eff7f"
-dependencies = [
- "ctor",
- "ghost",
- "inventory-impl",
-]
-
-[[package]]
-name = "inventory-impl"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75c094e94816723ab936484666968f5b58060492e880f3c8d00489a1e244fa51"
-dependencies = [
- "proc-macro2 1.0.24",
- "quote 1.0.8",
- "syn 1.0.57",
 ]
 
 [[package]]
@@ -1073,6 +1023,7 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.3.0"
+source = "git+https://github.com/jojolepro/minigene?branch=ecs#1e80b549392a872c41bf5b8c79a3a379e6a8b358"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",
@@ -1444,12 +1395,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c39e1e07286e9d65524d6c520c7e8e0bc4aeb5380081254aad0929581bf52c93"
 
 [[package]]
-name = "paste"
-version = "1.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c5d65c4d95931acda4498f675e332fcbdc9a06705cd07086c510e9b6009cd1c1"
-
-[[package]]
 name = "percent-encoding"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1464,6 +1409,8 @@ checksum = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
 [[package]]
 name = "plank_ecs"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4fa09dca04433f3e6963c46958e91432b9f5feaf59fa792336a92c56ab2abac9"
 dependencies = [
  "entity_component",
  "world_dispatcher",
@@ -1964,27 +1911,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "traitcast"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f80b1cde694e5ff2dcb33875530f2f031a9a34dec8ba2744cacaf80a88658740"
-dependencies = [
- "inventory",
- "lazy_static",
- "traitcast_core",
-]
-
-[[package]]
-name = "traitcast_core"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aabba8f4a83963f61a84d8cfc5829b4fad692aa6c6ad5d7b08b9549777e3cc4a"
-dependencies = [
- "anymap",
- "inventory",
-]
-
-[[package]]
 name = "ultraviolet"
 version = "0.4.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2284,11 +2210,12 @@ dependencies = [
 
 [[package]]
 name = "world_dispatcher"
-version = "0.99.2"
+version = "0.100.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eee589d739304a20d6db26103163b1321e5297e2de8dd1ac8a100be874e974d9"
 dependencies = [
  "derive-new",
  "downcast-rs",
- "traitcast",
 ]
 
 [[package]]
