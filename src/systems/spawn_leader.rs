@@ -1,6 +1,5 @@
 use crate::*;
 
-
 // TODO
 pub fn 
     spawn_leader_system(
@@ -8,10 +7,8 @@ game_events: &Vec<GameEvent>,
      stat_def: &StatDefinitions<Stats>,
      entities: &mut Entities,
      positions: &mut Components<Point>,
-     spawners: &mut Components<CreepSpawner>,
      creeps: &mut Components<Creep>,
      simple_movements: &mut Components<SimpleMovement>,
-     ai_destinations: &mut Components<AiDestination>,
      proximity_attacks: &mut Components<ProximityAttack>,
      stats: &mut Components<StatSet<Stats>>,
      ai_paths: &mut Components<AiPath>,

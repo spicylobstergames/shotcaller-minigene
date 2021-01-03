@@ -1,10 +1,6 @@
 use crate::*;
 
 pub fn damage_entity_system(
-        positions: &Components<Point>,
-        teams: &Components<Team>,
-        entities: &Entities,
-        events: &Vec<SkillTriggerEvent<Skills>>,
         stats: &mut Components<StatSet<Stats>>,
         game_events: &mut Vec<GameEvent>) -> SystemResult {
     let mut out_ev = vec![];

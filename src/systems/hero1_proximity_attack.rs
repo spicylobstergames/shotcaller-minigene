@@ -6,9 +6,6 @@ pub fn hero1_proximity_attack_system(entities: &Entities,
                                 proximity_attacks: &Components<
     Hero1ProximityAttack,
 >,
-                                creeps: &Components<
-    Creep,
->,
                                 leaders: &Components<
     Leader,
 >,
@@ -21,7 +18,7 @@ pub fn hero1_proximity_attack_system(entities: &Entities,
 game_events: &mut Vec<GameEvent>) -> SystemResult {
     let mut v = vec![];
     let mut rng = thread_rng();
-    for (e, proximity, stat, pos, team) in
+    for (e, _proximity, stat, pos, team) in
         join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
         let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);

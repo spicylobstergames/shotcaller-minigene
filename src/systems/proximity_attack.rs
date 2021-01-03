@@ -10,7 +10,7 @@ pub fn proximity_attack_system(entities: &Entities,
                                 stats: &mut Components< StatSet<Stats> >,
 game_events: &mut Vec<GameEvent>) -> SystemResult{
     let mut v = vec![];
-    for (e, proximity, stat, pos, team) in
+    for (e, _proximity, stat, pos, team) in
         join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
         let closest = find_closest_in_other_team(team.unwrap(), pos.unwrap(), &teams, &positions, &stats, &entities);

@@ -5,7 +5,6 @@ pub fn aoe_damage_system(
         teams: &Components<Team>,
         entities: &Entities,
         events: &Vec<SkillTriggerEvent<Skills>>,
-        stats: &mut Components<StatSet<Stats>>,
         game_events: &mut Vec<GameEvent>) -> SystemResult {
     for ev in events.iter() {
         if ev.1 == Skills::AOE {

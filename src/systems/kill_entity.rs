@@ -5,11 +5,8 @@ use crate::*;
 // If it happens to be a leader, set its respawn time and save its inventory.
 pub fn 
     kill_entity_system(
-        positions: &Components<Point>,
-        teams: &Components<Team>,
         leaders: &Components<Leader>,
         entities: &mut Entities,
-        stats: &mut Components<StatSet<Stats>>,
         events: &mut Vec<GameEvent>) -> SystemResult {
     let mut out_ev = vec![];
     for ev in events.iter() {
