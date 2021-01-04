@@ -18,8 +18,9 @@ defs:
     skills:
       - DoubleDamage
       - AOE
-  TreeLeader:
-    key: TreeLeader
-    name: "TreeLeader"
+  TreePersonLeader:
+    key: TreePersonLeader
+    name: "TreePersonLeader"
     skills:
       - NatureSummon
+      - Root

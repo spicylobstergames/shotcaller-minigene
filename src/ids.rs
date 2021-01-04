@@ -57,5 +57,5 @@ pub enum Leaders {
     Generic1,
     Generic2,
     Generic3,
-    TreeLeader,
+    TreePersonLeader,
 }
