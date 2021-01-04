@@ -149,13 +149,11 @@ fn main() -> BError {
     let mut dispatcher = DispatcherBuilder::new();
     dispatcher!(
         dispatcher,
-        reset_stat_effectors_system,
         combine_collision_system,
         input_driver::<InputEvent>,
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
-        spawn_creep_system,
         simple_movement_system,
         ai_pathing_system,
         ai_movement_system,
@@ -172,13 +170,15 @@ fn main() -> BError {
         exec_skill_system::<Stats, Effectors, Skills, Items>,
         apply_effector_system::<Stats, Effectors>,
         remove_outdated_effector_system::<Effectors>,
+        nature_summon_system,
+        spawn_creep_system,
         aoe_damage_system,
         damage_entity_system,
         kill_entity_system,
         goto_straight_system,
         select_hero_system,
         hero_teleport_system,
-        nature_summon_system,
+        root_system,
         game_stats_updater_system,
         quit_game_system,
     );
@@ -347,12 +347,12 @@ fn main() -> BError {
             default_stats.clone(),
         );
         // Creep spawners
-        centity!(
-            world,
-            Point::new(x, y - 1),
-            CreepSpawner(0, CREEP_SPAWN_TICKS),
-            Team::Me,
-        );
+        // centity!(
+        //     world,
+        //     Point::new(x, y - 1),
+        //     CreepSpawner(0, CREEP_SPAWN_TICKS),
+        //     Team::Me,
+        // );
     }
 
     // Create towers
@@ -404,9 +404,7 @@ fn main() -> BError {
     );
     skillset
         .skills
-        // .insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0))
-        .insert(Skills::NatureSummon, SkillInstance::new(Skills::NatureSummon, 0.0));
-
+        .insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
 
     let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
@@ -416,6 +414,22 @@ fn main() -> BError {
     // TODO re-enable de the hero
     // currently disabled to make the game balanced
     // Create generic hero 1
+    // centity!(
+    //     world,
+    //     Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11),
+    //     Sprite {
+    //         glyph: to_cp437('L'),
+    //         //fg: RGBA::named(YELLOW),
+    //         fg: RGBA::named(RED),
+    //         bg: RGBA::named(GREEN),
+    //     },
+    //     SpriteIndex(6),
+    //     Team::Me,
+    //     _default_inventory,
+    //     Leader(1),
+    //     default_stats,
+    //     skillset,
+    // );
     /*let hero1 = world
     .create()
     .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))

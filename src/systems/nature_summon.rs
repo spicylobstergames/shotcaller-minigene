@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Spawn a treant at a specific location
 pub fn nature_summon_system(
     positions: &Components<Point>,
     teams: &Components<Team>,
@@ -10,6 +11,8 @@ pub fn nature_summon_system(
         if ev.1 == Skills::NatureSummon {
             let pos = positions.get(ev.0).unwrap();
             let team = teams.get(ev.0).unwrap();
+
+            //@TODO: spawn an actual treant creep
             game_events.push(GameEvent::SpawnCreep(*pos, *team));
         }
     }

@@ -51,3 +51,16 @@ defs:
     conditions: []
     item_conditions: []
     stat_effectors: []
+  Root:
+    key: Root
+    name: Root
+    friendly_name: root
+    description: Detain the closer enemy in AOE radius for 5s. Cooldown of 8s.
+    cooldown: 8.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []
