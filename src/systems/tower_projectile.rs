@@ -1,5 +1,7 @@
 use crate::*;
 
+/// Handles the explosion of tower projectiles once they reach their destination.
+// TODO use damage events instead of manually doing it here.
 pub fn tower_projectile_system(
     projectiles: &Components<TowerProjectile>,
     positions: &Components<Point>,

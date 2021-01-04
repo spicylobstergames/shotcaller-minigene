@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Applies the area of effect damages to entities around the specified location.
 pub fn aoe_damage_system(
     positions: &Components<Point>,
     teams: &Components<Team>,

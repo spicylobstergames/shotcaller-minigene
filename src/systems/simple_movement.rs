@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Moves the entity towards the closest enemy, provided we have enough action points to do so.
 pub fn simple_movement_system(
     entities: &Entities,
     simple_movements: &Components<SimpleMovement>,

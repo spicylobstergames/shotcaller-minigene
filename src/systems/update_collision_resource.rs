@@ -1,6 +1,7 @@
 use crate::*;
 
 // non portable
+/// Updates the global `CollisionResource` using the background map data.
 pub fn update_collision_resource_system(
     positions: &Components<Point>,
     players: &Components<Player>,

@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Update the `EnemiesAround` stat using the entities that are close to the entity.
 pub fn update_enemies_around_system(
     entities: &Entities,
     positions: &Components<Point>,

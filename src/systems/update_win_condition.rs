@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Checks if the game is over and updates the `Winner` resource accordingly.
 pub fn win_condition_system(
     core: &Components<Core>,
     team: &Components<Team>,

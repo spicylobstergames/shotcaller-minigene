@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Changes the game speed using the received `SpeedToggle` event.
 pub fn toggle_game_speed_system(events: &Vec<InputEvent>, speed: &mut GameSpeed) -> SystemResult {
     for k in events.iter() {
         if k == &InputEvent::SpeedToggle {

@@ -1,8 +1,9 @@
 use crate::*;
 
+/// Selects a hero in the ui using input events.
 pub fn select_hero_system(
     events: &Vec<InputEvent>,
-    selected_hero: &mut SelectedHero,
+    selected_hero: &mut SelectedLeader,
 ) -> SystemResult {
     for k in events.iter() {
         match *k {

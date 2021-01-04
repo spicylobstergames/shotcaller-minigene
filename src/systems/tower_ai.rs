@@ -1,5 +1,7 @@
 use crate::*;
 
+/// The AI for the tower attack.
+// TODO separate  creation of the projectile entities from the tower's decision to attack.
 pub fn tower_ai_system(
     stat_def: &StatDefinitions<Stats>,
     towers: &Components<Tower>,

@@ -2210,9 +2210,9 @@ dependencies = [
 
 [[package]]
 name = "world_dispatcher"
-version = "0.100.0"
+version = "0.100.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eee589d739304a20d6db26103163b1321e5297e2de8dd1ac8a100be874e974d9"
+checksum = "d6252a4102733d083b492dc6e790ea178406ffef5d8ee10cb911e030b24297bd"
 dependencies = [
  "derive-new",
  "downcast-rs",

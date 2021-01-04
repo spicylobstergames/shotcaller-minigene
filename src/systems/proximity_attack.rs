@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Attacks entities that are in close proximity with this entity.
 pub fn proximity_attack_system(
     entities: &Entities,
     proximity_attacks: &Components<ProximityAttack>,

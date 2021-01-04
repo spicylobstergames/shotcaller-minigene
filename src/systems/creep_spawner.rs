@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Periodically generates events to spawn creeps.
 pub fn creep_spawner_system(
     positions: &mut Components<Point>,
     spawners: &mut Components<CreepSpawner>,

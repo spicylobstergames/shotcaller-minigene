@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Update the game statistics using the generated game events.
 pub fn game_stats_updater_system(
     game_events: &Vec<GameEvent>,
     game_stats: &mut GameStats,
