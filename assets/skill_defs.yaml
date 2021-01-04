@@ -41,3 +41,26 @@ defs:
           MinValue: 3.0
     item_conditions: []
     stat_effectors: []
+  NatureSummon:
+    key: NatureSummon
+    name: NatureSummon
+    friendly_name: nature_summon
+    description: Spawn a treant creep every 6s.
+    cooldown: 6.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  Root:
+    key: Root
+    name: Root
+    friendly_name: root
+    description: Detain the closer enemy in AOE radius for 5s. Cooldown of 8s.
+    cooldown: 8.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []

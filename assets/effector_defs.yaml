@@ -12,3 +12,9 @@ defs:
     effects:
       - - AttackSpeed
         - MultiplicativeMultiplier: 2.0
+  Root:
+    key: Root
+    duration: 5.0
+    effects:
+      - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 0.0

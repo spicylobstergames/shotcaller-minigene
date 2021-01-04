@@ -29,6 +29,8 @@ pub enum Skills {
     AOE,
     DoubleDamage,
     DoubleAttackSpeed,
+    NatureSummon,
+    Root,
 }
 
 /// The different items ids.
@@ -45,6 +47,7 @@ pub enum Items {
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
+    Root,
 }
 
 /// The different leader ids.
@@ -54,4 +57,5 @@ pub enum Leaders {
     Generic1,
     Generic2,
     Generic3,
+    TreePersonLeader,
 }
