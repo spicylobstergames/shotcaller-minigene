@@ -10,8 +10,8 @@ defs:
     key: Generic2
     name: "Hero2"
     skills:
-      - DoubleDamage
-      - AOE
+      - AttackSpeedIncrease
+      - SlowAOE
   Generic3:
     key: Generic3
     name: "Hero3"

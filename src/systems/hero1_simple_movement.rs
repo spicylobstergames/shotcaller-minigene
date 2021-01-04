@@ -22,7 +22,7 @@ pub fn hero1_simple_movement_system(
         let flee = flee.unwrap();
         let leader_team = leader_team.unwrap();
         let caught = caught.unwrap();
-        if leader.0 == 1 {
+        if leader.0 == 1 || leader.0 == 2 {
             if caught.0 {
                 for (e, _, team, pos) in
                     join!(&entities && &simple_movements && &teams && &positions)

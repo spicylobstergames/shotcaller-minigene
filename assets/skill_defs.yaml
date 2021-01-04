@@ -64,3 +64,30 @@ defs:
           MinValue: 1.0
     item_conditions: []
     stat_effectors: []
+  AttackSpeedIncrease:
+    key: AttackSpeedIncrease
+    name: Attack Speed Increase
+    friendly_name: attack_speed_increase
+    description: Increase attack speed by 10% with every subsequent attack up to a 100% increase.
+    cooldown: 0.0
+    passive: true
+    conditions:
+      - stat_key: AttacksDealt
+        condition:
+          MaxValue: 10.0
+    item_conditions: []
+    stat_effectors: 
+      - AttackSpeedIncrease
+  SlowAOE:
+    key: SlowAOE
+    name: Slow AOE
+    friendly_name: slow_aoe
+    description: Does 50 damage to all enemy entities around, and slows them by 50% for 4 seconds. Active only if 3 or more enemy entities are present. Cooldown of 12s.
+    cooldown: 12.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 3.0
+    item_conditions: []
+    stat_effectors: []
