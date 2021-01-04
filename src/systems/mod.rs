@@ -1,3 +1,4 @@
+mod reset_stat_effectors;
 mod aoe_damage;
 mod creep_spawner;
 mod damage_entity;
@@ -19,6 +20,7 @@ mod tower_projectile;
 mod update_collision_resource;
 mod update_enemies_around_stat;
 mod update_win_condition;
+pub use self::reset_stat_effectors::*;
 pub use self::aoe_damage::*;
 pub use self::creep_spawner::*;
 pub use self::damage_entity::*;

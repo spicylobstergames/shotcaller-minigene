@@ -146,6 +146,7 @@ fn main() -> BError {
     let mut dispatcher = DispatcherBuilder::new();
     dispatcher!(
         dispatcher,
+        reset_stat_effectors_system,
         combine_collision_system,
         input_driver::<InputEvent>,
         update_collision_resource_system,
