@@ -347,12 +347,12 @@ fn main() -> BError {
             default_stats.clone(),
         );
         // Creep spawners
-        // centity!(
-        //     world,
-        //     Point::new(x, y - 1),
-        //     CreepSpawner(0, CREEP_SPAWN_TICKS),
-        //     Team::Me,
-        // );
+        centity!(
+            world,
+            Point::new(x, y - 1),
+            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            Team::Me,
+        );
     }
 
     // Create towers
