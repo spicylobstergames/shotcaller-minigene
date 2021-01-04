@@ -1,6 +1,7 @@
 use crate::*;
 
 // TODO
+/// Spawns a leader using the provided event.
 pub fn spawn_leader_system(
     game_events: &Vec<GameEvent>,
     stat_def: &StatDefinitions<Stats>,

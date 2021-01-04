@@ -1,7 +1,7 @@
 use crate::*;
 
-// Kill the entity specified by the event.
-// If it happens to be a leader, set its respawn time and save its inventory.
+/// Kill the entity specified by the event.
+/// TODO If it happens to be a leader, set its respawn time and save its inventory.
 pub fn kill_entity_system(
     leaders: &Components<Leader>,
     entities: &mut Entities,

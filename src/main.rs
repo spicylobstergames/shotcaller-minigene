@@ -1,3 +1,6 @@
+//! The shotcaller game. A new MOBA!
+#![warn(missing_docs)]
+
 #[macro_use]
 extern crate serde;
 
@@ -19,7 +22,7 @@ const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
 const ACTION_POINT_MOVE_COST: f64 = 100.0;
-const ACTION_POINT_ATTACK_COST: f64 = 50.0;
+//const ACTION_POINT_ATTACK_COST: f64 = 50.0;
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -209,7 +212,7 @@ fn main() -> BError {
 
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
-    world.initialize::<TeamHeroes>();
+    world.initialize::<TeamLeaders>();
     world.initialize::<Camera>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
@@ -247,9 +250,9 @@ fn main() -> BError {
     world.initialize::<ItemDefinitions<Items, (), ()>>();
     *world.get_mut::<ItemDefinitions<Items, (), ()>>().unwrap() = item_defs;
 
-    let hero_defs = load_yaml("assets/hero_defs.yaml");
-    world.initialize::<HeroDefinitions>();
-    *world.get_mut::<HeroDefinitions>().unwrap() = hero_defs;
+    let hero_defs = load_yaml("assets/leader_defs.yaml");
+    world.initialize::<LeaderDefinitions>();
+    *world.get_mut::<LeaderDefinitions>().unwrap() = hero_defs;
 
     let stat_defs: StatDefinitions<Stats> = load_yaml("assets/stat_defs.yaml");
     let default_stats = stat_defs.to_statset();
@@ -403,8 +406,8 @@ fn main() -> BError {
 
     let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
-    let team_heroes = TeamHeroes::new(vec![Heroes::Generic1; 5], vec![Heroes::Generic2; 5]);
-    *world.get_mut::<TeamHeroes>().unwrap() = team_heroes;
+    let team_heroes = TeamLeaders::new(vec![Leaders::Generic1; 5], vec![Leaders::Generic2; 5]);
+    *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
 
     // TODO re-enable de the hero
     // currently disabled to make the game balanced

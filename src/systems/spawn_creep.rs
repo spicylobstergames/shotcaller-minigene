@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Spawns a creep using the provided event.
 pub fn spawn_creep_system(
     game_events: &Vec<GameEvent>,
     stat_def: &StatDefinitions<Stats>,

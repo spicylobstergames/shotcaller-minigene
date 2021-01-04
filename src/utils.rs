@@ -1,15 +1,18 @@
 use crate::*;
 
+/// Increment the attacks dealt stat by one.
 pub fn increment_attacks_dealt(stat_set: &mut StatSet<Stats>) {
     stat_set.stats.get_mut(&Stats::AttacksDealt).unwrap().value += 1.0;
 }
 
+/// Damage this `StatSet` by the provided damage amount.
 pub fn damage(stat_set: &mut StatSet<Stats>, damage: f64) -> bool {
     let mut health_inst = stat_set.stats.get_mut(&Stats::Health).unwrap();
     health_inst.value -= damage;
     health_inst.value <= 0.0
 }
 
+/// Get all entities in a radius using filters.
 pub fn entities_in_radius<F1: Fn(Entity, Point) -> bool, F2: Fn(Entity, Point, f32) -> bool>(
     around: &Point,
     entities: &Entities,
@@ -28,6 +31,8 @@ pub fn entities_in_radius<F1: Fn(Entity, Point) -> bool, F2: Fn(Entity, Point, f
     vec
 }
 
+/// Gets the closest entity of the other team around this point where the entity
+/// also has a `StatSet` component.
 pub fn find_closest_in_other_team(
     my_team: &Team,
     my_pos: &Point,
@@ -45,6 +50,7 @@ pub fn find_closest_in_other_team(
     vec.into_iter().next().map(|(_d, p, e)| (e, p))
 }
 
+/// Loads a yaml file into a struct.
 #[cfg(not(feature = "wasm"))]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     return serde_yaml::from_reader(
@@ -53,6 +59,7 @@ pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     .expect("Failed to parse yaml file into the requested type.");
 }
 
+/// Loads a yaml file into a struct.
 #[cfg(feature = "wasm")]
 pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
     let content_bytes = EMBED
@@ -64,6 +71,7 @@ pub fn load_yaml<T: serde::de::DeserializeOwned>(filepath: &str) -> T {
         .expect("Failed to parse yaml file into the requested type.");
 }
 
+/// Creates an entity using a list of components.
 #[macro_export]
 macro_rules! centity {
     ($world:ident, $($comps:expr),*$(,)?) => {
@@ -72,6 +80,7 @@ macro_rules! centity {
     }
 }
 
+/// Adds a file as an embedded resource for wasm compatibility.
 #[allow(unused)]
 #[macro_export]
 macro_rules! add_embed {

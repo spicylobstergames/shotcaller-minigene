@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Moves heroes on the map.
 pub fn hero1_simple_movement_system(
     entities: &Entities,
     simple_movements: &Components<Hero1SimpleMovement>,

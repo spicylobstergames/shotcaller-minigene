@@ -1,5 +1,7 @@
 use crate::*;
 
+/// Applies damage events to entities.
+/// Can emit events to kill the entity if it is out of health.
 pub fn damage_entity_system(
     stats: &mut Components<StatSet<Stats>>,
     game_events: &mut Vec<GameEvent>,

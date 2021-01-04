@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Renders the background map on the terminal.
 pub fn render<'a>(ctx: &mut BTerm) {
     let mut i = 0;
     for s in MAP {
@@ -8,6 +9,7 @@ pub fn render<'a>(ctx: &mut BTerm) {
     }
 }
 
+/// Creates the map background 2d sprite entities.
 pub fn create_map_bg<'a>(world: &mut World) {
     let mut i = 0;
     for s in MAP {
@@ -22,6 +24,7 @@ pub fn create_map_bg<'a>(world: &mut World) {
     }
 }
 
+/// Renders the user interface on the screen.
 pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
     ctx.draw_box(
         PLAY_WIDTH,
@@ -34,11 +37,11 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
     ctx.print(PLAY_WIDTH + 1, 1, "Leaders");
     ctx.print(PLAY_WIDTH + 1, 3, "My Team");
 
-    let selected = world.get::<SelectedHero>().unwrap().0;
+    let selected = world.get::<SelectedLeader>().unwrap().0;
 
-    for (i, key) in world.get::<TeamHeroes>().unwrap().me.iter().enumerate() {
+    for (i, key) in world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
         let name = world
-            .get::<HeroDefinitions>()
+            .get::<LeaderDefinitions>()
             .unwrap()
             .defs
             .get(key)
@@ -48,9 +51,9 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         ctx.print(PLAY_WIDTH + 1, i + 4, format!(" {}", name));
     }
     ctx.print(PLAY_WIDTH + 1, 10, "Enemy Team");
-    for (i, key) in world.get::<TeamHeroes>().unwrap().me.iter().enumerate() {
+    for (i, key) in world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
         let name = world
-            .get::<HeroDefinitions>()
+            .get::<LeaderDefinitions>()
             .unwrap()
             .defs
             .get(key)

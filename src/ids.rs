@@ -1,3 +1,5 @@
+/// The different stats ids.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Stats {
     Health,
@@ -20,6 +22,8 @@ impl Default for Stats {
     }
 }
 
+/// The different skill ids.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Skills {
     AOE,
@@ -27,20 +31,26 @@ pub enum Skills {
     DoubleAttackSpeed,
 }
 
+/// The different items ids.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Items {
     TestItem,
     Coffee,
 }
 
+/// The different effectors ids.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
 }
 
+/// The different leader ids.
+#[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
-pub enum Heroes {
+pub enum Leaders {
     Generic1,
     Generic2,
     Generic3,

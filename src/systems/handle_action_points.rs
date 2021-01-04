@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Refills the action points of entities using their `ActionPointRefillRate` stat.
 pub fn handle_action_points_system(stats: &mut Components<StatSet<Stats>>) -> SystemResult {
     // TODO consider using an effector instead?
     for stat in stats.iter_mut() {

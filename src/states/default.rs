@@ -1,5 +1,6 @@
 use crate::*;
 
+/// The default state of the game. Where the gameplay happens.
 pub struct DefaultState;
 
 impl minigene::State for DefaultState {

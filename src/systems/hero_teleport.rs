@@ -1,8 +1,9 @@
 use crate::*;
 
+/// Teleports the selected hero to the location specified in the event.
 pub fn hero_teleport_system(
     events: &Vec<InputEvent>,
-    selected_hero: &SelectedHero,
+    selected_hero: &SelectedLeader,
     leaders: &Components<Leader>,
     positions: &mut Components<Point>,
 ) -> SystemResult {

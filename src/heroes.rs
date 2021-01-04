@@ -1,18 +1,24 @@
 use crate::*;
 
+/// Specifies the archetype of a leader.
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct HeroDefinition {
-    pub key: Heroes,
+pub struct LeaderDefinition {
+    /// The leader id.
+    pub key: Leaders,
+    /// The leader name.
     pub name: String,
+    /// The leader skill set.
     pub skills: Vec<Skills>,
 }
 
+/// Contains the definitions of each leader.
 #[derive(Serialize, Deserialize, Debug, Clone, new)]
-pub struct HeroDefinitions {
-    pub defs: HashMap<Heroes, HeroDefinition>,
+pub struct LeaderDefinitions {
+    /// The leader definitions.
+    pub defs: HashMap<Leaders, LeaderDefinition>,
 }
 
-impl Default for HeroDefinitions {
+impl Default for LeaderDefinitions {
     fn default() -> Self {
         Self {
             defs: HashMap::default(),
@@ -20,8 +26,8 @@ impl Default for HeroDefinitions {
     }
 }
 
-impl From<Vec<HeroDefinition>> for HeroDefinitions {
-    fn from(t: Vec<HeroDefinition>) -> Self {
+impl From<Vec<LeaderDefinition>> for LeaderDefinitions {
+    fn from(t: Vec<LeaderDefinition>) -> Self {
         let defs = t
             .into_iter()
             .map(|s| (s.key.clone(), s))

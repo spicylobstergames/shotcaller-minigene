@@ -2,6 +2,7 @@ use crate::*;
 use rand::thread_rng;
 use rand::Rng;
 
+/// Attacks entities that are close to this hero.
 pub fn hero1_proximity_attack_system(
     entities: &Entities,
     proximity_attacks: &Components<Hero1ProximityAttack>,
