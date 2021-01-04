@@ -175,6 +175,7 @@ fn main() -> BError {
         goto_straight_system,
         select_hero_system,
         hero_teleport_system,
+        nature_summon_system,
         game_stats_updater_system,
         quit_game_system,
     );
@@ -400,7 +401,9 @@ fn main() -> BError {
     );
     skillset
         .skills
-        .insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
+        // .insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0))
+        .insert(Skills::NatureSummon, SkillInstance::new(Skills::NatureSummon, 0.0));
+
 
     let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
 
