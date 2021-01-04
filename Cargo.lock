@@ -647,7 +647,7 @@ checksum = "1eb3967eb10771608046642096553ffac263c410bb7ddef7b02eb3a3c3f38f51"
 [[package]]
 name = "game_features"
 version = "0.3.0"
-source = "git+https://github.com/jojolepro/game_features#cd0aef218a251dc4995894f7bd2eb119b004fc3d"
+source = "git+https://github.com/jojolepro/game_features#509dba32422edf5d534526386456db7f20abd2df"
 dependencies = [
  "derivative",
  "derive-new",
@@ -1023,7 +1023,7 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.3.0"
-source = "git+https://github.com/jojolepro/minigene?branch=master#a112953c558aa3cf13a0beadfe2a43e8cd7ed7c2"
+source = "git+https://github.com/jojolepro/minigene?branch=master#5b5fa056bc28a5998e9435b7292848f58ee125d8"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",
