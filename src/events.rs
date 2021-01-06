@@ -29,4 +29,6 @@ pub enum GameEvent {
     LeaderDied(u8),
     /// Spawn a creep at the specified position in the specified team.
     SpawnCreep(Point, Team),
+    /// Spawns a leader using the `TeamLeaders`' index and a position.
+    SpawnLeader(Point, u8),
 }

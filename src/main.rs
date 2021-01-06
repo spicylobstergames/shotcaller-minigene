@@ -23,6 +23,8 @@ const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
 const ACTION_POINT_MOVE_COST: f64 = 100.0;
 //const ACTION_POINT_ATTACK_COST: f64 = 50.0;
+const LEADER_SPAWN_POINT_ME: (i32, i32) = (PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11);
+const LEADER_SPAWN_POINT_OTHER: (i32, i32) = (PLAY_WIDTH as i32 / 2, 11);
 
 const MAP: &[&str] = &[
     "####################################000000000####################################",
@@ -171,7 +173,6 @@ fn main() -> BError {
         apply_effector_system::<Stats, Effectors>,
         remove_outdated_effector_system::<Effectors>,
         nature_summon_system,
-        spawn_creep_system,
         aoe_damage_system,
         damage_entity_system,
         kill_entity_system,
@@ -179,6 +180,9 @@ fn main() -> BError {
         select_hero_system,
         hero_teleport_system,
         root_system,
+        respawn_leader_driver,
+        spawn_creep_system,
+        spawn_leader_system,
         game_stats_updater_system,
         quit_game_system,
     );
@@ -410,6 +414,12 @@ fn main() -> BError {
 
     let team_heroes = TeamLeaders::new(vec![Leaders::Generic1; 5], vec![Leaders::Generic2; 5]);
     *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
+
+    {
+        let mut evs = world.get_mut::<Vec<GameEvent>>();
+        let evs = evs.as_mut().unwrap();
+        evs.push(GameEvent::SpawnLeader(Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1), 0));
+    }
 
     // TODO re-enable de the hero
     // currently disabled to make the game balanced
