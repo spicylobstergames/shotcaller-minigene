@@ -418,7 +418,10 @@ fn main() -> BError {
     {
         let mut evs = world.get_mut::<Vec<GameEvent>>();
         let evs = evs.as_mut().unwrap();
-        evs.push(GameEvent::SpawnLeader(Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1), 0));
+        evs.push(GameEvent::SpawnLeader(
+            Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1),
+            0,
+        ));
     }
 
     // TODO re-enable de the hero

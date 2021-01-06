@@ -25,7 +25,7 @@ pub fn spawn_leader_system(
             let leader = entities.create();
             positions.insert(leader, pos.clone());
             leaders.insert(leader, Leader(*id));
-            let team = if *id < 5 {Team::Me} else {Team::Other};
+            let team = if *id < 5 { Team::Me } else { Team::Other };
             teams.insert(leader, team);
             stats.insert(leader, stat_def.to_statset());
             //simple_movements.insert(leader, Hero1SimpleMovement);
@@ -47,14 +47,27 @@ pub fn spawn_leader_system(
             );
             sprite_indices.insert(leader, SpriteIndex(6));
             let leader_id = if *id < 5 {
-                team_leaders.me.get(*id as usize).expect("There isn't enough leaders in the me team!")
+                team_leaders
+                    .me
+                    .get(*id as usize)
+                    .expect("There isn't enough leaders in the me team!")
             } else {
-                team_leaders.other.get((*id-5) as usize).expect("Leader ID is higher than 9, or there isn't enough leaders in the other team!")
+                team_leaders.other.get((*id - 5) as usize).expect(
+                    "Leader ID is higher than 9, or there isn't enough leaders in the other team!",
+                )
             };
-            skillsets.insert(leader, leader_defs.defs.get(leader_id).unwrap().skills.clone().into());
+            skillsets.insert(
+                leader,
+                leader_defs
+                    .defs
+                    .get(leader_id)
+                    .unwrap()
+                    .skills
+                    .clone()
+                    .into(),
+            );
             effectors.insert(leader, EffectorSet::<Effectors>::default());
         }
     }
     Ok(())
 }
-
