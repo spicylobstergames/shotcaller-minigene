@@ -466,6 +466,11 @@ fn main() -> BError {
         .skills
         .insert(Skills::SlowAOE, SkillInstance::new(Skills::SlowAOE, 0.0));
 
+    skillset.skills.insert(
+        Skills::AttackSpeedIncrease,
+        SkillInstance::new(Skills::AttackSpeedIncrease, 0.0),
+    );
+
     // TODO re-enable the hero
     // currently disabled to make the game balanced
     // Create generic hero 2
