@@ -18,3 +18,15 @@ defs:
     effects:
       - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.0
+  AttackSpeedIncrease:
+    key: AttackSpeedIncrease
+    duration: 0.0
+    effects:
+      - - AttackSpeed
+        - AdditiveMultiplier: 0.1
+  HalfMovementSpeed:
+    key: HalfMovementSpeed
+    duration: 4.0
+    effects:
+      - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 0.5

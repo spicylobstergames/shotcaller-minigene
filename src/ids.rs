@@ -31,6 +31,8 @@ pub enum Skills {
     DoubleAttackSpeed,
     NatureSummon,
     Root,
+    AttackSpeedIncrease,
+    SlowAOE,
 }
 
 /// The different items ids.
@@ -48,6 +50,8 @@ pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
     Root,
+    AttackSpeedIncrease,
+    HalfMovementSpeed,
 }
 
 /// The different leader ids.

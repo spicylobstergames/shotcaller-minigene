@@ -15,9 +15,12 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
-//const LEADER_ATTACK_RADIUS: f32 = 2.1;
+//const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
+//const RANGED_LEADER_ATTACK_RADIUS: f32 = 6.3;
 const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
+const SLOW_AOE_RADIUS: f32 = 8.0;
+const SLOW_AOE_DAMAGE: f64 = 50.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
@@ -424,25 +427,25 @@ fn main() -> BError {
         ));
     }
 
-    // TODO re-enable de the hero
+    // TODO re-enable the hero
     // currently disabled to make the game balanced
     // Create generic hero 1
-    // centity!(
-    //     world,
-    //     Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11),
-    //     Sprite {
-    //         glyph: to_cp437('L'),
-    //         //fg: RGBA::named(YELLOW),
-    //         fg: RGBA::named(RED),
-    //         bg: RGBA::named(GREEN),
-    //     },
-    //     SpriteIndex(6),
-    //     Team::Me,
-    //     _default_inventory,
-    //     Leader(1),
-    //     default_stats,
-    //     skillset,
-    // );
+    /*centity!(
+        world,
+        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11),
+        Sprite {
+            glyph: to_cp437('L'),
+            //fg: RGBA::named(YELLOW),
+            fg: RGBA::named(RED),
+            bg: RGBA::named(GREEN),
+        },
+        SpriteIndex(6),
+        Team::Me,
+        _default_inventory.clone(),
+        Leader(1),
+        default_stats.clone(),
+        skillset,
+    );*/
     /*let hero1 = world
     .create()
     .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
@@ -459,7 +462,7 @@ fn main() -> BError {
     .with(Comp(skillset))
     .with(AiPath::new(NavigationPath::new()))
     .with(Leader(1))
-    .with(Hero1ProximityAttack::new(LEADER_ATTACK_RADIUS))
+    .with(Hero1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS))
     .with(Name("Generic Leader 1".to_string()))
     .with(Comp(default_stats.clone()))
     .with(Comp(EffectorSet::<Effectors>::default()))
@@ -469,6 +472,60 @@ fn main() -> BError {
 
     // Make hero HP really high. Used for testing win conditions.
     //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
+
+    // hero2 skill set
+    skillset = SkillSet::new(HashMap::new());
+    skillset
+        .skills
+        .insert(Skills::SlowAOE, SkillInstance::new(Skills::SlowAOE, 0.0));
+
+    skillset.skills.insert(
+        Skills::AttackSpeedIncrease,
+        SkillInstance::new(Skills::AttackSpeedIncrease, 0.0),
+    );
+
+    // TODO re-enable the hero
+    // currently disabled to make the game balanced
+    // Create generic hero 2
+    /*centity!(
+        world,
+        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 40),
+        Sprite {
+            glyph: to_cp437('L'),
+            //fg: RGBA::named(YELLOW),
+            fg: RGBA::named(BLUE),
+            bg: RGBA::named(GREEN),
+        },
+        SpriteIndex(5),
+        Team::Other,
+        _default_inventory.clone(),
+        Leader(2),
+        default_stats.clone(),
+        skillset,
+    );*/
+    /*let hero2 = world
+    .create()
+    .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 1))
+    .with(Sprite {
+        glyph: to_cp437('L'),
+        //fg: RGBA::named(YELLOW),
+        fg: RGBA::named(BLUE),
+        bg: RGBA::named(GREEN),
+    })
+    .with(SpriteIndex(5))
+    .with(Team::Other)
+    .with(Hero1SimpleMovement)
+    .with(Comp(default_inventory.clone()))
+    .with(Comp(skillset))
+    .with(AiPath::new(NavigationPath::new()))
+    .with(Leader(2))
+    .with(Hero1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS))
+    .with(Name("Generic Leader 2".to_string()))
+    .with(Comp(default_stats.clone()))
+    .with(Comp(EffectorSet::<Effectors>::default()))
+    .with(FleeToBase(50.0))
+    .with(IsCaught(false))
+    .build();*/
 
     create_map_bg(&mut world);
 
