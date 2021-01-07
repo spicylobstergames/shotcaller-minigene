@@ -12,9 +12,10 @@ pub fn creep_spawner_system(
         if spawner.0 == 0 {
             spawner.0 = spawner.1;
             // spawn
-            game_events.push(GameEvent::SpawnCreep(
+            game_events.push(GameEvent::SpawnUnit(
                 pos.unwrap().clone(),
                 team.unwrap().clone(),
+                Unit::Creep,
             ));
         }
         spawner.0 -= 1;

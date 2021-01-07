@@ -15,28 +15,30 @@ pub fn spawn_creep_system(
     sprite_indices: &mut Components<SpriteIndex>,
 ) -> SystemResult {
     for ev in game_events.iter() {
-        if let GameEvent::SpawnCreep(pos, team) = ev {
-            let creep = entities.create();
-            positions.insert(creep, pos.clone());
-            creeps.insert(creep, Creep);
-            simple_movements.insert(creep, SimpleMovement);
-            teams.insert(creep, *team);
-            stats.insert(creep, stat_def.to_statset());
-            proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
-            let bg = if *team == Team::Me {
-                RGBA::named(GREEN)
-            } else {
-                RGBA::named(RED)
-            };
-            sprites.insert(
-                creep,
-                Sprite {
-                    glyph: to_cp437('c'),
-                    fg: RGBA::named(YELLOW),
-                    bg,
-                },
-            );
-            sprite_indices.insert(creep, SpriteIndex(9));
+        if let GameEvent::SpawnUnit(pos, team, unit) = ev {
+            if unit == &Unit::Creep {
+                let creep = entities.create();
+                positions.insert(creep, pos.clone());
+                creeps.insert(creep, Creep);
+                simple_movements.insert(creep, SimpleMovement);
+                teams.insert(creep, *team);
+                stats.insert(creep, stat_def.to_statset());
+                proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
+                let bg = if *team == Team::Me {
+                    RGBA::named(GREEN)
+                } else {
+                    RGBA::named(RED)
+                };
+                sprites.insert(
+                    creep,
+                    Sprite {
+                        glyph: to_cp437('c'),
+                        fg: RGBA::named(YELLOW),
+                        bg,
+                    },
+                );
+                sprite_indices.insert(creep, SpriteIndex(9));
+            }
         }
     }
     Ok(())
