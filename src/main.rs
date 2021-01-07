@@ -148,7 +148,7 @@ fn main() -> BError {
         "../assets/keymap.yaml",
         "../assets/item_defs.yaml",
         "../assets/stat_defs.yaml",
-        "../assets/hero_defs.yaml"
+        "../assets/leader_defs.yaml"
     );
     let mut world = World::default();
     let mut dispatcher = DispatcherBuilder::new();
