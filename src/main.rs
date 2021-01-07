@@ -403,7 +403,22 @@ fn main() -> BError {
         }
     }
 
-    let team_heroes = TeamLeaders::new(vec![Leaders::Generic1, Leaders::Generic2, Leaders::Generic3, Leaders::TreePersonLeader, Leaders::Generic3], vec![Leaders::Generic1, Leaders::Generic2, Leaders::Generic3, Leaders::TreePersonLeader, Leaders::Generic3]);
+    let team_heroes = TeamLeaders::new(
+        vec![
+            Leaders::Generic1,
+            Leaders::Generic2,
+            Leaders::Generic3,
+            Leaders::TreePersonLeader,
+            Leaders::Generic3,
+        ],
+        vec![
+            Leaders::Generic1,
+            Leaders::Generic2,
+            Leaders::Generic3,
+            Leaders::TreePersonLeader,
+            Leaders::Generic3,
+        ],
+    );
     *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
 
     {
@@ -416,7 +431,7 @@ fn main() -> BError {
             ));
             evs.push(GameEvent::SpawnLeader(
                 Point::new(LEADER_SPAWN_POINT_OTHER.0, LEADER_SPAWN_POINT_OTHER.1),
-                i+5,
+                i + 5,
             ));
         }
     }

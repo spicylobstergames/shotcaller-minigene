@@ -14,17 +14,13 @@ pub fn hero1_simple_movement_system(
     positions: &Components<Point>,
     targets: &mut Components<AiDestination>,
 ) -> SystemResult {
-    for (e, flee, leader_team, caught) in
-        join!(&entities && &retreats && &teams && &is_caught)
-    {
+    for (e, flee, leader_team, caught) in join!(&entities && &retreats && &teams && &is_caught) {
         let e = e.unwrap();
         let flee = flee.unwrap();
         let leader_team = leader_team.unwrap();
         let caught = caught.unwrap();
         if caught.0 {
-            for (e, _, team, pos) in
-                join!(&entities && &simple_movements && &teams && &positions)
-            {
+            for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {
                 let e = e.unwrap();
                 let team = team.unwrap();
                 let pos = pos.unwrap();
