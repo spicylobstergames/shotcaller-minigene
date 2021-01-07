@@ -403,129 +403,23 @@ fn main() -> BError {
         }
     }
 
-    // hero1 skill set
-    let mut skillset = SkillSet::new(HashMap::new());
-    skillset.skills.insert(
-        Skills::DoubleDamage,
-        SkillInstance::new(Skills::DoubleDamage, 0.0),
-    );
-    skillset
-        .skills
-        .insert(Skills::AOE, SkillInstance::new(Skills::AOE, 0.0));
-
-    let _default_inventory = Inventory::<Items, (), ()>::new_fixed(4);
-
-    let team_heroes = TeamLeaders::new(vec![Leaders::Generic1; 5], vec![Leaders::Generic2; 5]);
+    let team_heroes = TeamLeaders::new(vec![Leaders::Generic1, Leaders::Generic2, Leaders::Generic3, Leaders::TreePersonLeader, Leaders::Generic3], vec![Leaders::Generic1, Leaders::Generic2, Leaders::Generic3, Leaders::TreePersonLeader, Leaders::Generic3]);
     *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
 
     {
         let mut evs = world.get_mut::<Vec<GameEvent>>();
         let evs = evs.as_mut().unwrap();
-        evs.push(GameEvent::SpawnLeader(
-            Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1),
-            0,
-        ));
+        for i in 0..5 {
+            evs.push(GameEvent::SpawnLeader(
+                Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1),
+                i,
+            ));
+            evs.push(GameEvent::SpawnLeader(
+                Point::new(LEADER_SPAWN_POINT_OTHER.0, LEADER_SPAWN_POINT_OTHER.1),
+                i+5,
+            ));
+        }
     }
-
-    // TODO re-enable the hero
-    // currently disabled to make the game balanced
-    // Create generic hero 1
-    /*centity!(
-        world,
-        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11),
-        Sprite {
-            glyph: to_cp437('L'),
-            //fg: RGBA::named(YELLOW),
-            fg: RGBA::named(RED),
-            bg: RGBA::named(GREEN),
-        },
-        SpriteIndex(6),
-        Team::Me,
-        _default_inventory.clone(),
-        Leader(1),
-        default_stats.clone(),
-        skillset,
-    );*/
-    /*let hero1 = world
-    .create()
-    .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11))
-    .with(Sprite {
-        glyph: to_cp437('L'),
-        //fg: RGBA::named(YELLOW),
-        fg: RGBA::named(RED),
-        bg: RGBA::named(GREEN),
-    })
-    .with(SpriteIndex(6))
-    .with(Team::Me)
-    .with(Hero1SimpleMovement)
-    .with(Comp(default_inventory.clone()))
-    .with(Comp(skillset))
-    .with(AiPath::new(NavigationPath::new()))
-    .with(Leader(1))
-    .with(Hero1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS))
-    .with(Name("Generic Leader 1".to_string()))
-    .with(Comp(default_stats.clone()))
-    .with(Comp(EffectorSet::<Effectors>::default()))
-    .with(FleeToBase(50.0))
-    .with(IsCaught(false))
-    .build();*/
-
-    // Make hero HP really high. Used for testing win conditions.
-    //world.write_storage::<Comp<StatSet<Stats>>>().get_mut(hero1).unwrap().0.stats.get_mut(&Stats::Health).unwrap().value = 10000000.0;
-
-    // hero2 skill set
-    skillset = SkillSet::new(HashMap::new());
-    skillset
-        .skills
-        .insert(Skills::SlowAOE, SkillInstance::new(Skills::SlowAOE, 0.0));
-
-    skillset.skills.insert(
-        Skills::AttackSpeedIncrease,
-        SkillInstance::new(Skills::AttackSpeedIncrease, 0.0),
-    );
-
-    // TODO re-enable the hero
-    // currently disabled to make the game balanced
-    // Create generic hero 2
-    /*centity!(
-        world,
-        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 40),
-        Sprite {
-            glyph: to_cp437('L'),
-            //fg: RGBA::named(YELLOW),
-            fg: RGBA::named(BLUE),
-            bg: RGBA::named(GREEN),
-        },
-        SpriteIndex(5),
-        Team::Other,
-        _default_inventory.clone(),
-        Leader(2),
-        default_stats.clone(),
-        skillset,
-    );*/
-    /*let hero2 = world
-    .create()
-    .with(Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 1))
-    .with(Sprite {
-        glyph: to_cp437('L'),
-        //fg: RGBA::named(YELLOW),
-        fg: RGBA::named(BLUE),
-        bg: RGBA::named(GREEN),
-    })
-    .with(SpriteIndex(5))
-    .with(Team::Other)
-    .with(Hero1SimpleMovement)
-    .with(Comp(default_inventory.clone()))
-    .with(Comp(skillset))
-    .with(AiPath::new(NavigationPath::new()))
-    .with(Leader(2))
-    .with(Hero1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS))
-    .with(Name("Generic Leader 2".to_string()))
-    .with(Comp(default_stats.clone()))
-    .with(Comp(EffectorSet::<Effectors>::default()))
-    .with(FleeToBase(50.0))
-    .with(IsCaught(false))
-    .build();*/
 
     create_map_bg(&mut world);
 

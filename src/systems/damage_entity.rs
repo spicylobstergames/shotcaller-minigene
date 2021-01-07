@@ -10,9 +10,11 @@ pub fn damage_entity_system(
     for ev in game_events.iter() {
         if let GameEvent::DamageEntity(e, dmg) = ev {
             if let Some(mut stat) = stats.get_mut(*e) {
-                damage(&mut stat, *dmg);
-                if stat.stats.get(&Stats::Health).unwrap().value <= 0.0 {
-                    out_ev.push(GameEvent::KillEntity(*e));
+                if stat.stats.get(&Stats::Health).unwrap().value > 0.0 {
+                    damage(&mut stat, *dmg);
+                    if stat.stats.get(&Stats::Health).unwrap().value <= 0.0 {
+                        out_ev.push(GameEvent::KillEntity(*e));
+                    }
                 }
             }
         }
