@@ -110,4 +110,5 @@ defs:
     passive: true
     conditions: []
     item_conditions: []
-    stat_effectors: []
+    stat_effectors:
+      - Savagery
