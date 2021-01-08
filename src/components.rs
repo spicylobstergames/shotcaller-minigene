@@ -16,7 +16,7 @@ pub struct Hero1ProximityAttack {
 }
 /// Identifies which type is the companion
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
-pub enum Unit {
+pub enum Companion {
     /// A bear companion
     Bear(Entity),
 }
@@ -24,8 +24,6 @@ pub enum Unit {
 pub struct TowerProjectile;
 /// Tags a core.
 pub struct Core;
-/// Identifies a companion.
-pub struct Companion(pub Unit);
 /// Tags a barrack.
 pub struct Barrack;
 /// Identifies an entity as a leader with a its position in the teams selected leaders.

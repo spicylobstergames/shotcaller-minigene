@@ -17,12 +17,12 @@ pub fn savagery_system(
             let savagery_effector = EffectorInstance::new(Effectors::Savagery, savagery_effector_def.duration);
 
             if let Some(c) = companions.get(ev.0) {
-                match c.0 {
-                    Unit::Bear(e) => {
-                        if effectors.get(e).is_none() {
-                            effectors.insert(e, EffectorSet::default());
+                match c {
+                    Companion::Bear(e) => {
+                        if effectors.get(*e).is_none() {
+                            effectors.insert(*e, EffectorSet::default());
                         }
-                        effectors.get_mut(e).unwrap().effectors.push(savagery_effector);
+                        effectors.get_mut(*e).unwrap().effectors.push(savagery_effector);
                     }
                 }
             }

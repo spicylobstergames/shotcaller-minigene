@@ -21,7 +21,7 @@ pub fn bear_spawner_system(
 
             let bear = entities.create();
             positions.insert(bear, pos.clone());
-            companions.insert(ev.0, Companion(Unit::Bear(bear)));
+            companions.insert(ev.0, Companion::Bear(bear));
             simple_movements.insert(bear, SimpleMovement);
             teams.insert(bear, team);
             stats.insert(bear, stat_def.to_statset());
