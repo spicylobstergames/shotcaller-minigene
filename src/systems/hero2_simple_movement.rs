@@ -1,9 +1,9 @@
 use crate::*;
 
-/// Moves melee heroes on the map.
-pub fn hero1_simple_movement_system(
+/// Moves ranged heroes on the map.
+pub fn hero2_simple_movement_system(
     entities: &Entities,
-    simple_movements: &Components<Hero1SimpleMovement>,
+    simple_movements: &Components<Hero2SimpleMovement>,
     teams: &Components<Team>,
     is_caught: &Components<IsCaught>,
     stats: &Components<StatSet<Stats>>,

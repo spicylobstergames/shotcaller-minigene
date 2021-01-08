@@ -165,6 +165,7 @@ fn main() -> BError {
         toggle_game_speed_system,
         win_condition_system,
         //hero1_simple_movement_system, // TODO re-enable
+        //hero2_simple_movement_system, // TODO re-enable
         tower_ai_system,
         proximity_attack_system,
         //hero1_proximity_attack_system, // TODO re-enable

@@ -28,6 +28,8 @@ pub struct Name(pub String);
 pub struct SimpleMovement;
 /// Allows this entity to move to the closest enemy entity.
 pub struct Hero1SimpleMovement;
+/// Allows this entity to move a given distance away from the closest enemy entity.
+pub struct Hero2SimpleMovement;
 /// Makes this entity run back to its team's `Core` when low in health.
 pub struct FleeToBase(pub f64);
 /// Added on entities which temporarily cannot move.
