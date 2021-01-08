@@ -177,6 +177,7 @@ fn main() -> BError {
         remove_outdated_effector_system::<Effectors>,
         nature_summon_system,
         bear_spawner_system,
+        savagery_system,
         aoe_damage_system,
         damage_entity_system,
         kill_entity_system,

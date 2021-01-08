@@ -30,3 +30,9 @@ defs:
     effects:
       - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.5
+  Savagery:
+    key: Savagery
+    duration: 10.0
+    effects:
+      - - AttackSpeed
+        - Additive: 5.0

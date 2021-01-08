@@ -25,7 +25,7 @@ pub struct TowerProjectile;
 /// Tags a core.
 pub struct Core;
 /// Identifies a companion.
-pub struct Companion<Unit>(pub Unit);
+pub struct Companion(pub Unit);
 /// Tags a barrack.
 pub struct Barrack;
 /// Identifies an entity as a leader with a its position in the teams selected leaders.

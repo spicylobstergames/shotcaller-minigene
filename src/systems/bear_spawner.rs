@@ -10,13 +10,12 @@ pub fn bear_spawner_system(
     stats: &mut Components<StatSet<Stats>>,
     positions: &mut Components<Point>,
     entities: &mut Entities,
-    companions: &mut Components<Companion<Unit>>,
+    companions: &mut Components<Companion>,
     sprites: &mut Components<Sprite>,
     sprite_indices: &mut Components<SpriteIndex>,
 ) -> SystemResult {
     for ev in events.iter() {
         if ev.1 == Skills::BearSummon {
-            println!("spawning");
             let pos = positions.get(ev.0).unwrap().clone();
             let team = teams.get_mut(ev.0).unwrap().clone();
 

@@ -54,6 +54,7 @@ pub enum Effectors {
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,
+    Savagery,
 }
 
 /// The different leader ids.
