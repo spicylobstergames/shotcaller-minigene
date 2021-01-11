@@ -1,14 +1,14 @@
-Escape: Quit
-H: MenuWest
-J: MenuSouth
-K: MenuNorth
-Key1:
+27: Quit
+104: MenuWest
+106: MenuSouth
+107: MenuNorth
+49:
   Teleport: 1
-Key2:
+50:
   Teleport: 2
-Key3:
+51:
   Teleport: 3
-L: MenuEast
-Q: MenuCancel
-Return: MenuSelect
-S: SpeedToggle
+108: MenuEast
+113: MenuCancel
+13: MenuSelect
+115: SpeedToggle

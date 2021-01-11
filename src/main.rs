@@ -194,7 +194,7 @@ fn main() -> BError {
         |ev1: &mut Vec<GameEvent>,
          ev2: &mut Vec<SkillTriggerEvent<Skills>>,
          ev3: &mut Vec<InputEvent>,
-         ev4: &mut Vec<VirtualKeyCode>| {
+         ev4: &mut Vec<char>| {
             ev1.clear();
             ev2.clear();
             ev3.clear();
@@ -222,7 +222,6 @@ fn main() -> BError {
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
     world.initialize::<TeamLeaders>();
-    world.initialize::<Camera>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
@@ -240,9 +239,11 @@ fn main() -> BError {
     AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
     ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);*/
 
-    let keymap = load_yaml("assets/keymap.yaml");
+    // TODO reenable
+    let keymap: HashMap<u8, InputEvent> = load_yaml("assets/keymap.yaml");
+    let keymap = keymap.into_iter().map(|(k, v)| (k as char, v)).collect();
     *world
-        .get_mut::<HashMap<VirtualKeyCode, InputEvent>>()
+        .get_mut::<HashMap<char, InputEvent>>()
         .unwrap() = keymap;
 
     let skill_definitions = load_yaml("assets/skill_defs.yaml");
