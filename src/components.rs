@@ -14,6 +14,12 @@ pub struct Hero1ProximityAttack {
     /// The radius at which we can attack.
     pub radius: f32,
 }
+/// Identifies which type is the companion
+#[derive(PartialEq, Eq, Copy, Clone, Debug)]
+pub enum Companion {
+    /// A bear companion
+    Bear(Entity),
+}
 /// Tags a tower projectile.
 pub struct TowerProjectile;
 /// Tags a core.

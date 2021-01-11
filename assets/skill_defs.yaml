@@ -91,3 +91,24 @@ defs:
           MinValue: 3.0
     item_conditions: []
     stat_effectors: []
+  BearSummon:
+    key: BearSummon
+    name: Bear Summon
+    friendly_name: bear_summon
+    description: Spawns a bear as companion of the leader.
+    cooldown: 120.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  Savagery:
+    key: Savagery
+    name: Savagery
+    friendly_name: savagery
+    description: Increase the attack speed of both leader and companion in 5 points for 10s. Cooldown 20s.
+    cooldown: 20.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors:
+      - Savagery

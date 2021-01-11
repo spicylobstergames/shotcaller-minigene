@@ -33,6 +33,8 @@ pub enum Skills {
     Root,
     AttackSpeedIncrease,
     SlowAOE,
+    BearSummon,
+    Savagery,
 }
 
 /// The different items ids.
@@ -52,6 +54,7 @@ pub enum Effectors {
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,
+    Savagery,
 }
 
 /// The different leader ids.
@@ -62,4 +65,5 @@ pub enum Leaders {
     Generic2,
     Generic3,
     TreePersonLeader,
+    BearPersonLeader,
 }

@@ -24,3 +24,9 @@ defs:
     skills:
       - NatureSummon
       - Root
+  BearPersonLeader:
+    key: BearPersonLeader
+    name: "BearPersonLeader"
+    skills:
+      - BearSummon
+      - Savagery

@@ -175,6 +175,8 @@ fn main() -> BError {
         apply_effector_system::<Stats, Effectors>,
         remove_outdated_effector_system::<Effectors>,
         nature_summon_system,
+        bear_spawner_system,
+        savagery_system,
         aoe_damage_system,
         damage_entity_system,
         kill_entity_system,
@@ -406,14 +408,14 @@ fn main() -> BError {
             Leaders::Generic2,
             Leaders::Generic3,
             Leaders::TreePersonLeader,
-            Leaders::Generic3,
+            Leaders::BearPersonLeader,
         ],
         vec![
             Leaders::Generic1,
             Leaders::Generic2,
             Leaders::Generic3,
             Leaders::TreePersonLeader,
-            Leaders::Generic3,
+            Leaders::BearPersonLeader,
         ],
     );
     *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
