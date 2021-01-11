@@ -239,9 +239,7 @@ fn main() -> BError {
     // TODO reenable
     let keymap: HashMap<u8, InputEvent> = load_yaml("assets/keymap.yaml");
     let keymap = keymap.into_iter().map(|(k, v)| (k as char, v)).collect();
-    *world
-        .get_mut::<HashMap<char, InputEvent>>()
-        .unwrap() = keymap;
+    *world.get_mut::<HashMap<char, InputEvent>>().unwrap() = keymap;
 
     let skill_definitions = load_yaml("assets/skill_defs.yaml");
     *world
