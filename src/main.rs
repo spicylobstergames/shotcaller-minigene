@@ -16,7 +16,7 @@ const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 50;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
 //const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
-//const RANGED_LEADER_ATTACK_RADIUS: f32 = 6.3;
+const RANGED_LEADER_ATTACK_RADIUS: f32 = 6.3;
 const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const SLOW_AOE_RADIUS: f32 = 8.0;
@@ -163,6 +163,7 @@ fn main() -> BError {
         toggle_game_speed_system,
         win_condition_system,
         //hero1_simple_movement_system, // TODO re-enable
+        //hero2_simple_movement_system, // TODO re-enable
         tower_ai_system,
         proximity_attack_system,
         //hero1_proximity_attack_system, // TODO re-enable
