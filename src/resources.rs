@@ -16,10 +16,6 @@ impl Default for Winner {
     }
 }
 
-/// Whether we requested to quit the game.
-#[derive(PartialEq, Eq, Clone, Default)]
-pub struct QuitGame(pub bool);
-
 /// The selected leaders in each team.
 #[derive(Clone, Default, new)]
 pub struct TeamLeaders {

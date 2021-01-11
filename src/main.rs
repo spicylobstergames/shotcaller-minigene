@@ -111,23 +111,21 @@ struct State {
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        if self.world.get::<QuitGame>().unwrap().0 {
+        #[cfg(not(feature = "wasm"))]
+        let delta = self.loop_helper.loop_start();
+        #[cfg(feature = "wasm")]
+        let delta = std::time::Duration::from_secs_f32(1.0 / 20.0);
+        self.world.get_mut::<Time>().unwrap().advance_frame(delta);
+        mini_frame(
+            &mut self.world,
+            &mut self.dispatcher,
+            ctx,
+            &mut self.state_machine,
+        );
+        #[cfg(not(feature = "wasm"))]
+        self.loop_helper.loop_sleep();
+        if !self.state_machine.is_running() {
             ctx.quitting = true;
-        }
-        if self.state_machine.is_running() && !ctx.quitting {
-            #[cfg(not(feature = "wasm"))]
-            let delta = self.loop_helper.loop_start();
-            #[cfg(feature = "wasm")]
-            let delta = std::time::Duration::from_secs_f32(1.0 / 20.0);
-            self.world.get_mut::<Time>().unwrap().advance_frame(delta);
-            mini_frame(
-                &mut self.world,
-                &mut self.dispatcher,
-                ctx,
-                &mut self.state_machine,
-            );
-            #[cfg(not(feature = "wasm"))]
-            self.loop_helper.loop_sleep();
         }
     }
 }
@@ -187,7 +185,6 @@ fn main() -> BError {
         spawn_creep_system,
         spawn_leader_system,
         game_stats_updater_system,
-        quit_game_system,
     );
     // Remove old events at the end of the frame.
     dispatcher = dispatcher.add(
