@@ -14,6 +14,7 @@ pub enum Stats {
     DamageReceived,
     ActionPoints,
     ActionPointRefillRate,
+    Gold,
 }
 
 impl Default for Stats {
@@ -35,6 +36,8 @@ pub enum Skills {
     SlowAOE,
     BearSummon,
     Savagery,
+    GreedyTouch,
+    AirCorrosion
 }
 
 /// The different items ids.
@@ -51,6 +54,7 @@ pub enum Items {
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
+    DoubleGold,
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,
@@ -66,4 +70,5 @@ pub enum Leaders {
     Generic3,
     TreePersonLeader,
     BearPersonLeader,
+    Celsus,
 }
