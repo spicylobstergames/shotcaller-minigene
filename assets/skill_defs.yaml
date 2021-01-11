@@ -121,8 +121,7 @@ defs:
     passive: true
     conditions: []
     item_conditions: []
-    stat_effectors:
-      - DoubleGold
+    stat_effectors: []
   AirCorrosion:
     key: AirCorrosion
     name: AirCorrosion

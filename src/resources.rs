@@ -36,4 +36,6 @@ pub struct GameStats {
     pub kill_count: u32,
     /// The total damage dealt to all entities during this game.
     pub damage_dealt: f64,
+    /// The total gold earned
+    pub earned_gold: f64,
 }
