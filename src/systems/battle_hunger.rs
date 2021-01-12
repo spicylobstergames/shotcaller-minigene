@@ -9,13 +9,12 @@ pub fn battle_hunger_system(
     effector_defs: &EffectorDefinitions<Stats, Effectors>,
     effectors: &mut Components<EffectorSet<Effectors>>,
     events: &mut Vec<SkillTriggerEvent<Skills>>,
-    stats: &mut Components<StatSet<Stats>>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
     for ev in events.iter() {
-        for e in join!(&entities) {
+        for (e, effector) in join!(&entities && &effectors) {
             let e = e.unwrap();
-            if let Some(effectors) = effectors.get(e) {
+            if let Some(effectors) = effector {
                 for effector in &effectors.effectors {
                     if effector.effector_key == Effectors::Enraged {
                         game_events.push(GameEvent::DamageEntity(e, 1.0));
