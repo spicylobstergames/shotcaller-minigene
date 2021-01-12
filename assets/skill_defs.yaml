@@ -116,12 +116,13 @@ defs:
     key: GreedyTouch
     name: GreedyTouch
     friendly_name: greedy_touch
-    description: Double the gold received destroying enemy units or leaders. Cooldown 10s.
+    description: Double the gold received destroying enemy units or leaders for 5s. Cooldown 10s.
     cooldown: 10.0
     passive: true
     conditions: []
     item_conditions: []
-    stat_effectors: []
+    stat_effectors:
+      - DoubleGold
   AirCorrosion:
     key: AirCorrosion
     name: AirCorrosion
