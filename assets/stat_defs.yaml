@@ -72,3 +72,11 @@ defs:
     min_value: 0
     max_value: ~
     icon_path: ~
+  Gold:
+    key: Gold
+    name: gold
+    friendly_name: Gold
+    default_value: 100.0
+    min_value: 0.0
+    max_value: ~
+    icon_path: ~

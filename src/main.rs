@@ -179,6 +179,7 @@ fn main() -> BError {
         savagery_system,
         aoe_damage_system,
         damage_entity_system,
+        transfer_gold_system,
         kill_entity_system,
         goto_straight_system,
         select_hero_system,

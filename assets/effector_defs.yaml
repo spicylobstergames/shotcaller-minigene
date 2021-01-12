@@ -36,3 +36,7 @@ defs:
     effects:
       - - AttackSpeed
         - Additive: 5.0
+  DoubleGold:
+   key: DoubleGold
+   duration: 5.0
+   effects: []
