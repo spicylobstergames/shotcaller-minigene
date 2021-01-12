@@ -40,3 +40,9 @@ defs:
     key: DoubleGold
     duration: 5.0
     effects: []
+  HalfDefense:
+    key: HalfDefense
+    duration: 5.0
+    effects:
+      - - Defense
+        - MultiplicativeMultiplier: 0.5

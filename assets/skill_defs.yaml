@@ -127,7 +127,7 @@ defs:
     key: AirCorrosion
     name: AirCorrosion
     friendly_name: air_corrosion
-    description: Reduce the defense of the enemies in the AOE range for 5.0s. Cooldown 10.0s.
+    description: Reduce the defense to half of the enemies in the AOE range for 5.0s. Cooldown 10.0s.
     cooldown: 10.0
     passive: true
     conditions:
