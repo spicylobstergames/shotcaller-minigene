@@ -57,6 +57,8 @@ pub enum Effectors {
     AttackSpeedIncrease,
     HalfMovementSpeed,
     Savagery,
+    BattleHungry,
+    Enraged,
 }
 
 /// The different leader ids.

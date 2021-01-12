@@ -125,3 +125,17 @@ defs:
           DivisibleBy: 5
     item_conditions: []
     stat_effectors: []
+  BattleHunger:
+    key: BattleHunger
+    name: Battle Hunger
+    friendly_name: battle_hunger
+    description: Slows and damages the closest enemy unit for 5 seconds. Caster gains movement speed.
+    cooldown: 12.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors:
+      - BattleHungry
