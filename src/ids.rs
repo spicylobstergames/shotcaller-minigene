@@ -35,6 +35,8 @@ pub enum Skills {
     SlowAOE,
     BearSummon,
     Savagery,
+    ReturnAOE,
+    BattleHunger,
 }
 
 /// The different items ids.
@@ -66,4 +68,5 @@ pub enum Leaders {
     Generic3,
     TreePersonLeader,
     BearPersonLeader,
+    AxePersonLeader,
 }

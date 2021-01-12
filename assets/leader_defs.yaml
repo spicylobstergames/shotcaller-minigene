@@ -30,3 +30,9 @@ defs:
     skills:
       - BearSummon
       - Savagery
+  AxePersonLeader:
+    key: AxePersonLeader
+    name: "AxePersonLeader"
+    skills:
+      - ReturnAOE
+      - BattleHunger
