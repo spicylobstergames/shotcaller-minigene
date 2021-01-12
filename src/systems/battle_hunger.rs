@@ -33,7 +33,8 @@ pub fn battle_hunger_system(
                     |_, _, d| d <= AOE_RADIUS,
                 );
                 let closest_enemy = enemies_around.first().unwrap().0;
-                let enraged_effector = effector_defs.defs
+                let enraged_effector = effector_defs
+                    .defs
                     .get(&Effectors::Enraged)
                     .expect("Unknown effector key.");
 

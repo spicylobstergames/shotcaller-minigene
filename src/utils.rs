@@ -7,7 +7,11 @@ pub fn increment_attacks_dealt(stat_set: &mut StatSet<Stats>) {
 
 /// Increment the attacks received stat by one.
 pub fn increment_attacks_received(stat_set: &mut StatSet<Stats>) {
-    stat_set.stats.get_mut(&Stats::AttacksReceived).unwrap().value += 1.0;
+    stat_set
+        .stats
+        .get_mut(&Stats::AttacksReceived)
+        .unwrap()
+        .value += 1.0;
 }
 
 /// Damage this `StatSet` by the provided damage amount.
