@@ -117,12 +117,15 @@ defs:
     name: Return AOE
     friendly_name: return_aoe
     description: Returns 20 damage in AOE for every 5 instances of attacks received.
-    cooldown: 0.0
+    cooldown: 5.0
     passive: true
     conditions:
       - stat_key: AttacksReceived
         condition:
           DivisibleBy: 5
+      - stat_key: AttacksReceived
+        condition:
+          MinValue: 5
     item_conditions: []
     stat_effectors: []
   BattleHunger:
