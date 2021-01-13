@@ -21,10 +21,14 @@ pub enum InputEvent {
 pub enum GameEvent {
     /// A team won the game.
     GameWon(Team),
-    /// Damage the specified entity by this amount.
-    DamageEntity(Entity, f64),
+    /// Attacker entity damages the target entity by this amount.
+    DamageEntity(Entity, Entity, f64),
     /// Kill the specified entity.
     KillEntity(Entity),
+    /// Transfers gold from an entity to another.
+    TransferGold(Entity, Entity),
+    /// A gold transfer was made.
+    TransferedGold(Entity, f64),
     /// A leader died.
     LeaderDied(u8),
     /// Spawn a creep at the specified position in the specified team.
