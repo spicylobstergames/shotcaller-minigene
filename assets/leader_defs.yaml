@@ -2,19 +2,19 @@
 defs:
   Generic1:
     key: Generic1
-    name: "Hero1"
+    name: "Leader1"
     skills:
       - DoubleDamage
       - AOE
   Generic2:
     key: Generic2
-    name: "Hero2"
+    name: "Leader2"
     skills:
       - AttackSpeedIncrease
       - SlowAOE
   Generic3:
     key: Generic3
-    name: "Hero3"
+    name: "Leader3"
     skills:
       - DoubleDamage
       - AOE

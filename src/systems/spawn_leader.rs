@@ -9,8 +9,8 @@ pub fn spawn_leader_system(
     entities: &mut Entities,
     positions: &mut Components<Point>,
     leaders: &mut Components<Leader>,
-    //simple_movements: &mut Components<Hero1SimpleMovement>,
-    //proximity_attacks: &mut Components<Hero1ProximityAttack>,
+    //simple_movements: &mut Components<Leader1SimpleMovement>,
+    //proximity_attacks: &mut Components<Leader1ProximityAttack>,
     simple_movements: &mut Components<SimpleMovement>,
     proximity_attacks: &mut Components<ProximityAttack>,
     stats: &mut Components<StatSet<Stats>>,
@@ -28,9 +28,9 @@ pub fn spawn_leader_system(
             let team = if *id < 5 { Team::Me } else { Team::Other };
             teams.insert(leader, team);
             stats.insert(leader, stat_def.to_statset());
-            //simple_movements.insert(leader, Hero1SimpleMovement);
+            //simple_movements.insert(leader, Leader1SimpleMovement);
             simple_movements.insert(leader, SimpleMovement);
-            //proximity_attacks.insert(leader, Hero1ProximityAttack::new(CREEP_ATTACK_RADIUS));
+            //proximity_attacks.insert(leader, Leader1ProximityAttack::new(CREEP_ATTACK_RADIUS));
             proximity_attacks.insert(leader, ProximityAttack::new(CREEP_ATTACK_RADIUS));
             let bg = if team == Team::Me {
                 RGBA::named(GREEN)
