@@ -54,12 +54,12 @@ pub enum Items {
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
-    DoubleGold,
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,
     Savagery,
     HalfDefense,
+    DoubleGold,
 }
 
 /// The different leader ids.
