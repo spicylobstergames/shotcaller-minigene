@@ -84,8 +84,8 @@ const MAP: &[&str] = &[
 
 mod components;
 mod events;
-mod heroes;
 mod ids;
+mod leaders;
 mod render_map;
 mod resources;
 mod states;
@@ -93,8 +93,8 @@ mod systems;
 mod utils;
 pub use self::components::*;
 pub use self::events::*;
-pub use self::heroes::*;
 pub use self::ids::*;
+pub use self::leaders::*;
 pub use self::render_map::*;
 pub use self::resources::*;
 pub use self::states::*;
@@ -162,11 +162,11 @@ fn main() -> BError {
         ai_movement_system,
         toggle_game_speed_system,
         win_condition_system,
-        //hero1_simple_movement_system, // TODO re-enable
-        //hero2_simple_movement_system, // TODO re-enable
+        //leader1_simple_movement_system, // TODO re-enable
+        //leader2_simple_movement_system, // TODO re-enable
         tower_ai_system,
         proximity_attack_system,
-        //hero1_proximity_attack_system, // TODO re-enable
+        //leader1_proximity_attack_system, // TODO re-enable
         tower_projectile_system,
         update_enemies_around_system,
         skill_cooldown_system::<Skills>,
@@ -182,8 +182,8 @@ fn main() -> BError {
         transfer_gold_system,
         kill_entity_system,
         goto_straight_system,
-        select_hero_system,
-        hero_teleport_system,
+        select_leader_system,
+        leader_teleport_system,
         root_system,
         respawn_leader_driver,
         spawn_creep_system,
@@ -259,9 +259,9 @@ fn main() -> BError {
     world.initialize::<ItemDefinitions<Items, (), ()>>();
     *world.get_mut::<ItemDefinitions<Items, (), ()>>().unwrap() = item_defs;
 
-    let hero_defs = load_yaml("assets/leader_defs.yaml");
+    let leader_defs = load_yaml("assets/leader_defs.yaml");
     world.initialize::<LeaderDefinitions>();
-    *world.get_mut::<LeaderDefinitions>().unwrap() = hero_defs;
+    *world.get_mut::<LeaderDefinitions>().unwrap() = leader_defs;
 
     let stat_defs: StatDefinitions<Stats> = load_yaml("assets/stat_defs.yaml");
     let default_stats = stat_defs.to_statset();
@@ -403,7 +403,7 @@ fn main() -> BError {
         }
     }
 
-    let team_heroes = TeamLeaders::new(
+    let team_leaders = TeamLeaders::new(
         vec![
             Leaders::Generic1,
             Leaders::Generic2,
@@ -419,7 +419,7 @@ fn main() -> BError {
             Leaders::BearPersonLeader,
         ],
     );
-    *world.get_mut::<TeamLeaders>().unwrap() = team_heroes;
+    *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
 
     {
         let mut evs = world.get_mut::<Vec<GameEvent>>();

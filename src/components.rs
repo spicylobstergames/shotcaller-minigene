@@ -8,9 +8,9 @@ pub struct ProximityAttack {
     /// The radius at which we can attack.
     pub radius: f32,
 }
-/// Allows this hero to attack other entities in proximity to it.
+/// Allows this leader to attack other entities in proximity to it.
 #[derive(new)]
-pub struct Hero1ProximityAttack {
+pub struct Leader1ProximityAttack {
     /// The radius at which we can attack.
     pub radius: f32,
 }
@@ -33,9 +33,9 @@ pub struct Name(pub String);
 /// Allows this entity to move to the closest enemy entity.
 pub struct SimpleMovement;
 /// Allows this entity to move to the closest enemy entity.
-pub struct Hero1SimpleMovement;
+pub struct Leader1SimpleMovement;
 /// Allows this entity to move a given distance away from the closest enemy entity.
-pub struct Hero2SimpleMovement;
+pub struct Leader2SimpleMovement;
 /// Makes this entity run back to its team's `Core` when low in health.
 pub struct FleeToBase(pub f64);
 /// Added on entities which temporarily cannot move.
