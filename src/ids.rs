@@ -15,6 +15,7 @@ pub enum Stats {
     ActionPoints,
     ActionPointRefillRate,
     Gold,
+    GoldGainMultiplier,
 }
 
 impl Default for Stats {
@@ -37,7 +38,7 @@ pub enum Skills {
     BearSummon,
     Savagery,
     GreedyTouch,
-    AirCorrosion
+    AirCorrosion,
 }
 
 /// The different items ids.
@@ -59,7 +60,7 @@ pub enum Effectors {
     HalfMovementSpeed,
     Savagery,
     HalfDefense,
-    DoubleGold,
+    DoubleGoldGain,
 }
 
 /// The different leader ids.

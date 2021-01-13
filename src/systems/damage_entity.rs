@@ -13,7 +13,14 @@ pub fn damage_entity_system(
                 if stat.stats.get(&Stats::Health).unwrap().value > 0.0 {
                     damage(&mut stat, *dmg);
                     if stat.stats.get(&Stats::Health).unwrap().value <= 0.0 {
-                        out_ev.push(GameEvent::TransferGold(*a, *e, stats.get(*e).unwrap().stats.get(&Stats::Gold).unwrap().value));
+                        let gold = stats
+                            .get(*e)
+                            .unwrap()
+                            .stats
+                            .get(&Stats::Gold)
+                            .unwrap()
+                            .value;
+                        out_ev.push(GameEvent::TransferGold(*a, *e, gold));
                         out_ev.push(GameEvent::KillEntity(*e));
                     }
                 }

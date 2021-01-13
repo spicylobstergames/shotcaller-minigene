@@ -39,7 +39,6 @@ pub fn air_corrosion_system(
                             half_def_effector.duration,
                         ))
                 }
-
             }
         }
     }
