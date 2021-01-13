@@ -48,3 +48,9 @@ defs:
     effects:
       - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.5
+  DoubleGoldGain:
+   key: DoubleGoldGain
+   duration: 5.0
+   effects:
+     - - GoldGainMultiplier
+       - MultiplicativeMultiplier: 2

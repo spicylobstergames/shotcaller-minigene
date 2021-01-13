@@ -14,6 +14,8 @@ pub enum Stats {
     DamageReceived,
     ActionPoints,
     ActionPointRefillRate,
+    Gold,
+    GoldGainMultiplier,
 }
 
 impl Default for Stats {
@@ -59,6 +61,7 @@ pub enum Effectors {
     Savagery,
     BattleHungry,
     Enraged,
+    DoubleGoldGain,
 }
 
 /// The different leader ids.

@@ -53,7 +53,7 @@ pub fn leader1_proximity_attack_system(
     for (attacker, target, dmg) in v.into_iter() {
         increment_attacks_dealt(&mut stats.get_mut(attacker).unwrap());
         increment_attacks_received(&mut stats.get_mut(target).unwrap());
-        game_events.push(GameEvent::DamageEntity(target, dmg));
+        game_events.push(GameEvent::DamageEntity(attacker, target, dmg));
     }
     Ok(())
 }
