@@ -5,9 +5,17 @@ pub fn transfer_gold_system(
     stats: &mut Components<StatSet<Stats>>,
     events: &mut Vec<GameEvent>,
 ) -> SystemResult {
+    let mut out_ev = Vec::new();
     for ev in events.iter() {
-        if let GameEvent::TransferGold(to, from, gold) = ev {
-            let earned_gold = gold
+        if let GameEvent::TransferGold(to, from) = ev {
+            let gold = stats
+                .get(*from)
+                .unwrap()
+                .stats
+                .get(&Stats::Gold)
+                .unwrap()
+                .value;
+            let multiplied_gold = gold
                 * stats
                     .get(*to)
                     .unwrap()
@@ -28,8 +36,13 @@ pub fn transfer_gold_system(
                 .stats
                 .get_mut(&Stats::Gold)
                 .unwrap()
-                .value += earned_gold;
+                .value += multiplied_gold;
+
+            out_ev.push(GameEvent::TransferedGold(*to, multiplied_gold));
         }
+    }
+    for ev in out_ev {
+        events.push(ev);
     }
     Ok(())
 }

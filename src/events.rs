@@ -26,7 +26,9 @@ pub enum GameEvent {
     /// Kill the specified entity.
     KillEntity(Entity),
     /// Transfers gold from an entity to another.
-    TransferGold(Entity, Entity, f64),
+    TransferGold(Entity, Entity),
+    /// A gold transfer was made.
+    TransferedGold(Entity, f64),
     /// A leader died.
     LeaderDied(u8),
     /// Spawn a creep at the specified position in the specified team.
