@@ -24,7 +24,10 @@ There's also a [short mp4 video](./media/shotcaller-prototype.mp4).
 
 ### Locally
 
+Requires the rust nightly toolchain!
+
 ```
+rustup default nightly
 cargo run
 ```
 
