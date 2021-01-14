@@ -81,16 +81,22 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
     }
 
     let game_stats = world.get::<GameStats>().unwrap();
-    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 5, "Total Damage");
+    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 7, "Total Damage");
+    ctx.print(
+        PLAY_WIDTH + 1,
+        SCREEN_HEIGHT - 6,
+        format!("{:.2}", game_stats.damage_dealt),
+    );
+    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 5, "Kills");
     ctx.print(
         PLAY_WIDTH + 1,
         SCREEN_HEIGHT - 4,
-        format!("{:.2}", game_stats.damage_dealt),
+        format!("{}", game_stats.kill_count),
     );
-    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 3, "Kills");
+    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 3, "Earned Gold");
     ctx.print(
         PLAY_WIDTH + 1,
         SCREEN_HEIGHT - 2,
-        format!("{}", game_stats.kill_count),
+        format!("{}", game_stats.earned_gold),
     );
 }

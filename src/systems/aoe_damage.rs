@@ -21,7 +21,7 @@ pub fn aoe_damage_system(
                     |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
                     |_, _, d| d <= AOE_RADIUS,
                 ) {
-                    game_events.push(GameEvent::DamageEntity(e, AOE_DAMAGE));
+                    game_events.push(GameEvent::DamageEntity(ev.0, e, AOE_DAMAGE));
                 }
             }
         } else if ev.1 == Skills::SlowAOE {
@@ -34,7 +34,7 @@ pub fn aoe_damage_system(
                     |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
                     |_, _, d| d <= SLOW_AOE_RADIUS,
                 ) {
-                    game_events.push(GameEvent::DamageEntity(e, SLOW_AOE_DAMAGE));
+                    game_events.push(GameEvent::DamageEntity(ev.0, e, SLOW_AOE_DAMAGE));
 
                     let slow_effector = effector_defs
                         .defs

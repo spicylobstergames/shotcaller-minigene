@@ -36,3 +36,9 @@ defs:
     effects:
       - - AttackSpeed
         - Additive: 5.0
+  DoubleGoldGain:
+   key: DoubleGoldGain
+   duration: 5.0
+   effects:
+     - - GoldGainMultiplier
+       - MultiplicativeMultiplier: 2
