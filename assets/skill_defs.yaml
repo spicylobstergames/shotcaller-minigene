@@ -112,3 +112,27 @@ defs:
     item_conditions: []
     stat_effectors:
       - Savagery
+  GreedyTouch:
+    key: GreedyTouch
+    name: GreedyTouch
+    friendly_name: greedy_touch
+    description: Double the gold received destroying enemy units or leaders for 5s. Cooldown 10s.
+    cooldown: 10.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors:
+      - DoubleGoldGain
+  AirCorrosion:
+    key: AirCorrosion
+    name: AirCorrosion
+    friendly_name: air_corrosion
+    description: Reduce the defense to half of the enemies in the AOE range for 5.0s. Cooldown 10.0s.
+    cooldown: 10.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []

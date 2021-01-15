@@ -37,6 +37,8 @@ pub enum Skills {
     SlowAOE,
     BearSummon,
     Savagery,
+    GreedyTouch,
+    AirCorrosion,
 }
 
 /// The different items ids.
@@ -57,6 +59,7 @@ pub enum Effectors {
     AttackSpeedIncrease,
     HalfMovementSpeed,
     Savagery,
+    HalfDefense,
     DoubleGoldGain,
 }
 
@@ -69,4 +72,5 @@ pub enum Leaders {
     Generic3,
     TreePersonLeader,
     BearPersonLeader,
+    Celsus,
 }

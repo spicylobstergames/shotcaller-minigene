@@ -177,6 +177,7 @@ fn main() -> BError {
         nature_summon_system,
         bear_spawner_system,
         savagery_system,
+        air_corrosion_system,
         aoe_damage_system,
         damage_entity_system,
         transfer_gold_system,

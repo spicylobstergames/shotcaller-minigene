@@ -30,3 +30,9 @@ defs:
     skills:
       - BearSummon
       - Savagery
+  Celsus:
+    key: Celsus
+    name: "Celsus"
+    skills:
+      - GreedyTouch
+      - AirCorrosion
