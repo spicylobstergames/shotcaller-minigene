@@ -88,3 +88,19 @@ defs:
     min_value: ~
     max_value: ~
     icon_path: ~
+  Souls:
+    key: Souls
+    name: souls
+    friendly_name: Souls
+    default_value: 0.0
+    min_value: 0.0
+    max_value: 20
+    icon_path: ~
+  AdditionalAttack:
+    key: AdditionalAttack
+    name: additional_attack
+    friendly_name: Additional Attack
+    default_value: 0.0
+    min_value: 0.0
+    max_value: ~
+    icon_path: ~

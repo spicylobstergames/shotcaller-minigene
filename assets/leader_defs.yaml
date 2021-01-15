@@ -30,3 +30,9 @@ defs:
     skills:
       - BearSummon
       - Savagery
+  SoulsCollector:
+    key: SoulsCollector
+    name: "SoulsCollector"
+    skills:
+      - StealSoul
+      - DarkPresence

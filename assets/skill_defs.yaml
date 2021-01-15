@@ -112,3 +112,26 @@ defs:
     item_conditions: []
     stat_effectors:
       - Savagery
+  StealSoul:
+    key: StealSoul
+    name: Steal Soul
+    friendly_name: steal_soul
+    description: Steals the soul of the killed enemies. Each soul gives 1 point of attack. When the leader dies the souls are freed.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  DarkPresence:
+    key: DarkPresence
+    name: Dark Presence
+    friendly_name: dark_presence
+    description: Reduce the defense of the enemies in AOE_RADIUS.
+    cooldown: 0.0
+    passive: true
+    conditions:
+      - stat_key: EnemeisAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []

@@ -16,6 +16,8 @@ pub enum Stats {
     ActionPointRefillRate,
     Gold,
     GoldGainMultiplier,
+    Souls,
+    AdditionalAttack,
 }
 
 impl Default for Stats {
@@ -37,6 +39,8 @@ pub enum Skills {
     SlowAOE,
     BearSummon,
     Savagery,
+    StealSoul,
+    DarkPresence,
 }
 
 /// The different items ids.
@@ -69,4 +73,5 @@ pub enum Leaders {
     Generic3,
     TreePersonLeader,
     BearPersonLeader,
+    SoulsCollector,
 }

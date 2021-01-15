@@ -42,3 +42,9 @@ defs:
    effects:
      - - GoldGainMultiplier
        - MultiplicativeMultiplier: 2
+  AdditionalAttack:
+    key: AdditionalAttack
+    duration: 0.0
+    effects:
+      - - Attack
+        - Additive: 1.0
