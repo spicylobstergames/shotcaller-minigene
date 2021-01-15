@@ -39,6 +39,8 @@ pub enum Skills {
     Savagery,
     ReturnAOE,
     BattleHunger,
+    GreedyTouch,
+    AirCorrosion,
 }
 
 /// The different items ids.
@@ -61,6 +63,7 @@ pub enum Effectors {
     Savagery,
     BattleHungry,
     Enraged,
+    HalfDefense,
     DoubleGoldGain,
 }
 
@@ -74,4 +77,5 @@ pub enum Leaders {
     TreePersonLeader,
     BearPersonLeader,
     AxePersonLeader,
+    Celsus,
 }

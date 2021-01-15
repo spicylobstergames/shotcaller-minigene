@@ -180,6 +180,7 @@ fn main() -> BError {
         bear_spawner_system,
         savagery_system,
         battle_hunger_system,
+        air_corrosion_system,
         aoe_damage_system,
         damage_entity_system,
         transfer_gold_system,
