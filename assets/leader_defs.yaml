@@ -30,6 +30,12 @@ defs:
     skills:
       - BearSummon
       - Savagery
+  AxePersonLeader:
+    key: AxePersonLeader
+    name: "AxePersonLeader"
+    skills:
+      - ReturnAOE
+      - BattleHunger
   Celsus:
     key: Celsus
     name: "Celsus"

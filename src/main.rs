@@ -21,6 +21,8 @@ const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const SLOW_AOE_RADIUS: f32 = 8.0;
 const SLOW_AOE_DAMAGE: f64 = 50.0;
+const RETURN_AOE_RADIUS: f32 = 4.0;
+const RETURN_AOE_DAMAGE: f64 = 20.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
@@ -177,6 +179,7 @@ fn main() -> BError {
         nature_summon_system,
         bear_spawner_system,
         savagery_system,
+        battle_hunger_system,
         air_corrosion_system,
         aoe_damage_system,
         damage_entity_system,

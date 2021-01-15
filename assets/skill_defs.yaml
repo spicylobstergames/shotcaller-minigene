@@ -112,6 +112,36 @@ defs:
     item_conditions: []
     stat_effectors:
       - Savagery
+  ReturnAOE:
+    key: ReturnAOE
+    name: Return AOE
+    friendly_name: return_aoe
+    description: Returns 20 damage in AOE for every 5 instances of attacks received.
+    cooldown: 5.0
+    passive: true
+    conditions:
+      - stat_key: AttacksReceived
+        condition:
+          DivisibleBy: 5
+      - stat_key: AttacksReceived
+        condition:
+          MinValue: 5
+    item_conditions: []
+    stat_effectors: []
+  BattleHunger:
+    key: BattleHunger
+    name: Battle Hunger
+    friendly_name: battle_hunger
+    description: Slows and damages the closest enemy unit for 5 seconds. Caster gains movement speed.
+    cooldown: 12.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors:
+      - BattleHungry
   GreedyTouch:
     key: GreedyTouch
     name: GreedyTouch

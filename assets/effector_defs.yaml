@@ -36,6 +36,17 @@ defs:
     effects:
       - - AttackSpeed
         - Additive: 5.0
+  BattleHungry:
+    key: BattleHungry
+    duration: 5.0
+    effects:
+      - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 1.5
+  Enraged:
+    key: Enraged
+    duration: 5.0
+    effects:
+      - - ActionPointRefillRate
   HalfDefense:
     key: HalfDefense
     duration: 5.0
