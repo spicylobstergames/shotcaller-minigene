@@ -89,7 +89,7 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 [[package]]
 name = "bracket-algorithm-traits"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "bracket-geometry",
  "smallvec",
@@ -98,7 +98,7 @@ dependencies = [
 [[package]]
 name = "bracket-color"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "byteorder",
  "lazy_static",
@@ -109,7 +109,7 @@ dependencies = [
 [[package]]
 name = "bracket-geometry"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "serde",
  "ultraviolet",
@@ -118,7 +118,7 @@ dependencies = [
 [[package]]
 name = "bracket-lib"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "bracket-algorithm-traits",
  "bracket-color",
@@ -132,7 +132,7 @@ dependencies = [
 [[package]]
 name = "bracket-noise"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "bracket-random",
 ]
@@ -140,7 +140,7 @@ dependencies = [
 [[package]]
 name = "bracket-pathfinding"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "bracket-algorithm-traits",
  "bracket-geometry",
@@ -151,7 +151,7 @@ dependencies = [
 [[package]]
 name = "bracket-random"
 version = "0.8.0"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "lazy_static",
  "rand 0.7.3",
@@ -163,7 +163,7 @@ dependencies = [
 [[package]]
 name = "bracket-terminal"
 version = "0.8.1"
-source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#a61393e9944341733957a6bd313fee9725318561"
+source = "git+https://github.com/jojolepro/bracket-lib?branch=winit_serde#e990882da8d212f155d8de98fb7d10fb020e8d71"
 dependencies = [
  "bracket-color",
  "bracket-geometry",
@@ -193,9 +193,9 @@ checksum = "2e8c087f005730276d1096a652e92a8bacee2e2472bcc9715a74d2bec38b5820"
 
 [[package]]
 name = "bytemuck"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41aa2ec95ca3b5c54cf73c91acf06d24f4495d5f1b1c12506ae3483d646177ac"
+checksum = "5a4bad0c5981acc24bc09e532f35160f952e35422603f0563cd7a73c2c2e65a0"
 
 [[package]]
 name = "byteorder"
@@ -545,7 +545,7 @@ version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b11f15d1e3268f140f68d390637d5e76d849782d971ae7063e0da69fe9709a76"
 dependencies = [
- "libloading 0.6.6",
+ "libloading 0.6.7",
 ]
 
 [[package]]
@@ -647,7 +647,7 @@ checksum = "1eb3967eb10771608046642096553ffac263c410bb7ddef7b02eb3a3c3f38f51"
 [[package]]
 name = "game_features"
 version = "0.4.0"
-source = "git+https://github.com/jojolepro/game_features#263e98e20d7817bb59e904b6c36fbf16cd9b78cb"
+source = "git+https://github.com/jojolepro/game_features#51828345dfa0f8e91990ba9b34c0480722a47a54"
 dependencies = [
  "derivative",
  "derive-new",
@@ -930,9 +930,9 @@ dependencies = [
 
 [[package]]
 name = "libloading"
-version = "0.6.6"
+version = "0.6.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e9367bdfa836b7e3cf895867f7a570283444da90562980ec2263d6e1569b16bc"
+checksum = "351a32417a12d5f7e82c368a66781e307834dae04c6ce0cd4456d52989229883"
 dependencies = [
  "cfg-if 1.0.0",
  "winapi 0.3.9",
@@ -1023,7 +1023,7 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.3.0"
-source = "git+https://github.com/jojolepro/minigene?rev=a2f5c3bca0903acae760a763152ccd45ccb53948#a2f5c3bca0903acae760a763152ccd45ccb53948"
+source = "git+https://github.com/jojolepro/minigene?branch=master#4e227a4647206aca2abad574438ff9bbe19d5ebb"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",
