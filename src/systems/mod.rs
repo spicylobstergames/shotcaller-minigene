@@ -1,4 +1,6 @@
+mod air_corrosion;
 mod aoe_damage;
+mod battle_hunger;
 mod bear_spawner;
 mod creep_spawner;
 mod damage_entity;
@@ -25,7 +27,9 @@ mod transfer_gold;
 mod update_collision_resource;
 mod update_enemies_around_stat;
 mod update_win_condition;
+pub use self::air_corrosion::*;
 pub use self::aoe_damage::*;
+pub use self::battle_hunger::*;
 pub use self::bear_spawner::*;
 pub use self::creep_spawner::*;
 pub use self::damage_entity::*;

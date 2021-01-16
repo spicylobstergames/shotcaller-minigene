@@ -55,6 +55,19 @@ pub fn aoe_damage_system(
                         ))
                 }
             }
+        } else if ev.1 == Skills::ReturnAOE {
+            // Damage around
+            if let (Some(from), Some(team)) = (positions.get(ev.0), teams.get(ev.0)) {
+                for (e, _, _) in entities_in_radius(
+                    from,
+                    &*entities,
+                    &positions,
+                    |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
+                    |_, _, d| d <= RETURN_AOE_RADIUS,
+                ) {
+                    game_events.push(GameEvent::DamageEntity(e, RETURN_AOE_DAMAGE));
+                }
+            }
         }
     }
     Ok(())

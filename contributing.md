@@ -27,6 +27,7 @@ If you’ve grokked the following resources, you should be able to work on the S
 #### Essentials
 - https://sokoban.iolivia.me/
 - https://pragprog.com/titles/hwrust/hands-on-rust/
+- https://jojolepro.com/blog/2021-01-13_planks_ecs/
 
 #### Extended
 - https://doc.rust-lang.org/book/ (no need to fully grasp it)
@@ -50,11 +51,12 @@ https://github.com/thebracket/bracket-lib
 
 For a text-based game, Rust gives us agency over the entire stack, all the way down to terminal libs like Crossterm. By intentionally constraining ourselves to ASCII/tiles graphics for the first iterations of the game we maintain a narrow focus on game mechanics. 
 
-#### Specs
+#### Plank ECS and Minigene
 
-https://github.com/amethyst/specs
+https://crates.io/crates/plank_ecs
+https://github.com/jojolepro/minigene
 
-Specs isn't the hottest ECS around in Rust-world, but it's by far the most mature and well understood. We might very well migrate to something like Legion in the future, but right now Specs is perfectly adequate for our needs, and it also comes with outstanding learning resources (see Learning Path below).
+Shotcaller is built with Minigene, an ASCII/tiled game engine using a custom ECS framework called Plank. Plank is intended to be very similar to Specs, and it should be easy to learn if you've reviewed any Specs-related learning resources (see Learning Path below).
 
 #### Why not Amethyst Engine?
 
