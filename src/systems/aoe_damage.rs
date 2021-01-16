@@ -65,7 +65,7 @@ pub fn aoe_damage_system(
                     |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
                     |_, _, d| d <= RETURN_AOE_RADIUS,
                 ) {
-                    game_events.push(GameEvent::DamageEntity(e, RETURN_AOE_DAMAGE));
+                    game_events.push(GameEvent::DamageEntity(ev.0, e, RETURN_AOE_DAMAGE));
                 }
             }
         }

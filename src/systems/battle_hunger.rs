@@ -17,7 +17,7 @@ pub fn battle_hunger_system(
             if let Some(effectors) = effector {
                 for effector in &effectors.effectors {
                     if effector.effector_key == Effectors::Enraged {
-                        game_events.push(GameEvent::DamageEntity(e, 1.0));
+                        game_events.push(GameEvent::DamageEntity(ev.0, e, 1.0));
                     }
                 }
             }
