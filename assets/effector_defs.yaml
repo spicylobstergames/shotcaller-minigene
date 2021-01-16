@@ -47,6 +47,7 @@ defs:
     duration: 5.0
     effects:
       - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 0.75
   HalfDefense:
     key: HalfDefense
     duration: 5.0
