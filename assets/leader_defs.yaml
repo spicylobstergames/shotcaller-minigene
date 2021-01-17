@@ -42,3 +42,9 @@ defs:
     skills:
       - GreedyTouch
       - AirCorrosion
+  Erno:
+    key: Erno
+    name: "Erno"
+    skills:
+      - SpellSteal
+      - Telekinesis

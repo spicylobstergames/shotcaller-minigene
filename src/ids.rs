@@ -8,6 +8,7 @@ pub enum Stats {
     Mana,
     AttackSpeed,
     EnemiesAround,
+    LeadersAround,
     AttacksDealt,
     AttacksReceived,
     DamageDealt,
@@ -41,6 +42,8 @@ pub enum Skills {
     BattleHunger,
     GreedyTouch,
     AirCorrosion,
+    SpellSteal,
+    Telekinesis,
 }
 
 /// The different items ids.
@@ -65,6 +68,7 @@ pub enum Effectors {
     Enraged,
     HalfDefense,
     DoubleGoldGain,
+    Stun,
 }
 
 /// The different leader ids.
@@ -78,4 +82,5 @@ pub enum Leaders {
     BearPersonLeader,
     AxePersonLeader,
     Celsus,
+    Erno,
 }
