@@ -228,6 +228,7 @@ fn main() -> BError {
         //leader1_proximity_attack_system, // TODO re-enable
         tower_projectile_system,
         update_enemies_around_system,
+        update_leaders_around_system,
         skill_cooldown_system::<Skills>,
         trigger_passive_skill_system::<Stats, Effectors, Skills, Items, (), ()>,
         exec_skill_system::<Stats, Effectors, Skills, Items>,
