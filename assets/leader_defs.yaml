@@ -42,3 +42,9 @@ defs:
     skills:
       - GreedyTouch
       - AirCorrosion
+  SoulsCollector:
+    key: SoulsCollector
+    name: "SoulsCollector"
+    skills:
+      - StealSoul
+      - DarkPresence
