@@ -22,22 +22,15 @@ pub fn update_leaders_around_system(
             pos.unwrap(),
             &*entities,
             &positions,
-            |e, _| teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false),
+            |e, _| teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false) && leaders.get(e).is_some(),
             |_, _, d| d <= radius,
-        );
-
-        let mut leaders_around = vec![];
-        for e in c {
-            if let Some(_) = leaders.get(e.0) {
-                leaders_around.push((e.0, e.1));
-            }
-        }
-
+        )
+        .len() as f64;
         stat.unwrap()
             .stats
             .get_mut(&Stats::LeadersAround)
             .expect("Failed to get LeadersAround stat")
-            .value = leaders_around.len() as f64;
+            .value = c;
     }
     Ok(())
 }
