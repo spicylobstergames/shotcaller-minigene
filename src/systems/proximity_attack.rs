@@ -23,7 +23,14 @@ pub fn proximity_attack_system(
         );
         if let Some((target, p)) = closest {
             if dist(&p, pos.unwrap()) <= CREEP_ATTACK_RADIUS {
-                let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
+                // let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
+                let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value
+                    + stat
+                        .unwrap()
+                        .stats
+                        .get(&Stats::AdditionalAttack)
+                        .unwrap()
+                        .value;
                 v.push((e.unwrap().clone(), target.clone(), damage));
             }
         }
