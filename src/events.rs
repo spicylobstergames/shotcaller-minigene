@@ -35,4 +35,6 @@ pub enum GameEvent {
     SpawnCreep(Point, Team),
     /// Spawns a leader using the `TeamLeaders`' index and a position.
     SpawnLeader(Point, u8),
+    /// Set additional attack for an entity.
+    AdditionalAttack(Entity, f64),
 }

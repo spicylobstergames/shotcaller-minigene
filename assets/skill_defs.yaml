@@ -166,3 +166,26 @@ defs:
           MinValue: 1.0
     item_conditions: []
     stat_effectors: []
+  StealSoul:
+    key: StealSoul
+    name: Steal Soul
+    friendly_name: steal_soul
+    description: Steals the souls of killes enemies with the maximum of 20 souls. Each soul gives 1 point of attack.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  DarkPresence:
+    key: DarkPresence
+    name: Dark Presence
+    friendly_name: dark_presence
+    description: Reduces the defense of the enemies by half in AOE_RADIUS.
+    cooldown: 0.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []
