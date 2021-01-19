@@ -2,13 +2,31 @@ use crate::*;
 
 /// Update additional attack stat.
 pub fn additional_attack_system(
-    stats: &mut Components<StatSet<Stats>>,
+    effector_defs: &EffectorDefinitions<Stats, Effectors>,
+    effectors: &mut Components<EffectorSet<Effectors>>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
+    let additional_attack_effector = effector_defs
+        .defs
+        .get(&Effectors::Root)
+        .expect("Unknown effector key.");
     for ev in game_events.iter() {
         if let GameEvent::AdditionalAttack(e, a) = ev {
-            let entity_stats = stats.get_mut(*e).unwrap();
-            entity_stats.stats.get_mut(&Stats::AdditionalAttack).unwrap().value += a;
+            for _ in 0..(*a as u64) {
+
+                if effectors.get(*e).is_none() {
+                    effectors.insert(*e, EffectorSet::default());
+                }
+
+                effectors
+                    .get_mut(*e)
+                    .unwrap()
+                    .effectors
+                    .push(EffectorInstance::new(
+                        Effectors::AdditionalAttack,
+                        additional_attack_effector.duration,
+                    ))
+            }
         }
     }
 

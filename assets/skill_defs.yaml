@@ -180,7 +180,7 @@ defs:
     key: DarkPresence
     name: Dark Presence
     friendly_name: dark_presence
-    description: Reduces the defense of the enemis by half in AOE_RADIUS.
+    description: Reduces the defense of the enemies by half in AOE_RADIUS.
     cooldown: 0.0
     passive: true
     conditions:

@@ -17,7 +17,6 @@ pub enum Stats {
     Gold,
     GoldGainMultiplier,
     Souls,
-    AdditionalAttack,
 }
 
 impl Default for Stats {
