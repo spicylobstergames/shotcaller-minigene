@@ -189,3 +189,24 @@ defs:
           MinValue: 1.0
     item_conditions: []
     stat_effectors: []
+  ReturnDamage:
+    key: ReturnDamage
+    name: Return Damage
+    friendly_name: return_damage
+    description: Returns half of the received damage.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  BattleCall:
+    key: BattleCall
+    name: Battle Call
+    friendly_name: battle_call
+    description: Increase the move speed for 5s. Cooldown 10s.
+    cooldown: 10.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors:
+      - BattleHungry
