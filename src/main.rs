@@ -241,6 +241,7 @@ fn main() -> BError {
         additional_attack_system,
         aoe_damage_system,
         damage_entity_system,
+        return_damage_system,
         steal_soul_system,
         transfer_gold_system,
         kill_entity_system,
