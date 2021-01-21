@@ -22,7 +22,10 @@ pub fn update_leaders_around_system(
             pos.unwrap(),
             &*entities,
             &positions,
-            |e, _| teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false) && leaders.get(e).is_some(),
+            |e, _| {
+                teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false)
+                    && leaders.get(e).is_some()
+            },
             |_, _, d| d <= radius,
         )
         .len() as f64;

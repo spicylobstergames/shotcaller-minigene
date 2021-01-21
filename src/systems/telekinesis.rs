@@ -20,8 +20,10 @@ pub fn telekinesis_system(
                 let closest_enemy = enemies_around.first().unwrap().0;
                 let target_enemy = enemies_around.get(1).unwrap().0;
 
-                positions.get_mut(closest_enemy).unwrap().x = positions.get(target_enemy).unwrap().x;
-                positions.get_mut(closest_enemy).unwrap().y = positions.get(target_enemy).unwrap().y;
+                positions.get_mut(closest_enemy).unwrap().x =
+                    positions.get(target_enemy).unwrap().x;
+                positions.get_mut(closest_enemy).unwrap().y =
+                    positions.get(target_enemy).unwrap().y;
             }
         }
     }
