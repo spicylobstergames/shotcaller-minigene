@@ -46,6 +46,8 @@ pub enum Skills {
     DarkPresence,
     ReturnDamage,
     BattleCall,
+    ThornVolley,
+    BackEndurance,
 }
 
 /// The different items ids.
@@ -71,6 +73,7 @@ pub enum Effectors {
     HalfDefense,
     DoubleGoldGain,
     AdditionalAttack,
+    AdditionalDefense,
 }
 
 /// The different leader ids.
@@ -86,4 +89,5 @@ pub enum Leaders {
     CentaurPersonLeader,
     Celsus,
     SoulsCollector,
+    BristlebackPersonLeader,
 }
