@@ -1,5 +1,6 @@
 //! The shotcaller game. A new MOBA!
 #![warn(missing_docs)]
+#![feature(map_into_keys_values)]
 
 #[macro_use]
 extern crate serde;
@@ -240,6 +241,7 @@ fn main() -> BError {
         battle_hunger_system,
         air_corrosion_system,
         telekinesis_system,
+        spell_steal_system,
         aoe_damage_system,
         damage_entity_system,
         transfer_gold_system,
