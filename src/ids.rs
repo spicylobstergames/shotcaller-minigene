@@ -44,6 +44,8 @@ pub enum Skills {
     AirCorrosion,
     StealSoul,
     DarkPresence,
+    ReturnDamage,
+    BattleCall,
 }
 
 /// The different items ids.
@@ -81,6 +83,7 @@ pub enum Leaders {
     TreePersonLeader,
     BearPersonLeader,
     AxePersonLeader,
+    CentaurPersonLeader,
     Celsus,
     SoulsCollector,
 }
