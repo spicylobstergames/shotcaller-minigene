@@ -1,6 +1,6 @@
 use crate::*;
 
-/// Update additional attack stat.
+/// Update additional attack effector.
 pub fn additional_attack_system(
     effector_defs: &EffectorDefinitions<Stats, Effectors>,
     effectors: &mut Components<EffectorSet<Effectors>>,
@@ -8,7 +8,7 @@ pub fn additional_attack_system(
 ) -> SystemResult {
     let additional_attack_effector = effector_defs
         .defs
-        .get(&Effectors::Root)
+        .get(&Effectors::AdditionalAttack)
         .expect("Unknown effector key.");
     for ev in game_events.iter() {
         if let GameEvent::AdditionalAttack(e, a) = ev {
