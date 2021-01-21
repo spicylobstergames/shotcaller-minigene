@@ -17,6 +17,7 @@ pub enum Stats {
     ActionPointRefillRate,
     Gold,
     GoldGainMultiplier,
+    Souls,
 }
 
 impl Default for Stats {
@@ -44,6 +45,8 @@ pub enum Skills {
     AirCorrosion,
     SpellSteal,
     Telekinesis,
+    StealSoul,
+    DarkPresence,
 }
 
 /// The different items ids.
@@ -69,6 +72,7 @@ pub enum Effectors {
     HalfDefense,
     DoubleGoldGain,
     Stun,
+    AdditionalAttack,
 }
 
 /// The different leader ids.
@@ -83,4 +87,5 @@ pub enum Leaders {
     AxePersonLeader,
     Celsus,
     Erno,
+    SoulsCollector,
 }

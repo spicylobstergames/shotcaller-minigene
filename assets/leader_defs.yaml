@@ -48,3 +48,9 @@ defs:
     skills:
       - SpellSteal
       - Telekinesis
+  SoulsCollector:
+    key: SoulsCollector
+    name: "SoulsCollector"
+    skills:
+      - StealSoul
+      - DarkPresence

@@ -66,3 +66,9 @@ defs:
     effects:
       - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.0
+  AdditionalAttack:
+    key: AdditionalAttack
+    duration: 0.0
+    effects:
+      - - Attack
+        - Additive: 1.0
