@@ -46,6 +46,8 @@ pub enum Skills {
     DarkPresence,
     ReturnDamage,
     BattleCall,
+    CausticScales,
+    VenomBite,
 }
 
 /// The different items ids.
@@ -60,6 +62,7 @@ pub enum Items {
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
+    DamageOverTime,
     DoubleDamage,
     DoubleAttackSpeed,
     Root,
@@ -85,5 +88,6 @@ pub enum Leaders {
     AxePersonLeader,
     CentaurPersonLeader,
     Celsus,
+    GreenSnakeLeader,
     SoulsCollector,
 }

@@ -235,6 +235,7 @@ fn main() -> BError {
         nature_summon_system,
         bear_spawner_system,
         savagery_system,
+        caustic_scales_system,
         battle_hunger_system,
         air_corrosion_system,
         dark_presence_system,

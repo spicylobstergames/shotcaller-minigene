@@ -66,3 +66,9 @@ defs:
     effects:
       - - Attack
         - Additive: 1.0
+  DamageOverTime:
+    key: DamageOverTime
+    duration: 10.0
+    effects: 
+      - - Health
+        - Additive: -1.0

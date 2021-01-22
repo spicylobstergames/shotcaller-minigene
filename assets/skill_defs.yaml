@@ -210,3 +210,23 @@ defs:
     item_conditions: []
     stat_effectors:
       - BattleHungry
+  CausticScales:
+    key: CausticScales
+    name: Caustic Scales
+    friendly_name: caustic_scales
+    description: Applies damage over time and armor reduction for any enemy that attacks/damages this leader.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  VenomBite:
+    key: VenomBite
+    name: Venom Bite
+    friendly_name: venom_bite
+    description: Every attack applies damage over time and slow. Stacks up to 5 instances.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
