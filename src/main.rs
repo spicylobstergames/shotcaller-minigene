@@ -469,16 +469,16 @@ fn main() -> BError {
 
     let team_leaders = TeamLeaders::new(
         vec![
-            Leaders::Generic1,
-            Leaders::Generic2,
-            Leaders::Generic3,
+            Leaders::AxePersonLeader,
+            Leaders::Celsus,
+            Leaders::SoulsCollector,
             Leaders::TreePersonLeader,
             Leaders::BearPersonLeader,
         ],
         vec![
-            Leaders::Generic1,
-            Leaders::Generic2,
-            Leaders::Generic3,
+            Leaders::CentaurPersonLeader,
+            Leaders::SoulsCollector,
+            Leaders::Celsus,
             Leaders::TreePersonLeader,
             Leaders::BearPersonLeader,
         ],
