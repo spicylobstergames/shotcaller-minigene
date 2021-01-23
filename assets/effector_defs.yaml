@@ -72,3 +72,9 @@ defs:
     effects: 
       - - Health
         - Additive: -1.0
+  AttackSpeedDecrease:
+    key: AttackSpeedIncrease
+    duration: 10.0
+    effects:
+      - - AttackSpeed
+        - MultiplicativeMultiplier: 0.8

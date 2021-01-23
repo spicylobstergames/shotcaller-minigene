@@ -66,6 +66,7 @@ pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
     Root,
+    AttackSpeedDecrease,
     AttackSpeedIncrease,
     HalfMovementSpeed,
     Savagery,
