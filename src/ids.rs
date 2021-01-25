@@ -65,6 +65,7 @@ pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
     CausticScales,
+    HemotoxicVenom,
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,

@@ -214,7 +214,7 @@ defs:
     key: CausticScales
     name: Caustic Scales
     friendly_name: caustic_scales
-    description: Applies damage over time and armor reduction for any enemy that attacks/damages this leader.
+    description: Applies damage over time and attack speed reduction for any enemy that attacks/damages this leader.
     cooldown: 0.0
     passive: true
     conditions: []

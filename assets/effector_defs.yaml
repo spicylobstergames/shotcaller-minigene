@@ -71,6 +71,14 @@ defs:
     duration: 10.0
     effects: 
       - - Health
-        - Additive: -3.0
+        - Additive: -6.0
       - - AttackSpeed
+        - MultiplicativeMultiplier: 0.8
+  HemotoxicVenom:
+    key: HemotoxicVenom
+    duration: 10.0
+    effects: 
+      - - Health
+        - Additive: -3.0
+      - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.8
