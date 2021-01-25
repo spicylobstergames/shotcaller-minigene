@@ -47,6 +47,10 @@ pub enum Skills {
     Telekinesis,
     StealSoul,
     DarkPresence,
+    ReturnDamage,
+    BattleCall,
+    ThornVolley,
+    BackEndurance,
 }
 
 /// The different items ids.
@@ -73,6 +77,7 @@ pub enum Effectors {
     DoubleGoldGain,
     Stun,
     AdditionalAttack,
+    AdditionalDefense,
 }
 
 /// The different leader ids.
@@ -85,7 +90,9 @@ pub enum Leaders {
     TreePersonLeader,
     BearPersonLeader,
     AxePersonLeader,
+    CentaurPersonLeader,
     Celsus,
     Erno,
     SoulsCollector,
+    BristlebackPersonLeader,
 }

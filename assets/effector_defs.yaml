@@ -72,3 +72,9 @@ defs:
     effects:
       - - Attack
         - Additive: 1.0
+  AdditionalDefense:
+    key: AdditionalDefense
+    duration: 0.0
+    effects:
+      - - Defense
+        - Additive: 1.0

@@ -54,3 +54,15 @@ defs:
     skills:
       - StealSoul
       - DarkPresence
+  CentaurPersonLeader:
+    key: CentaurPersonLeader
+    name: "CentaurPersonLeader"
+    skills:
+      - ReturnDamage
+      - BattleCall
+  BristlebackPersonLeader:
+    key: BristlebackPersonLeader
+    name: "BristlebackPersonLeader"
+    skills:
+      - ThornVolley
+      - BackEndurance

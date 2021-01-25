@@ -215,3 +215,47 @@ defs:
           MinValue: 1.0
     item_conditions: []
     stat_effectors: []
+  ReturnDamage:
+    key: ReturnDamage
+    name: Return Damage
+    friendly_name: return_damage
+    description: Returns half of the received damage.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []
+  BattleCall:
+    key: BattleCall
+    name: Battle Call
+    friendly_name: battle_call
+    description: Increase the move speed for 5s. Cooldown 10s.
+    cooldown: 10.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors:
+      - BattleHungry
+  ThornVolley:
+    key: ThornVolley
+    name: Thorn Volley
+    friendly_name: thorn_volley
+    description: Deals AOE damage when receives some damage. Cooldown 2s.
+    cooldown: 2.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []
+  BackEndurance:
+    key: BackEndurance
+    name: Back Endurance
+    friendly_name: back_endurance
+    description: Increases the defense for each attack received.
+    cooldown: 0.0
+    passive: true
+    conditions: []
+    item_conditions: []
+    stat_effectors: []

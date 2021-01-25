@@ -2,6 +2,8 @@
 
 An RTS / MOBA game with multiple frontends: ASCII-rendered or tiles-rendered. See the [design document](https://www.notion.so/erlendsh/Shotcaller-7374d2b2819c42ccb40f01dc7089d419) for much more.
 
+![shotcaller-2guis](./media/shotcaller-art.png)
+
 ### Summary
 
 In the way "[MOBA](https://en.wikipedia.org/wiki/Multiplayer_online_battle_arena)" games such as DOTA2 or LoL are usually played, the captain of the team is the default *shotcaller*.

@@ -37,4 +37,6 @@ pub enum GameEvent {
     SpawnLeader(Point, u8),
     /// Set additional attack for an entity.
     AdditionalAttack(Entity, f64),
+    /// Set additional defense for an entity.
+    AdditionalDefense(Entity, f64),
 }
