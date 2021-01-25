@@ -7,19 +7,12 @@ pub fn caustic_scales_system(
     effectors: &mut Components<EffectorSet<Effectors>>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
-    let mut apply_acid = None;
 
     let dot_effector = effector_defs
         .defs
-        .get(&Effectors::DamageOverTime)
+        .get(&Effectors::CausticScales)
         .expect("Unknown effector key.");
-
-    let asd_effector = effector_defs
-        .defs
-        .get(&Effectors::AttackSpeedDecrease)
-        .expect("Unknown effector key.");
-
-    
+   
 
     for ev in game_events.iter() {
         if let GameEvent::DamageEntity(a, t, _dmg) = ev {
@@ -31,36 +24,34 @@ pub fn caustic_scales_system(
                         effectors.insert(*a, EffectorSet::default());
                     }
 
-                    // TODO: maybe better to have a single effector for bpoth effects? Depends on design philosophy IMO.
-                    // TODO: if effectors already exist, renew duration instead.
-                    effectors
+                    let current_effectors = &mut effectors
                     .get_mut(*a)
                     .unwrap()
-                    .effectors
-                    .push(EffectorInstance::new(
-                        Effectors::DamageOverTime,
-                        dot_effector.duration,
-                    ));
+                    .effectors;
 
-                    // TODO: beautify code to not have repetitions like this
-                    effectors
-                    .get_mut(*a)
-                    .unwrap()
-                    .effectors
-                    .push(EffectorInstance::new(
-                        Effectors::AttackSpeedDecrease,
-                        dot_effector.duration,
-                    ));
-
-
+                    // If CausticScales already applied, then just refresh the duration
+                    if current_effectors.iter().any(|x| x.effector_key == Effectors::CausticScales ){
+                        for i in 0..current_effectors.len(){
+                            if current_effectors[i].effector_key == Effectors::CausticScales {
+                                current_effectors[i].disable_in = dot_effector.duration;
+                            }
+                        }
+                    }
+                    // else add the effector:
+                    else {
+                        effectors
+                        .get_mut(*a)
+                        .unwrap()
+                        .effectors
+                        .push(EffectorInstance::new(
+                            Effectors::CausticScales,
+                            dot_effector.duration,
+                        ));  
+                    }
+                
                 }
             }
         }
-    }
-
-    // this part necessary?
-    if let Some(event) = apply_acid {
-        game_events.push(event);
     }
 
     Ok(())

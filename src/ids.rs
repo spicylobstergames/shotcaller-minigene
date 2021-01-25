@@ -62,11 +62,10 @@ pub enum Items {
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum Effectors {
-    DamageOverTime,
     DoubleDamage,
     DoubleAttackSpeed,
+    CausticScales,
     Root,
-    AttackSpeedDecrease,
     AttackSpeedIncrease,
     HalfMovementSpeed,
     Savagery,

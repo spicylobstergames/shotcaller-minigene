@@ -66,15 +66,11 @@ defs:
     effects:
       - - Attack
         - Additive: 1.0
-  DamageOverTime:
-    key: DamageOverTime
+  CausticScales:
+    key: CausticScales
     duration: 10.0
     effects: 
       - - Health
-        - Additive: -1.0
-  AttackSpeedDecrease:
-    key: AttackSpeedIncrease
-    duration: 10.0
-    effects:
+        - Additive: -3.0
       - - AttackSpeed
         - MultiplicativeMultiplier: 0.8
