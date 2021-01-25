@@ -13,7 +13,6 @@ pub fn additional_attack_system(
     for ev in game_events.iter() {
         if let GameEvent::AdditionalAttack(e, a) = ev {
             for _ in 0..(*a as u64) {
-
                 if effectors.get(*e).is_none() {
                     effectors.insert(*e, EffectorSet::default());
                 }

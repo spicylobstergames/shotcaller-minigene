@@ -17,13 +17,16 @@ pub fn telekinesis_system(
                     |e, _| teams.get(e).map(|t| t != team).unwrap_or(false),
                     |_, _, d| d <= RANGED_LEADER_ATTACK_RADIUS,
                 );
-                let closest_enemy = enemies_around.first().unwrap().0;
-                let target_enemy = enemies_around.get(1).unwrap().0;
 
-                positions.get_mut(closest_enemy).unwrap().x =
-                    positions.get(target_enemy).unwrap().x;
-                positions.get_mut(closest_enemy).unwrap().y =
-                    positions.get(target_enemy).unwrap().y;
+                if enemies_around.len() >= 2 {
+                    let closest_enemy = enemies_around.first().unwrap().0;
+                    let target_enemy = enemies_around.get(1).unwrap().0;
+
+                    positions.get_mut(closest_enemy).unwrap().x =
+                        positions.get(target_enemy).unwrap().x;
+                    positions.get_mut(closest_enemy).unwrap().y =
+                        positions.get(target_enemy).unwrap().y;
+                }
             }
         }
     }
