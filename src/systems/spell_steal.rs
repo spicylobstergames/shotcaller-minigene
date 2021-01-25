@@ -30,12 +30,12 @@ pub fn spell_steal_system(
                         .map(|t| t.0)
                         .unwrap();
 
-                        let skill = skillsets
+                        let skill = *skillsets
                             .get(closest_leader)
                             .unwrap()
                             .clone()
                             .skills
-                            .into_values()
+                            .keys()
                             .next()
                             .unwrap();
 
@@ -43,7 +43,7 @@ pub fn spell_steal_system(
                             .get_mut(e)
                             .unwrap()
                             .skills
-                            .insert(skill.skill_key, skill);
+                            .insert(skill, SkillInstance::new(skill, 0.0));
                         spell_steal.get_mut(e).unwrap().0 = true;
                     }
                 }

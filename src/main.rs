@@ -1,6 +1,5 @@
 //! The shotcaller game. A new MOBA!
 #![warn(missing_docs)]
-#![feature(map_into_keys_values)]
 
 #[macro_use]
 extern crate serde;
