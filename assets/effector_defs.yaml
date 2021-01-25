@@ -82,3 +82,4 @@ defs:
         - Additive: -3.0
       - - ActionPointRefillRate
         - MultiplicativeMultiplier: 0.8
+        

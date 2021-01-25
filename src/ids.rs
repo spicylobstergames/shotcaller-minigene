@@ -89,6 +89,6 @@ pub enum Leaders {
     AxePersonLeader,
     CentaurPersonLeader,
     Celsus,
-    GreenSnakeLeader,
     SoulsCollector,
+    Adder,
 }

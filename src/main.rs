@@ -473,7 +473,7 @@ fn main() -> BError {
         vec![
             Leaders::Generic1,
             Leaders::Generic2,
-            Leaders::GreenSnakeLeader,
+            Leaders::Adder,
             Leaders::TreePersonLeader,
             Leaders::BearPersonLeader,
         ],
