@@ -289,7 +289,8 @@ fn main() -> BError {
 
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
-    world.initialize::<Components<Viewshed>>();
+    world.initialize::<Components<LineOfSight>>();
+    world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
@@ -420,6 +421,7 @@ fn main() -> BError {
             Team::Me,
             Barrack,
             default_stats.clone(),
+            LineOfSight::new(15),
         );
         // Creep spawners
         centity!(
@@ -427,6 +429,7 @@ fn main() -> BError {
             Point::new(x, y - 1),
             CreepSpawner(0, CREEP_SPAWN_TICKS),
             Team::Me,
+            LineOfSight::new(15),
         );
     }
 
@@ -467,6 +470,7 @@ fn main() -> BError {
                 SpriteIndex(80),
                 Team::Me,
                 default_stats.clone(),
+                LineOfSight::new(6),
             );
         }
     }

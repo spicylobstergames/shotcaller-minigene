@@ -13,7 +13,7 @@ pub fn spawn_creep_system(
     teams: &mut Components<Team>,
     sprites: &mut Components<Sprite>,
     sprite_indices: &mut Components<SpriteIndex>,
-    viewsheds: &mut Components<Viewshed>,
+    sights: &mut Components<LineOfSight>,
 ) -> SystemResult {
     for ev in game_events.iter() {
         if let GameEvent::SpawnCreep(pos, team) = ev {
@@ -38,7 +38,7 @@ pub fn spawn_creep_system(
                 },
             );
             sprite_indices.insert(creep, SpriteIndex(9));
-            viewsheds.insert(creep, Viewshed::new(Vec::new(), 5));
+            sights.insert(creep, LineOfSight::new(5));
         }
     }
     Ok(())

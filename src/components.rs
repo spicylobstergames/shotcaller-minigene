@@ -62,3 +62,8 @@ pub enum Team {
     /// The opponent's team.
     Other,
 }
+
+#[derive(new)]
+pub struct LineOfSight {
+    pub range: i32,
+}
