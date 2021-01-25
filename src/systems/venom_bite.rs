@@ -7,7 +7,6 @@ pub fn venom_bite_system(
     effectors: &mut Components<EffectorSet<Effectors>>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
-
     let dot_effector = effector_defs
         .defs
         .get(&Effectors::VenomDamage)
@@ -33,8 +32,10 @@ pub fn venom_bite_system(
                     // TODO: stack limit should be specified in data files, not hardcoded
                     if current_effectors
                         .iter()
-                        .filter(|x| (x.effector_key == Effectors::VenomDamage) | 
-                        (x.effector_key == Effectors::VenomDamage))
+                        .filter(|x| {
+                            (x.effector_key == Effectors::VenomDamage)
+                                | (x.effector_key == Effectors::VenomDamage)
+                        })
                         .count()
                         < 5
                     {
