@@ -64,8 +64,10 @@ pub enum Items {
 pub enum Effectors {
     DoubleDamage,
     DoubleAttackSpeed,
-    CausticScales,
-    HemotoxicVenom,
+    CausticDamage,
+    CausticSlow,
+    VenomDamage,
+    VenomSlow,
     Root,
     AttackSpeedIncrease,
     HalfMovementSpeed,

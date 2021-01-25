@@ -66,16 +66,26 @@ defs:
     effects:
       - - Attack
         - Additive: 1.0
-  CausticScales:
-    key: CausticScales
+  CausticDamage:
+    key: CausticDamage
     duration: 10.0
     effects: 
       - - Health
         - Additive: -6.0
+  CausticSlow:
+    key: CausticSlow
+    duration: 10.0
+    effects: 
       - - AttackSpeed
         - MultiplicativeMultiplier: 0.8
-  HemotoxicVenom:
-    key: HemotoxicVenom
+  VenomSlow:
+    key: VenomSlow
+    duration: 10.0
+    effects:
+      - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 0.8
+  VenomDamage:
+    key: VenomDamage
     duration: 10.0
     effects: 
       - - Health
