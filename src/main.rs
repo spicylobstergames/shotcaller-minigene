@@ -23,6 +23,7 @@ const SLOW_AOE_RADIUS: f32 = 8.0;
 const SLOW_AOE_DAMAGE: f64 = 50.0;
 const RETURN_AOE_RADIUS: f32 = 4.0;
 const RETURN_AOE_DAMAGE: f64 = 20.0;
+const STUN_AOE_RADIUS: f32 = 4.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
@@ -227,6 +228,7 @@ fn main() -> BError {
         //leader1_proximity_attack_system, // TODO re-enable
         tower_projectile_system,
         update_enemies_around_system,
+        update_leaders_around_system,
         skill_cooldown_system::<Skills>,
         trigger_passive_skill_system::<Stats, Effectors, Skills, Items, (), ()>,
         exec_skill_system::<Stats, Effectors, Skills, Items>,
@@ -237,6 +239,8 @@ fn main() -> BError {
         savagery_system,
         battle_hunger_system,
         air_corrosion_system,
+        telekinesis_system,
+        spell_steal_system,
         dark_presence_system,
         additional_attack_system,
         additional_defense_system,

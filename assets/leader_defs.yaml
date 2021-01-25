@@ -42,6 +42,12 @@ defs:
     skills:
       - GreedyTouch
       - AirCorrosion
+  Erno:
+    key: Erno
+    name: "Erno"
+    skills:
+      - SpellSteal
+      - Telekinesis
   SoulsCollector:
     key: SoulsCollector
     name: "SoulsCollector"

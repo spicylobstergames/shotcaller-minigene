@@ -60,6 +60,12 @@ defs:
    effects:
      - - GoldGainMultiplier
        - MultiplicativeMultiplier: 2.0
+  Stun:
+    key: Stun
+    duration: 2.0
+    effects:
+      - - ActionPointRefillRate
+        - MultiplicativeMultiplier: 0.0
   AdditionalAttack:
     key: AdditionalAttack
     duration: 0.0

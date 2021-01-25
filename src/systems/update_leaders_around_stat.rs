@@ -1,11 +1,12 @@
 use crate::*;
 
-/// Update the `EnemiesAround` stat using the entities that are close to the entity.
-pub fn update_enemies_around_system(
+/// Update the `LeadersAround` stat using the entities that are close to the entity.
+pub fn update_leaders_around_system(
     entities: &Entities,
     positions: &Components<Point>,
     teams: &Components<Team>,
     skills: &Components<SkillSet<Skills>>,
+    leaders: &Components<Leader>,
     stats: &mut Components<StatSet<Stats>>,
 ) -> SystemResult {
     for (pos, stat, team, skill) in join!(&positions && &mut stats && &teams && &skills) {
@@ -21,14 +22,17 @@ pub fn update_enemies_around_system(
             pos.unwrap(),
             &*entities,
             &positions,
-            |e, _| teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false),
+            |e, _| {
+                teams.get(e).map(|t| t != team.unwrap()).unwrap_or(false)
+                    && leaders.get(e).is_some()
+            },
             |_, _, d| d <= radius,
         )
         .len() as f64;
         stat.unwrap()
             .stats
-            .get_mut(&Stats::EnemiesAround)
-            .expect("Failed to get EnemiesAround stat")
+            .get_mut(&Stats::LeadersAround)
+            .expect("Failed to get LeadersAround stat")
             .value = c;
     }
     Ok(())
