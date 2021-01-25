@@ -210,6 +210,7 @@ fn main() -> BError {
     let mut dispatcher = DispatcherBuilder::new();
     dispatcher!(
         dispatcher,
+        fog_of_vision_system,
         combine_collision_system,
         input_driver::<InputEvent>,
         update_collision_resource_system,
@@ -288,6 +289,7 @@ fn main() -> BError {
 
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
+    world.initialize::<Components<Viewshed>>();
     world.initialize::<TeamLeaders>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
