@@ -54,3 +54,9 @@ defs:
     skills:
       - ReturnDamage
       - BattleCall
+  BristlebackPersonLeader:
+    key: BristlebackPersonLeader
+    name: "BristlebackPersonLeader"
+    skills:
+      - ThornVolley
+      - BackEndurance
