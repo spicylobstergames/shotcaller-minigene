@@ -25,6 +25,7 @@ pub fn spawn_creep_system(
             stats.insert(creep, stat_def.to_statset());
             proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
             let bg = if *team == Team::Me {
+                sights.insert(creep, LineOfSight::new(5));
                 RGBA::named(GREEN)
             } else {
                 RGBA::named(RED)
@@ -38,7 +39,6 @@ pub fn spawn_creep_system(
                 },
             );
             sprite_indices.insert(creep, SpriteIndex(9));
-            sights.insert(creep, LineOfSight::new(5));
         }
     }
     Ok(())
