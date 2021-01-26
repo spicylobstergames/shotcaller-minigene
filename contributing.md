@@ -26,7 +26,6 @@ If you’ve grokked the following resources, you should be able to work on the S
 
 #### Essentials
 - https://sokoban.iolivia.me/
-- https://pragprog.com/titles/hwrust/hands-on-rust/
 - https://jojolepro.com/blog/2021-01-13_planks_ecs/
 
 #### Extended
@@ -35,6 +34,7 @@ If you’ve grokked the following resources, you should be able to work on the S
   - https://stevedonovan.github.io/rust-gentle-intro/readme.html
   - https://doc.rust-lang.org/rust-by-example/
 - https://bfnightly.bracketproductions.com/rustbook/chapter_0.html
+- https://pragprog.com/titles/hwrust/hands-on-rust/ (ask Erlend for early-access)
 - https://specs.amethyst.rs/docs/tutorials/01_intro.html
 
 #### Optional
