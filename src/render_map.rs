@@ -25,78 +25,81 @@ pub fn create_map_bg<'a>(world: &mut World) {
 }
 
 /// Renders the user interface on the screen.
-pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
-    ctx.draw_box(
-        PLAY_WIDTH,
-        0,
-        SCREEN_WIDTH - PLAY_WIDTH - 1,
-        SCREEN_HEIGHT - 1,
-        WHITE,
-        BLACK,
-    );
-    ctx.print(PLAY_WIDTH + 1, 1, "Leaders");
-    ctx.print(PLAY_WIDTH + 1, 3, "My Team");
+pub fn render_ui(_world: &mut World, _ctx: &mut BTerm) {
+    #[cfg(not(feature = "headless"))]
+    {
+        _ctx.draw_box(
+            PLAY_WIDTH,
+            0,
+            SCREEN_WIDTH - PLAY_WIDTH - 1,
+            SCREEN_HEIGHT - 1,
+            WHITE,
+            BLACK,
+        );
+        _ctx.print(PLAY_WIDTH + 1, 1, "Leaders");
+        _ctx.print(PLAY_WIDTH + 1, 3, "My Team");
 
-    let selected = world.get::<SelectedLeader>().unwrap().0;
+        let selected = _world.get::<SelectedLeader>().unwrap().0;
 
-    for (i, key) in world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
-        let name = world
-            .get::<LeaderDefinitions>()
-            .unwrap()
-            .defs
-            .get(key)
-            .unwrap()
-            .name
-            .clone();
-        ctx.print(PLAY_WIDTH + 1, i + 4, format!(" {}", name));
-    }
-    ctx.print(PLAY_WIDTH + 1, 10, "Enemy Team");
-    for (i, key) in world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
-        let name = world
-            .get::<LeaderDefinitions>()
-            .unwrap()
-            .defs
-            .get(key)
-            .unwrap()
-            .name
-            .clone();
-        ctx.print(PLAY_WIDTH + 1, i + 11, format!(" Leader {}", name));
-    }
-
-    ctx.print(PLAY_WIDTH + 1, selected + 4, ">");
-
-    ctx.print(PLAY_WIDTH + 1, 17, "Keybinds");
-
-    let hm = world.get::<HashMap<char, InputEvent>>().unwrap();
-    let mut keybinds = hm.iter().collect::<Vec<_>>();
-    keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
-    for (idx, (k, v)) in keybinds.iter().enumerate() {
-        if **k as u32 == 13 {
-            ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Enter:{:?}", v));
-        } else if **k as u32 == 27 {
-            ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Esc:{:?}", v));
-        } else {
-            ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("{}:{:?}", k, v));
+        for (i, key) in _world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
+            let name = _world
+                .get::<LeaderDefinitions>()
+                .unwrap()
+                .defs
+                .get(key)
+                .unwrap()
+                .name
+                .clone();
+            _ctx.print(PLAY_WIDTH + 1, i + 4, format!(" {}", name));
         }
-    }
+        _ctx.print(PLAY_WIDTH + 1, 10, "Enemy Team");
+        for (i, key) in _world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
+            let name = _world
+                .get::<LeaderDefinitions>()
+                .unwrap()
+                .defs
+                .get(key)
+                .unwrap()
+                .name
+                .clone();
+            _ctx.print(PLAY_WIDTH + 1, i + 11, format!(" Leader {}", name));
+        }
 
-    let game_stats = world.get::<GameStats>().unwrap();
-    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 7, "Total Damage");
-    ctx.print(
-        PLAY_WIDTH + 1,
-        SCREEN_HEIGHT - 6,
-        format!("{:.2}", game_stats.damage_dealt),
-    );
-    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 5, "Kills");
-    ctx.print(
-        PLAY_WIDTH + 1,
-        SCREEN_HEIGHT - 4,
-        format!("{}", game_stats.kill_count),
-    );
-    ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 3, "Earned Gold");
-    ctx.print(
-        PLAY_WIDTH + 1,
-        SCREEN_HEIGHT - 2,
-        format!("{}", game_stats.earned_gold),
-    );
+        _ctx.print(PLAY_WIDTH + 1, selected + 4, ">");
+
+        _ctx.print(PLAY_WIDTH + 1, 17, "Keybinds");
+
+        let hm = _world.get::<HashMap<char, InputEvent>>().unwrap();
+        let mut keybinds = hm.iter().collect::<Vec<_>>();
+        keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
+        for (idx, (k, v)) in keybinds.iter().enumerate() {
+            if **k as u32 == 13 {
+                _ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Enter:{:?}", v));
+            } else if **k as u32 == 27 {
+                _ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Esc:{:?}", v));
+            } else {
+                _ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("{}:{:?}", k, v));
+            }
+        }
+
+        let game_stats = _world.get::<GameStats>().unwrap();
+        _ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 7, "Total Damage");
+        _ctx.print(
+            PLAY_WIDTH + 1,
+            SCREEN_HEIGHT - 6,
+            format!("{:.2}", game_stats.damage_dealt),
+        );
+        _ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 5, "Kills");
+        _ctx.print(
+            PLAY_WIDTH + 1,
+            SCREEN_HEIGHT - 4,
+            format!("{}", game_stats.kill_count),
+        );
+        _ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 3, "Earned Gold");
+        _ctx.print(
+            PLAY_WIDTH + 1,
+            SCREEN_HEIGHT - 2,
+            format!("{}", game_stats.earned_gold),
+        );
+    }
 }

@@ -8,6 +8,8 @@ edition = "2018"
 default = ["opengl"]
 terminal = ["minigene/terminal"]
 opengl = ["minigene/opengl"]
+# Note: A rendering backend must still be specified if running headlessly
+headless = ["minigene/headless"]
 wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook", "opengl"]
 
 [dependencies]
