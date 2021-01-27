@@ -1,6 +1,6 @@
 use crate::*;
 
-/// Spawns a creep using the provided event.
+/// Spawns a leader using the provided event.
 pub fn spawn_leader_system(
     game_events: &Vec<GameEvent>,
     stat_def: &StatDefinitions<Stats>,

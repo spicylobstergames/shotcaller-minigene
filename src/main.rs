@@ -6,6 +6,7 @@ extern crate serde;
 
 use minigene::*;
 use std::collections::HashMap;
+use rand::{ Rng, thread_rng };
 
 add_wasm_support!();
 
@@ -473,22 +474,46 @@ fn main() -> BError {
         }
     }
 
-    let team_leaders = TeamLeaders::new(
-        vec![
-            Leaders::AxePersonLeader,
-            Leaders::Celsus,
-            Leaders::SoulsCollector,
-            Leaders::TreePersonLeader,
-            Leaders::BearPersonLeader,
-        ],
-        vec![
-            Leaders::CentaurPersonLeader,
-            Leaders::SoulsCollector,
-            Leaders::Celsus,
-            Leaders::TreePersonLeader,
-            Leaders::BearPersonLeader,
-        ],
-    );
+    // Spawn leaders
+    // TODO: optimize
+    let mut rng = thread_rng();
+    let leaders_vec = vec![
+        Leaders::Generic1,
+        Leaders::Generic2,
+        Leaders::TreePersonLeader,
+        Leaders::BearPersonLeader,
+        Leaders::AxePersonLeader,
+        Leaders::CentaurPersonLeader,
+        Leaders::Celsus,
+        Leaders::Erno,
+        Leaders::SoulsCollector,
+        Leaders::BristlebackPersonLeader,
+    ];
+
+    let mut team_leaders = TeamLeaders::new(vec![], vec![]);
+    let mut me_number = 0;
+    let mut other_number = 0;
+
+    for leader in leaders_vec {
+        if rng.gen_range(1,3) == 1 {
+            if me_number < 5 {
+                team_leaders.me.push(leader);
+                me_number += 1;
+            } else if other_number < 5 {
+                team_leaders.other.push(leader);
+                other_number += 1;
+            }
+        } else {
+            if other_number < 5 {
+                team_leaders.other.push(leader);
+                other_number += 1;
+            } else if me_number < 5 {
+                team_leaders.me.push(leader);
+                me_number += 1;
+            }
+        }
+    }
+    
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
 
     {
