@@ -5,8 +5,8 @@
 extern crate serde;
 
 use minigene::*;
+use rand::{seq::SliceRandom, thread_rng, Rng};
 use std::collections::HashMap;
-use rand::{ Rng, thread_rng, seq::SliceRandom };
 
 add_wasm_support!();
 
@@ -497,7 +497,7 @@ fn main() -> BError {
     leaders_vec.shuffle(&mut rng);
 
     for leader in leaders_vec {
-        if rng.gen_range(1,3) == 1 {
+        if rng.gen_range(1, 3) == 1 {
             if me_number < 5 {
                 team_leaders.me.push(leader);
                 me_number += 1;
@@ -515,7 +515,7 @@ fn main() -> BError {
             }
         }
     }
-    
+
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
 
     {
