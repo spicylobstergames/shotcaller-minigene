@@ -6,7 +6,7 @@ extern crate serde;
 
 use minigene::*;
 use std::collections::HashMap;
-use rand::{ Rng, thread_rng };
+use rand::{ Rng, thread_rng, seq::SliceRandom };
 
 add_wasm_support!();
 
@@ -16,8 +16,8 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 10;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
-//const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
-const RANGED_LEADER_ATTACK_RADIUS: f32 = 6.3;
+const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
+const RANGED_LEADER_ATTACK_RADIUS: f32 = 21.0;
 const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const SLOW_AOE_RADIUS: f32 = 8.0;
@@ -477,7 +477,7 @@ fn main() -> BError {
     // Spawn leaders
     // TODO: optimize
     let mut rng = thread_rng();
-    let leaders_vec = vec![
+    let mut leaders_vec = vec![
         Leaders::Generic1,
         Leaders::Generic2,
         Leaders::TreePersonLeader,
@@ -493,6 +493,8 @@ fn main() -> BError {
     let mut team_leaders = TeamLeaders::new(vec![], vec![]);
     let mut me_number = 0;
     let mut other_number = 0;
+
+    leaders_vec.shuffle(&mut rng);
 
     for leader in leaders_vec {
         if rng.gen_range(1,3) == 1 {

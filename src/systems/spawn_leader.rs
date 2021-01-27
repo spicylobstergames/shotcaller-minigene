@@ -9,10 +9,12 @@ pub fn spawn_leader_system(
     entities: &mut Entities,
     positions: &mut Components<Point>,
     leaders: &mut Components<Leader>,
-    //simple_movements: &mut Components<Leader1SimpleMovement>,
-    //proximity_attacks: &mut Components<Leader1ProximityAttack>,
-    simple_movements: &mut Components<SimpleMovement>,
-    proximity_attacks: &mut Components<ProximityAttack>,
+    retreats: &mut Components<FleeToBase>,
+    is_caught: &mut Components<IsCaught>,
+    spell_steals: &mut Components<SpellSteal>,
+    leader1_simple_movements: &mut Components<Leader1SimpleMovement>,
+    leader2_simple_movements: &mut Components<Leader2SimpleMovement>,
+    leader1_proximity_attacks: &mut Components<Leader1ProximityAttack>,
     stats: &mut Components<StatSet<Stats>>,
     teams: &mut Components<Team>,
     sprites: &mut Components<Sprite>,
@@ -28,24 +30,12 @@ pub fn spawn_leader_system(
             let team = if *id < 5 { Team::Me } else { Team::Other };
             teams.insert(leader, team);
             stats.insert(leader, stat_def.to_statset());
-            //simple_movements.insert(leader, Leader1SimpleMovement);
-            simple_movements.insert(leader, SimpleMovement);
-            //proximity_attacks.insert(leader, Leader1ProximityAttack::new(CREEP_ATTACK_RADIUS));
-            proximity_attacks.insert(leader, ProximityAttack::new(CREEP_ATTACK_RADIUS));
             let bg = if team == Team::Me {
                 RGBA::named(GREEN)
             } else {
                 RGBA::named(WHITE)
             };
-            sprites.insert(
-                leader,
-                Sprite {
-                    glyph: to_cp437('L'),
-                    fg: RGBA::named(RED),
-                    bg,
-                },
-            );
-            sprite_indices.insert(leader, SpriteIndex(6));
+
             let leader_id = if *id < 5 {
                 team_leaders
                     .me
@@ -56,6 +46,7 @@ pub fn spawn_leader_system(
                     "Leader ID is higher than 9, or there isn't enough leaders in the other team!",
                 )
             };
+
             skillsets.insert(
                 leader,
                 leader_defs
@@ -66,7 +57,172 @@ pub fn spawn_leader_system(
                     .clone()
                     .into(),
             );
+
             effectors.insert(leader, EffectorSet::<Effectors>::default());
+
+            match leader_id {
+                Leaders::Generic1 => {
+                    sprites.insert(
+                        leader,
+                        Sprite { 
+                            glyph: to_cp437('1'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(6));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::Generic2 => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('2'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(5));
+                    leader2_simple_movements.insert(leader, Leader2SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::TreePersonLeader => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('T'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(55));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::BearPersonLeader => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('B'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(9));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::AxePersonLeader => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('A'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(8));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::CentaurPersonLeader => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('N'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(16));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::Celsus => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('C'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(8));
+                    leader2_simple_movements.insert(leader, Leader2SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::Erno => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('E'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(8));
+                    leader2_simple_movements.insert(leader, Leader2SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                    spell_steals.insert(leader, SpellSteal(false));
+                },
+                Leaders::SoulsCollector => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('S'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(19));
+                    leader2_simple_movements.insert(leader, Leader2SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                },
+                Leaders::BristlebackPersonLeader => {
+                    sprites.insert(
+                        leader,
+                        Sprite {
+                            glyph: to_cp437('B'),
+                            fg: RGBA::named(RED),
+                            bg,
+                        },
+                    );
+                    sprite_indices.insert(leader, SpriteIndex(14));
+                    leader1_simple_movements.insert(leader, Leader1SimpleMovement);
+                    leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
+                    // TODO: Add higher threshold for retreating
+                    retreats.insert(leader, FleeToBase(0.0));
+                    is_caught.insert(leader, IsCaught(false));
+                }
+            }
         }
     }
     Ok(())

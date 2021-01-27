@@ -86,7 +86,6 @@ pub enum Effectors {
 pub enum Leaders {
     Generic1,
     Generic2,
-    Generic3,
     TreePersonLeader,
     BearPersonLeader,
     AxePersonLeader,
