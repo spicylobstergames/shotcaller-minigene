@@ -32,6 +32,13 @@ pub fn spawn_leader_system(
             let team = if *id < 5 { Team::Me } else { Team::Other };
             teams.insert(leader, team);
             stats.insert(leader, stat_def.to_statset());
+            stats
+                .get_mut(leader)
+                .unwrap()
+                .stats
+                .get_mut(&Stats::ActionPointRefillRate)
+                .unwrap()
+                .value = 25.0;
             let bg = if team == Team::Me {
                 RGBA::named(GREEN)
             } else {

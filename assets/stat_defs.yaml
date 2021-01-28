@@ -12,7 +12,7 @@ defs:
     key: Health
     name: health
     friendly_name: HP
-    default_value: 100.0
+    default_value: 1000.0
     min_value: ~
     max_value: ~
     icon_path: ~
@@ -84,7 +84,7 @@ defs:
     key: ActionPointRefillRate
     name: action_point_refill_rate
     friendly_name: Action Point Refill Rate
-    default_value: 100.0
+    default_value: 15.0
     min_value: 0
     max_value: ~
     icon_path: ~
