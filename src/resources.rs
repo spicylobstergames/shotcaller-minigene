@@ -39,3 +39,12 @@ pub struct GameStats {
     /// The total gold earned
     pub earned_gold: f64,
 }
+
+/// The mouse data
+#[derive(Clone, Default, new)]
+pub struct Mouse {
+    /// The mouse position x, y
+    pub pos: (i32, i32),
+    /// The left button was clicked
+    pub left_click: bool,
+}

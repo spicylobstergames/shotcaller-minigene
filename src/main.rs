@@ -286,6 +286,7 @@ fn main() -> BError {
         world,
     );
 
+    world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
     world.initialize::<TeamLeaders>();
