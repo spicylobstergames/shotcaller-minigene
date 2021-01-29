@@ -3,46 +3,47 @@ use crate::*;
 /// The default state of the game. Where the gameplay happens.
 pub struct DefaultState;
 
+#[allow(unused_variables)]
 impl minigene::State for DefaultState {
     fn update(
         &mut self,
-        _world: &mut World,
-        _dispatcher: &mut Dispatcher,
-        _ctx: &mut BTerm,
+        world: &mut World,
+        dispatcher: &mut Dispatcher,
+        ctx: &mut BTerm,
     ) -> Trans {
         #[cfg(not(feature = "headless"))]
         {
-            _ctx.set_active_console(0);
-            _ctx.cls();
+            ctx.set_active_console(0);
+            ctx.cls();
             #[cfg(feature = "opengl")]
             {
-                _ctx.set_active_console(1);
-                _ctx.cls();
+                ctx.set_active_console(1);
+                ctx.cls();
             }
             #[cfg(not(feature = "opengl"))]
             {
-                _ctx.set_active_console(0);
-                render(_ctx);
+                ctx.set_active_console(0);
+                render(ctx);
                 render_ascii(
-                    _ctx,
-                    &*_world.get().unwrap(),
-                    &*_world.get().unwrap(),
-                    &*_world.get().unwrap(),
-                    &*_world.get().unwrap(),
+                    ctx,
+                    &*world.get().unwrap(),
+                    &*world.get().unwrap(),
+                    &*world.get().unwrap(),
+                    &*world.get().unwrap(),
                 );
             }
             #[cfg(feature = "opengl")]
             {
-                _ctx.set_active_console(1);
+                ctx.set_active_console(1);
                 render_sprites(
-                    _ctx,
-                    &*_world.get().unwrap(),
-                    &*_world.get().unwrap(),
-                    &*_world.get().unwrap(),
+                    ctx,
+                    &*world.get().unwrap(),
+                    &*world.get().unwrap(),
+                    &*world.get().unwrap(),
                 );
             }
-            _ctx.set_active_console(0);
-            render_ui(_world, _ctx);
+            ctx.set_active_console(0);
+            render_ui(world, ctx);
         }
         Trans::None
     }  
