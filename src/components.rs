@@ -48,6 +48,10 @@ pub struct CreepSpawner(pub u32, pub u32);
 pub struct Base;
 /// Identifies mouse selectable entities
 pub struct MouseSelectable;
+/// Identifies mouse clickable entities
+pub struct MouseClickable;
+/// Identifies mouse hoverable entities
+pub struct MouseHoverable;
 /// Tags an arbitrary entity spawner. Unused.
 pub struct Spawner<F: Fn(&mut World)> {
     /// The spawning function.
