@@ -29,7 +29,8 @@ they have an enum containing the identifiers and a collection of definitions.
 A skillset is the skills a specific leader has access to.
 It is created using a hashmap using the skill's key as key and the a SkillInstance as the value.
 A skill instance is simply the skill's key and the current cooldown (usually 0.0).
-As of 0.4.0, this is automatically done and all you need to worry about is adding your leader and all associated skills to the `assets/leader_defs.yaml` file.
+As of 0.4.0, this is done automatically and all you need to worry about is adding your leader and all associated skills to the `assets/leader_defs.yaml` file.
+To be added to teams, your leader must also be present in the `leaders_vec` variable on line 480 of `main.rs`.
 
 ## Creating a leader's entity
 
@@ -41,6 +42,7 @@ They have:
 - `SpriteIndex`: A number pointing to the 2d sprite in the spritesheet used by the game. There are 10 sprites per row and 10 rows, for a total of 100 sprites.
 - `Team`: Indicates which team the entity is on. Used by AI to determine which entity to attack or follow.
 - `SimpleMovement`: A marker component indicating that this entity should be moved by the SimpleMovementSystem (shared by creeps and leaders).
+- `ProximityAttack`: A marker component indicating that this entity should attack nearby opponents.
 - `Inventory`: An inventory of the items this leader has. This can easily be cloned from the default inventory (default_inventory).
 - `SkillSet`: The skillset we defined earlier for this leader.
 - `AiPath`: The path that this entity will follow while moving. This is used by the AI systems to move the entities around.
@@ -48,9 +50,11 @@ They have:
 - `Name`: The displayed name of the leader.
 - `StatSet`: The current stats of the leader. Can easily be cloned from the default statset (default_stats).
 - `EffectorSet`: Holds the currently active effectors of this leader. Used to keep the `StatSet` with the correct values during gameplay.
-- `FleeToBase`: Marks the health threshold at which a leader retreats back to their base.
-- `IsCaught`: Tells whether or not a leader is currently unable to escape an opponent.
-As of 0.4.0, this is all done in `src/systems/spawn_leader.rs`. We are not currently immediately adding the entities for leaders, so you are not required to do this at the moment. This will change once we implement a total of 10 leaders so we can have two entirely asymmetrical teams.
+- `FleeToBase`: Marks the health threshold at which a leader retreats back to their base. This is currently disabled.
+- `IsCaught`: Tells whether or not a leader is unable to escape an opponent. This is currently disabled.
+
+As of 0.4.0, this is all done in `src/systems/spawn_leader.rs`.
+Many components are assigned automatically, but `SimpleMovement`, `ProximityAttack`, `Sprite`, `SpriteIndex`, and any custom components that you may add to your leader need to be added as part of the `match` statement on line 65.
 
 ## Note
 

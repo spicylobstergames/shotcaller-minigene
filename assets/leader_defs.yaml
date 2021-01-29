@@ -12,12 +12,6 @@ defs:
     skills:
       - AttackSpeedIncrease
       - SlowAOE
-  Generic3:
-    key: Generic3
-    name: "Leader3"
-    skills:
-      - DoubleDamage
-      - AOE
   TreePersonLeader:
     key: TreePersonLeader
     name: "TreePersonLeader"
