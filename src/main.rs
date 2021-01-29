@@ -212,6 +212,7 @@ fn main() -> BError {
         dispatcher,
         combine_collision_system,
         input_driver::<InputEvent>,
+        update_mouse_events_system,
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
