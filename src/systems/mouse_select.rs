@@ -9,7 +9,8 @@ pub fn mouse_select_system(
 ) -> SystemResult {
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) {
-            input_events.push(MouseEvent::ItemSelected(e.unwrap()));
+            // TODO deal with different types os selection e.g. leader, summon, etc.
+            input_events.push(MouseEvent::EntitySelected(e.unwrap()));
         }
     }
     Ok(())
