@@ -64,3 +64,10 @@ pub enum Team {
     /// The opponent's team.
     Other,
 }
+
+/// Allows a unit to see others.
+#[derive(new)]
+pub struct LineOfSight {
+    /// The limit of the unit vision.
+    pub range: i32,
+}
