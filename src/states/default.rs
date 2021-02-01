@@ -46,6 +46,15 @@ impl minigene::State for DefaultState {
             ctx.set_active_console(0);
             render_ui(world, ctx);
         }
+
+        // Update mouse info
+        {
+            if let Ok(mut m) = world.get_mut::<Mouse>() {
+                m.pos = ctx.mouse_pos();
+                m.left_click = ctx.left_click;
+            }
+        }
+
         Trans::None
     }  
 }

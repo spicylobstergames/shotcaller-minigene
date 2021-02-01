@@ -215,6 +215,7 @@ fn main() -> BError {
         fog_of_vision_system,
         combine_collision_system,
         input_driver::<InputEvent>,
+        update_mouse_events_system,
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
@@ -292,6 +293,7 @@ fn main() -> BError {
         world,
     );
 
+    world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
     world.initialize::<Components<LineOfSight>>();
