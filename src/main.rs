@@ -5,6 +5,7 @@
 extern crate serde;
 
 use minigene::*;
+use rand::{seq::SliceRandom, thread_rng, Rng};
 use std::collections::HashMap;
 
 add_wasm_support!();
@@ -13,16 +14,17 @@ const PLAY_WIDTH: u32 = 81;
 const PLAY_HEIGHT: u32 = 50;
 const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
-const CREEP_SPAWN_TICKS: u32 = 10;
+const CREEP_SPAWN_TICKS: u32 = 125;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
-//const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
-const RANGED_LEADER_ATTACK_RADIUS: f32 = 6.3;
+const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
+const RANGED_LEADER_ATTACK_RADIUS: f32 = 21.0;
 const AOE_RADIUS: f32 = 4.0;
 const AOE_DAMAGE: f64 = 100.0;
 const SLOW_AOE_RADIUS: f32 = 8.0;
 const SLOW_AOE_DAMAGE: f64 = 50.0;
 const RETURN_AOE_RADIUS: f32 = 4.0;
 const RETURN_AOE_DAMAGE: f64 = 20.0;
+const STUN_AOE_RADIUS: f32 = 4.0;
 const TOWER_RANGE: f32 = 5.0;
 const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
@@ -228,6 +230,7 @@ fn main() -> BError {
         //leader1_proximity_attack_system, // TODO re-enable
         tower_projectile_system,
         update_enemies_around_system,
+        update_leaders_around_system,
         skill_cooldown_system::<Skills>,
         trigger_passive_skill_system::<Stats, Effectors, Skills, Items, (), ()>,
         exec_skill_system::<Stats, Effectors, Skills, Items>,
@@ -238,6 +241,8 @@ fn main() -> BError {
         savagery_system,
         battle_hunger_system,
         air_corrosion_system,
+        telekinesis_system,
+        spell_steal_system,
         dark_presence_system,
         additional_attack_system,
         additional_defense_system,
@@ -475,22 +480,48 @@ fn main() -> BError {
         }
     }
 
-    let team_leaders = TeamLeaders::new(
-        vec![
-            Leaders::AxePersonLeader,
-            Leaders::Celsus,
-            Leaders::SoulsCollector,
-            Leaders::TreePersonLeader,
-            Leaders::BearPersonLeader,
-        ],
-        vec![
-            Leaders::CentaurPersonLeader,
-            Leaders::SoulsCollector,
-            Leaders::Celsus,
-            Leaders::TreePersonLeader,
-            Leaders::BearPersonLeader,
-        ],
-    );
+    // Spawn leaders
+    // TODO: optimize
+    let mut rng = thread_rng();
+    let mut leaders_vec = vec![
+        Leaders::Generic1,
+        Leaders::Generic2,
+        Leaders::TreePersonLeader,
+        Leaders::BearPersonLeader,
+        Leaders::AxePersonLeader,
+        Leaders::CentaurPersonLeader,
+        Leaders::Celsus,
+        Leaders::Erno,
+        Leaders::SoulsCollector,
+        Leaders::BristlebackPersonLeader,
+    ];
+
+    let mut team_leaders = TeamLeaders::new(vec![], vec![]);
+    let mut me_number = 0;
+    let mut other_number = 0;
+
+    leaders_vec.shuffle(&mut rng);
+
+    for leader in leaders_vec {
+        if rng.gen_range(1, 3) == 1 {
+            if me_number < 5 {
+                team_leaders.me.push(leader);
+                me_number += 1;
+            } else if other_number < 5 {
+                team_leaders.other.push(leader);
+                other_number += 1;
+            }
+        } else {
+            if other_number < 5 {
+                team_leaders.other.push(leader);
+                other_number += 1;
+            } else if me_number < 5 {
+                team_leaders.me.push(leader);
+                me_number += 1;
+            }
+        }
+    }
+
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
 
     {

@@ -8,6 +8,7 @@ pub enum Stats {
     Mana,
     AttackSpeed,
     EnemiesAround,
+    LeadersAround,
     AttacksDealt,
     AttacksReceived,
     DamageDealt,
@@ -42,6 +43,8 @@ pub enum Skills {
     BattleHunger,
     GreedyTouch,
     AirCorrosion,
+    SpellSteal,
+    Telekinesis,
     StealSoul,
     DarkPresence,
     ReturnDamage,
@@ -72,6 +75,7 @@ pub enum Effectors {
     Enraged,
     HalfDefense,
     DoubleGoldGain,
+    Stun,
     AdditionalAttack,
     AdditionalDefense,
 }
@@ -82,12 +86,12 @@ pub enum Effectors {
 pub enum Leaders {
     Generic1,
     Generic2,
-    Generic3,
     TreePersonLeader,
     BearPersonLeader,
     AxePersonLeader,
     CentaurPersonLeader,
     Celsus,
+    Erno,
     SoulsCollector,
     BristlebackPersonLeader,
 }

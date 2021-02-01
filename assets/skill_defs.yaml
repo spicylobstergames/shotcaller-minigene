@@ -166,6 +166,32 @@ defs:
           MinValue: 1.0
     item_conditions: []
     stat_effectors: []
+  SpellSteal:
+    key: SpellSteal
+    name: SpellSteal
+    friendly_name: spell_steal
+    description: Gain access to an ability belonging to a leader in range until the caster dies. Only one ability may be stolen at a time.
+    cooldown: 0.0
+    passive: true
+    conditions:
+      - stat_key: LeadersAround
+        condition:
+          MinValue: 1.0
+    item_conditions: []
+    stat_effectors: []
+  Telekinesis:
+    key: Telekinesis
+    name: Telekinesis
+    friendly_name: telekinesis
+    description: Hurls the nearest opponent at the second nearest opponent, stunning in an AOE around the landing site.
+    cooldown: 12.0
+    passive: true
+    conditions:
+      - stat_key: EnemiesAround
+        condition:
+          MinValue: 2.0
+    item_conditions: []
+    stat_effectors: []
   StealSoul:
     key: StealSoul
     name: Steal Soul
