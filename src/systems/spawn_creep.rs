@@ -13,6 +13,7 @@ pub fn spawn_creep_system(
     teams: &mut Components<Team>,
     sprites: &mut Components<Sprite>,
     sprite_indices: &mut Components<SpriteIndex>,
+    sights: &mut Components<LineOfSight>,
 ) -> SystemResult {
     for ev in game_events.iter() {
         if let GameEvent::SpawnCreep(pos, team) = ev {
@@ -24,6 +25,7 @@ pub fn spawn_creep_system(
             stats.insert(creep, stat_def.to_statset());
             proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
             let bg = if *team == Team::Me {
+                sights.insert(creep, LineOfSight::new(5));
                 RGBA::named(GREEN)
             } else {
                 RGBA::named(RED)

@@ -40,6 +40,8 @@ pub struct Leader2SimpleMovement;
 pub struct FleeToBase(pub f64);
 /// Added on entities which temporarily cannot move.
 pub struct IsCaught(pub bool);
+/// Tracks whether or not Spell Steal has been used for heroes with that ability.
+pub struct SpellSteal(pub bool);
 /// Tags a creep.
 pub struct Creep;
 /// Tags a creep spawner. Contains the delay in ticks between spawns.
@@ -67,4 +69,11 @@ pub enum Team {
     Me,
     /// The opponent's team.
     Other,
+}
+
+/// Allows a unit to see others.
+#[derive(new)]
+pub struct LineOfSight {
+    /// The limit of the unit vision.
+    pub range: i32,
 }
