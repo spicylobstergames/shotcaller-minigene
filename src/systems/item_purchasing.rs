@@ -17,7 +17,9 @@ pub fn item_purchasing_system(
                     for (s, i, l) in join!(&mut stats && &mut inventory && &leaders) {
                         let st = s.unwrap();
                         let inv = i.unwrap();
-                        if l.unwrap().0 == selected_leader.0 && st.stats.get(&Stats::Gold).unwrap().value >= (shelf_item.1 as f64) {
+                        if l.unwrap().0 == selected_leader.0
+                            && st.stats.get(&Stats::Gold).unwrap().value >= (shelf_item.1 as f64)
+                        {
                             st.stats.get_mut(&Stats::Gold).unwrap().value -= shelf_item.1 as f64;
                             if let Err(e) = inv.insert(ItemInstance::new(shelf_item.0, 1)) {
                                 eprintln!("Item purchasing failed: {:?}", e);

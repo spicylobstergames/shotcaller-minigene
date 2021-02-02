@@ -9,7 +9,6 @@ pub fn select_shelf_item_system(
     for ev in mouse_events.iter() {
         if let MouseEvent::EntitySelected(e) = ev {
             if let Some(i) = items.get(*e) {
-                println!("aa");
                 selected_item.0 = Some(*i);
             }
         }
