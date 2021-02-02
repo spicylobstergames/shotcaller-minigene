@@ -4,10 +4,9 @@ use crate::*;
 pub fn item_purchasing_system(
     mouse_events: &Vec<MouseEvent>,
     buy_buttons: &Components<BuyButton>,
-    // items: &Component<ShelfItem>,
     leaders: &Components<Leader>,
-    team_leaders: &TeamLeaders,
     selected_leader: &SelectedLeader,
+    inventory: &mut Components<Inventory<Items, (), ()>>,
     selected_item: &mut SelectedItem,
     stats: &mut Components<StatSet<Stats>>,
 ) -> SystemResult {
@@ -15,13 +14,17 @@ pub fn item_purchasing_system(
         if let MouseEvent::EntityClicked(button_entity) = click_ev {
             if buy_buttons.get(*button_entity).is_some() {
                 if let Some(shelf_item) = selected_item.0 {
-                    for (l, s) in join!(&leaders && &mut stats) {
+                    for (s, i, l) in join!(&mut stats && &mut inventory && &leaders) {
                         let st = s.unwrap();
+                        let inv = i.unwrap();
                         if l.unwrap().0 == selected_leader.0 && st.stats.get(&Stats::Gold).unwrap().value >= (shelf_item.1 as f64) {
-                            println!("comprou o item {:?}", shelf_item);
                             st.stats.get_mut(&Stats::Gold).unwrap().value -= shelf_item.1 as f64;
-                            //TODO add item to inventory
-                        }// else - not enough gold
+                            if let Err(e) = inv.insert(ItemInstance::new(shelf_item.0, 1)) {
+                                eprintln!("Item purchasing failed: {:?}", e);
+                            }
+                        } else {
+                            eprintln!("Item purchasing failed: Not enough gold.");
+                        }
                     }
                 }
             }

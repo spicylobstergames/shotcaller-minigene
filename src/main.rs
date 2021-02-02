@@ -256,6 +256,8 @@ fn main() -> BError {
         kill_entity_system,
         goto_straight_system,
         select_leader_system,
+        select_shelf_item_system,
+        item_purchasing_system,
         leader_teleport_system,
         root_system,
         respawn_leader_driver,
@@ -297,8 +299,13 @@ fn main() -> BError {
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
     world.initialize::<Components<LineOfSight>>();
+    world.initialize::<Components<ShelfItem>>();
+    world.initialize::<Components<MouseClickable>>();
+    world.initialize::<Components<MouseSelectable>>();
+    world.initialize::<Components<BuyButton>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
+    world.initialize::<SelectedItem>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
