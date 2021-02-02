@@ -298,14 +298,8 @@ fn main() -> BError {
     world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
-    world.initialize::<Components<LineOfSight>>();
-    world.initialize::<Components<ShelfItem>>();
-    world.initialize::<Components<MouseClickable>>();
-    world.initialize::<Components<MouseSelectable>>();
-    world.initialize::<Components<BuyButton>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
-    world.initialize::<SelectedItem>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
