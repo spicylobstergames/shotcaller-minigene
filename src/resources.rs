@@ -48,3 +48,19 @@ pub struct Mouse {
     /// The left button was clicked
     pub left_click: bool,
 }
+
+/// Current gamemode. Used to disable/enable specific systems
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum GameMode {
+    /// Default gamemode
+    Shotcaller,
+    /// Gamemode where player directly controls individual units (aka. traditional RTS controls).
+    MircoInput
+}
+
+impl Default for GameMode {
+    fn default() -> Self {
+        // TODO: default should be GameMode::Shotcaller. Now using MircoInput for testing purposes
+        GameMode::MircoInput
+    }
+}

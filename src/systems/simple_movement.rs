@@ -3,6 +3,7 @@ use crate::*;
 /// Moves the entity towards the closest enemy, provided we have enough action points to do so.
 pub fn simple_movement_system(
     entities: &Entities,
+    gamemode: &GameMode,
     simple_movements: &Components<SimpleMovement>,
     teams: &Components<Team>,
     positions: &Components<Point>,
@@ -11,6 +12,13 @@ pub fn simple_movement_system(
     paths: &mut Components<AiPath>,
 ) -> SystemResult {
     for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {
+
+        // This system should not run if current gamemode is micro input:
+        match gamemode {
+            GameMode::Shotcaller => {},
+            GameMode::MircoInput => return Ok(()),
+        }
+
         // find closest in other team
         // TODO: optimize
         // TODO: fix assumption that if you have a movement and team you have stats

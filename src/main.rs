@@ -299,6 +299,7 @@ fn main() -> BError {
     world.initialize::<Components<LineOfSight>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
+    world.initialize::<GameMode>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
