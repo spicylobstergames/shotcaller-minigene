@@ -60,7 +60,6 @@ pub enum GameMode {
 
 impl Default for GameMode {
     fn default() -> Self {
-        // TODO: default should be GameMode::Shotcaller. Now using MircoInput for testing purposes
-        GameMode::MircoInput
+        GameMode::Shotcaller
     }
 }

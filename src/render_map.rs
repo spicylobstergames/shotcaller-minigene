@@ -104,3 +104,12 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         );
     }
 }
+/// Renders a cursor at mouse position
+pub fn render_cursor(world: &mut World, ctx: &mut BTerm) {
+    let mouse = world.get::<Mouse>().unwrap();
+    ctx.print(
+        mouse.pos.0,
+        mouse.pos.1,
+        format!(">"),
+    );
+}

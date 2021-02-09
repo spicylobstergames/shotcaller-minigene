@@ -223,6 +223,7 @@ fn main() -> BError {
         ai_pathing_system,
         ai_movement_system,
         toggle_game_speed_system,
+        toggle_game_mode_system,
         win_condition_system,
         //leader1_simple_movement_system, // TODO re-enable
         //leader2_simple_movement_system, // TODO re-enable

@@ -13,6 +13,7 @@ pub enum InputEvent {
     MenuCancel,
     SpeedToggle,
     ZoomToggle,
+    GameModeToggle,
     Teleport(u8),
 }
 

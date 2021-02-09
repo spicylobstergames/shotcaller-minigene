@@ -45,6 +45,8 @@ impl minigene::State for DefaultState {
             }
             ctx.set_active_console(0);
             render_ui(world, ctx);
+            // TODO: Mouse cursor should be on top of all other sprites
+            render_cursor(world, ctx);
         }
 
         // Update mouse info
