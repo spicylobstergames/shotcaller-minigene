@@ -224,6 +224,7 @@ fn main() -> BError {
         ai_movement_system,
         toggle_game_speed_system,
         win_condition_system,
+        quit_upon_win_system,
         //leader1_simple_movement_system, // TODO re-enable
         //leader2_simple_movement_system, // TODO re-enable
         tower_ai_system,
@@ -483,7 +484,6 @@ fn main() -> BError {
     }
 
     // Spawn leaders
-    // TODO: optimize
     let mut rng = thread_rng();
     let mut leaders_vec = vec![
         Leaders::Generic1,
