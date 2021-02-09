@@ -19,7 +19,7 @@ pub fn savagery_system(
 
             if let Some(c) = companions.get(ev.0) {
                 match c {
-                    Companion::Bear(e) => {
+                    Companion::Elephant(e) => {
                         if effectors.get(*e).is_none() {
                             effectors.insert(*e, EffectorSet::default());
                         }

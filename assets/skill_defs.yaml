@@ -91,11 +91,11 @@ defs:
           MinValue: 3.0
     item_conditions: []
     stat_effectors: []
-  BearSummon:
-    key: BearSummon
-    name: Bear Summon
-    friendly_name: bear_summon
-    description: Spawns a bear as companion of the leader.
+  ElephantSummon:
+    key: ElephantSummon
+    name: Elephant Summon
+    friendly_name: elephant_summon
+    description: Spawns a elephant as companion of the leader.
     cooldown: 120.0
     passive: true
     conditions: []

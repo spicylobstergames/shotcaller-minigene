@@ -18,11 +18,11 @@ defs:
     skills:
       - NatureSummon
       - Root
-  BearPersonLeader:
-    key: BearPersonLeader
-    name: "BearPersonLeader"
+  Raja:
+    key: Raja
+    name: "Raja"
     skills:
-      - BearSummon
+      - ElephantSummon
       - Savagery
   AxePersonLeader:
     key: AxePersonLeader
