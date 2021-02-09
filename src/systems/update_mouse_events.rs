@@ -14,6 +14,8 @@ pub fn update_mouse_events_system(
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntitySelected(e.unwrap()));
+            //TODO: some additional checks to distinguish between units and any entity.
+            mouse_events.push(MouseEvent::UnitSelected(e.unwrap()));
         }
     }
     for (e, _, pos) in join!(&entities && &clickables && &pos) {

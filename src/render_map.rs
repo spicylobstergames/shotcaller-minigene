@@ -83,6 +83,13 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
             }
         }
 
+        let selected_units = world.get::<SelectedUnits>().unwrap();
+        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 9, "Selected Units");
+        ctx.print(
+            PLAY_WIDTH + 1,
+            SCREEN_HEIGHT - 8,
+            format!("{:.2}", selected_units.units.len()),
+        );
         let game_stats = world.get::<GameStats>().unwrap();
         ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 7, "Total Damage");
         ctx.print(

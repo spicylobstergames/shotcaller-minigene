@@ -47,8 +47,12 @@ pub enum GameEvent {
 pub enum MouseEvent {
     /// A selectable entity was selected.
     EntitySelected(Entity),
+    /// A selectable unit was selected. Distinct from `EntitySelected` because applies only to units.
+    UnitSelected(Entity),
     /// A clicable entity was clicked anywhere in the game.
     EntityClicked(Entity),
     /// A hoverable entity was hovered anywhere in the game.
     EntityHovered(Entity),
+    // /// A point on a map was clicked.
+    // PointClicked(Point),
 }

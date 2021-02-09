@@ -257,6 +257,7 @@ fn main() -> BError {
         kill_entity_system,
         goto_straight_system,
         select_leader_system,
+        unit_selection_system,
         leader_teleport_system,
         root_system,
         respawn_leader_driver,
@@ -301,6 +302,7 @@ fn main() -> BError {
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
     world.initialize::<GameMode>();
+    world.initialize::<SelectedUnits>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),

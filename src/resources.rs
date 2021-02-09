@@ -63,3 +63,18 @@ impl Default for GameMode {
         GameMode::Shotcaller
     }
 }
+
+/// Stores units that were selected by the player
+#[derive(Clone, new)]
+pub struct SelectedUnits {
+    /// Vector of all selected Entities
+    pub units: Vec<Entity>
+} 
+
+impl Default for SelectedUnits {
+    fn default() -> Self {
+        SelectedUnits{
+            units: vec![],
+        }
+    }
+}
