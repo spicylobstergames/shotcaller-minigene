@@ -4,15 +4,11 @@ use crate::*;
 pub struct Tower;
 /// Allows this entity to attack other entities in proximity to it.
 #[derive(new)]
-pub struct ProximityAttack {
-    /// The radius at which we can attack.
-    pub radius: f32,
-}
-/// Allows this leader to attack other entities in proximity to it.
-#[derive(new)]
-pub struct Leader1ProximityAttack {
-    /// The radius at which we can attack.
-    pub radius: f32,
+pub enum ProximityAttackSystems {
+    /// Standard proximity attack
+    SimpleProximityAttack(f32),
+    /// Leader proximity attack
+    Leader1ProximityAttack(f32),
 }
 /// Identifies which type is the companion
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]

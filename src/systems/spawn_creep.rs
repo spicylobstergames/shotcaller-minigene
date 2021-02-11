@@ -8,7 +8,7 @@ pub fn spawn_creep_system(
     positions: &mut Components<Point>,
     creeps: &mut Components<Creep>,
     simple_movements: &mut Components<MovementSystems>,
-    proximity_attacks: &mut Components<ProximityAttack>,
+    proximity_attacks: &mut Components<ProximityAttackSystems>,
     stats: &mut Components<StatSet<Stats>>,
     teams: &mut Components<Team>,
     sprites: &mut Components<Sprite>,
@@ -23,7 +23,7 @@ pub fn spawn_creep_system(
             simple_movements.insert(creep, MovementSystems::SimpleMovement);
             teams.insert(creep, *team);
             stats.insert(creep, stat_def.to_statset());
-            proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
+            proximity_attacks.insert(creep, ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS));
             let bg = if *team == Team::Me {
                 sights.insert(creep, LineOfSight::new(5));
                 RGBA::named(GREEN)
