@@ -41,8 +41,8 @@ They have:
 - `Sprite`: A letter and color for drawing in the terminal
 - `SpriteIndex`: A number pointing to the 2d sprite in the spritesheet used by the game. There are 10 sprites per row and 10 rows, for a total of 100 sprites.
 - `Team`: Indicates which team the entity is on. Used by AI to determine which entity to attack or follow.
-- `SimpleMovement`: A marker component indicating that this entity should be moved by the SimpleMovementSystem (shared by creeps and leaders).
-- `ProximityAttack`: A marker component indicating that this entity should attack nearby opponents.
+- `MovementSystems`: A marker component indicating that this entity should be moved by the particular movement system specified by the enum variant.
+- `ProximityAttackSystems`: A marker component indicating that this entity should attack nearby opponents following the particular proximity attack system specified by the enum variant.
 - `Inventory`: An inventory of the items this leader has. This can easily be cloned from the default inventory (default_inventory).
 - `SkillSet`: The skillset we defined earlier for this leader.
 - `AiPath`: The path that this entity will follow while moving. This is used by the AI systems to move the entities around.
