@@ -6,7 +6,7 @@ pub fn elephant_spawner_system(
     stat_def: &StatDefinitions<Stats>,
     teams: &mut Components<Team>,
     proximity_attacks: &mut Components<ProximityAttack>,
-    simple_movements: &mut Components<SimpleMovement>,
+    simple_movements: &mut Components<MovementSystems>,
     stats: &mut Components<StatSet<Stats>>,
     positions: &mut Components<Point>,
     entities: &mut Entities,
@@ -22,7 +22,7 @@ pub fn elephant_spawner_system(
             let elephant = entities.create();
             positions.insert(elephant, pos.clone());
             companions.insert(ev.0, Companion::Elephant(elephant));
-            simple_movements.insert(elephant, SimpleMovement);
+            simple_movements.insert(elephant, MovementSystems::SimpleMovement);
             teams.insert(elephant, team);
             stats.insert(elephant, stat_def.to_statset());
             proximity_attacks.insert(elephant, ProximityAttack::new(CREEP_ATTACK_RADIUS));

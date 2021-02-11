@@ -7,7 +7,7 @@ pub fn spawn_creep_system(
     entities: &mut Entities,
     positions: &mut Components<Point>,
     creeps: &mut Components<Creep>,
-    simple_movements: &mut Components<SimpleMovement>,
+    simple_movements: &mut Components<MovementSystems>,
     proximity_attacks: &mut Components<ProximityAttack>,
     stats: &mut Components<StatSet<Stats>>,
     teams: &mut Components<Team>,
@@ -20,7 +20,7 @@ pub fn spawn_creep_system(
             let creep = entities.create();
             positions.insert(creep, pos.clone());
             creeps.insert(creep, Creep);
-            simple_movements.insert(creep, SimpleMovement);
+            simple_movements.insert(creep, MovementSystems::SimpleMovement);
             teams.insert(creep, *team);
             stats.insert(creep, stat_def.to_statset());
             proximity_attacks.insert(creep, ProximityAttack::new(CREEP_ATTACK_RADIUS));
