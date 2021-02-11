@@ -78,8 +78,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(6));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttacks::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -97,8 +99,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(5));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader2_simple_movements.insert(leader, Leader2SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -116,8 +120,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(55));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -135,8 +141,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(4));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -154,8 +162,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(8));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -173,8 +183,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(16));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -192,8 +204,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(7));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader2_simple_movements.insert(leader, Leader2SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -211,8 +225,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(7));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader2_simple_movements.insert(leader, Leader2SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -231,8 +247,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(19));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(RANGED_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader2_simple_movements.insert(leader, Leader2SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -250,8 +268,10 @@ pub fn spawn_leader_system(
                     );
                     sprite_indices.insert(leader, SpriteIndex(14));
                     simple_movements.insert(leader, MovementSystems::SimpleMovement);
-                    proximity_attacks
-                        .insert(leader, ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS));
+                    proximity_attacks.insert(
+                        leader,
+                        ProximityAttackSystems::SimpleProximityAttack(MELEE_LEADER_ATTACK_RADIUS),
+                    );
                     // TODO: Add higher threshold for retreating and re-enable
                     // leader1_simple_movements.insert(leader, Leader1SimpleMovement);
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));

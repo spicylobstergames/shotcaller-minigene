@@ -25,7 +25,10 @@ pub fn elephant_spawner_system(
             simple_movements.insert(elephant, MovementSystems::SimpleMovement);
             teams.insert(elephant, team);
             stats.insert(elephant, stat_def.to_statset());
-            proximity_attacks.insert(elephant, ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS));
+            proximity_attacks.insert(
+                elephant,
+                ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS),
+            );
             let bg = if team == Team::Me {
                 RGBA::named(GREEN)
             } else {

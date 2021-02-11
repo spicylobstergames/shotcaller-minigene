@@ -23,7 +23,10 @@ pub fn spawn_creep_system(
             simple_movements.insert(creep, MovementSystems::SimpleMovement);
             teams.insert(creep, *team);
             stats.insert(creep, stat_def.to_statset());
-            proximity_attacks.insert(creep, ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS));
+            proximity_attacks.insert(
+                creep,
+                ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS),
+            );
             let bg = if *team == Team::Me {
                 sights.insert(creep, LineOfSight::new(5));
                 RGBA::named(GREEN)
