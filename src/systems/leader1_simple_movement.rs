@@ -3,11 +3,11 @@ use crate::*;
 /// Moves melee leaders on the map.
 pub fn leader1_simple_movement_system(
     entities: &Entities,
-    simple_movements: &Components<Leader1SimpleMovement>,
+    simple_movements: &Components<MovementSystems>,
     teams: &Components<Team>,
     is_caught: &Components<IsCaught>,
     stats: &Components<StatSet<Stats>>,
-    creeps: &Components<Creep>,
+    pawns: &Components<Pawn>,
     leaders: &Components<Leader>,
     retreats: &Components<FleeToBase>,
     cores: &Components<Core>,
@@ -20,22 +20,26 @@ pub fn leader1_simple_movement_system(
         let leader_team = leader_team.unwrap();
         let caught = caught.unwrap();
         if caught.0 {
-            for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {
-                let e = e.unwrap();
-                let team = team.unwrap();
-                let pos = pos.unwrap();
-                // find closest leader in other team
-                // TODO: optimize
-                let mut vec = join!(&teams && &positions && &stats && &leaders)
-                    .filter(|(t, _, _, _)| *t.unwrap() != *team)
-                    .map(|(_, p, _, _)| (dist(pos, p.unwrap()), p.unwrap().clone()))
-                    .collect::<Vec<_>>();
-                vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-                let closest = vec.into_iter().next().map(|(_d, p)| p);
-                if let Some(c) = closest {
-                    targets.insert(e, AiDestination::new(c.clone())).unwrap();
-                } else {
-                    targets.remove(e);
+            for (e, movement, team, pos) in
+                join!(&entities && &simple_movements && &teams && &positions)
+            {
+                if let MovementSystems::Leader1SimpleMovement = movement.unwrap() {
+                    let e = e.unwrap();
+                    let team = team.unwrap();
+                    let pos = pos.unwrap();
+                    // find closest leader in other team
+                    // TODO: optimize
+                    let mut vec = join!(&teams && &positions && &stats && &leaders)
+                        .filter(|(t, _, _, _)| *t.unwrap() != *team)
+                        .map(|(_, p, _, _)| (dist(pos, p.unwrap()), p.unwrap().clone()))
+                        .collect::<Vec<_>>();
+                    vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+                    let closest = vec.into_iter().next().map(|(_d, p)| p);
+                    if let Some(c) = closest {
+                        targets.insert(e, AiDestination::new(c.clone())).unwrap();
+                    } else {
+                        targets.remove(e);
+                    }
                 }
             }
         } else {
@@ -57,20 +61,22 @@ pub fn leader1_simple_movement_system(
                     }
                 }
             } else {
-                for (e, _, pos) in join!(&entities && &simple_movements && &positions) {
-                    let e = e.unwrap();
-                    let pos = pos.unwrap();
-                    // find closest creep
-                    // TODO: optimize
-                    let mut vec = join!(&positions && &stats && &creeps)
-                        .map(|(p, _, _)| (dist(pos, p.unwrap()), p.unwrap().clone()))
-                        .collect::<Vec<_>>();
-                    vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
-                    let closest = vec.into_iter().next().map(|(_d, p)| p);
-                    if let Some(c) = closest {
-                        targets.insert(e, AiDestination::new(c.clone())).unwrap();
-                    } else {
-                        targets.remove(e);
+                for (e, movement, pos) in join!(&entities && &simple_movements && &positions) {
+                    if let MovementSystems::Leader1SimpleMovement = movement.unwrap() {
+                        let e = e.unwrap();
+                        let pos = pos.unwrap();
+                        // find closest pawn
+                        // TODO: optimize
+                        let mut vec = join!(&positions && &stats && &pawns)
+                            .map(|(p, _, _)| (dist(pos, p.unwrap()), p.unwrap().clone()))
+                            .collect::<Vec<_>>();
+                        vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());
+                        let closest = vec.into_iter().next().map(|(_d, p)| p);
+                        if let Some(c) = closest {
+                            targets.insert(e, AiDestination::new(c.clone())).unwrap();
+                        } else {
+                            targets.remove(e);
+                        }
                     }
                 }
             }

@@ -3,28 +3,30 @@ use crate::*;
 /// Attacks entities that are in close proximity with this entity.
 pub fn proximity_attack_system(
     entities: &Entities,
-    proximity_attacks: &Components<ProximityAttack>,
+    proximity_attacks: &Components<ProximityAttackSystems>,
     teams: &Components<Team>,
     positions: &Components<Point>,
     stats: &mut Components<StatSet<Stats>>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
     let mut v = vec![];
-    for (e, _proximity, stat, pos, team) in
+    for (e, proximity, stat, pos, team) in
         join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
-        let closest = find_closest_in_other_team(
-            team.unwrap(),
-            pos.unwrap(),
-            &teams,
-            &positions,
-            &stats,
-            &entities,
-        );
-        if let Some((target, p)) = closest {
-            if dist(&p, pos.unwrap()) <= CREEP_ATTACK_RADIUS {
-                let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
-                v.push((e.unwrap().clone(), target.clone(), damage));
+        if let ProximityAttackSystems::SimpleProximityAttack(radius) = proximity.unwrap() {
+            let closest = find_closest_in_other_team(
+                team.unwrap(),
+                pos.unwrap(),
+                &teams,
+                &positions,
+                &stats,
+                &entities,
+            );
+            if let Some((target, p)) = closest {
+                if dist(&p, pos.unwrap()) <= *radius {
+                    let damage = stat.unwrap().stats.get(&Stats::Attack).unwrap().value;
+                    v.push((e.unwrap().clone(), target.clone(), damage));
+                }
             }
         }
     }

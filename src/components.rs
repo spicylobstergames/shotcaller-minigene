@@ -4,15 +4,11 @@ use crate::*;
 pub struct Tower;
 /// Allows this entity to attack other entities in proximity to it.
 #[derive(new)]
-pub struct ProximityAttack {
-    /// The radius at which we can attack.
-    pub radius: f32,
-}
-/// Allows this leader to attack other entities in proximity to it.
-#[derive(new)]
-pub struct Leader1ProximityAttack {
-    /// The radius at which we can attack.
-    pub radius: f32,
+pub enum ProximityAttackSystems {
+    /// Standard proximity attack
+    SimpleProximityAttack(f32),
+    /// Leader proximity attack
+    Leader1ProximityAttack(f32),
 }
 /// Identifies which type is the companion
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
@@ -31,21 +27,24 @@ pub struct Leader(pub u8);
 /// Adds a name to an entity.
 pub struct Name(pub String);
 /// Allows this entity to move to the closest enemy entity.
-pub struct SimpleMovement;
-/// Allows this entity to move to the closest enemy entity.
-pub struct Leader1SimpleMovement;
-/// Allows this entity to move a given distance away from the closest enemy entity.
-pub struct Leader2SimpleMovement;
+pub enum MovementSystems {
+    /// Standard movement
+    SimpleMovement,
+    /// Melee leader movement
+    Leader1SimpleMovement,
+    /// Ranged leader movement
+    Leader2SimpleMovement,
+}
 /// Makes this entity run back to its team's `Core` when low in health.
 pub struct FleeToBase(pub f64);
 /// Added on entities which temporarily cannot move.
 pub struct IsCaught(pub bool);
 /// Tracks whether or not Spell Steal has been used for heroes with that ability.
 pub struct SpellSteal(pub bool);
-/// Tags a creep.
-pub struct Creep;
-/// Tags a creep spawner. Contains the delay in ticks between spawns.
-pub struct CreepSpawner(pub u32, pub u32);
+/// Tags a pawn.
+pub struct Pawn;
+/// Tags a pawn spawner. Contains the delay in ticks between spawns.
+pub struct PawnSpawner(pub u32, pub u32);
 /// Tags a base.
 pub struct Base;
 /// Identifies mouse selectable entities
