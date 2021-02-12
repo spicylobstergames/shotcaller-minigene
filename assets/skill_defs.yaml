@@ -45,7 +45,7 @@ defs:
     key: NatureSummon
     name: NatureSummon
     friendly_name: nature_summon
-    description: Spawn a treant creep every 6s.
+    description: Spawn a treant pawn every 6s.
     cooldown: 6.0
     passive: true
     conditions: []

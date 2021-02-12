@@ -1,9 +1,9 @@
 use crate::*;
 
-/// Periodically generates events to spawn creeps.
-pub fn creep_spawner_system(
+/// Periodically generates events to spawn pawns.
+pub fn pawn_spawner_system(
     positions: &mut Components<Point>,
-    spawners: &mut Components<CreepSpawner>,
+    spawners: &mut Components<PawnSpawner>,
     teams: &mut Components<Team>,
     game_events: &mut Vec<GameEvent>,
 ) -> SystemResult {
@@ -12,7 +12,7 @@ pub fn creep_spawner_system(
         if spawner.0 == 0 {
             spawner.0 = spawner.1;
             // spawn
-            game_events.push(GameEvent::SpawnCreep(
+            game_events.push(GameEvent::SpawnPawn(
                 pos.unwrap().clone(),
                 team.unwrap().clone(),
             ));

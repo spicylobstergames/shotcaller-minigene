@@ -41,10 +41,10 @@ pub struct FleeToBase(pub f64);
 pub struct IsCaught(pub bool);
 /// Tracks whether or not Spell Steal has been used for heroes with that ability.
 pub struct SpellSteal(pub bool);
-/// Tags a creep.
-pub struct Creep;
-/// Tags a creep spawner. Contains the delay in ticks between spawns.
-pub struct CreepSpawner(pub u32, pub u32);
+/// Tags a pawn.
+pub struct Pawn;
+/// Tags a pawn spawner. Contains the delay in ticks between spawns.
+pub struct PawnSpawner(pub u32, pub u32);
 /// Tags a base.
 pub struct Base;
 /// Identifies mouse selectable entities

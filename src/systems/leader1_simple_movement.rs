@@ -7,7 +7,7 @@ pub fn leader1_simple_movement_system(
     teams: &Components<Team>,
     is_caught: &Components<IsCaught>,
     stats: &Components<StatSet<Stats>>,
-    creeps: &Components<Creep>,
+    pawns: &Components<Pawn>,
     leaders: &Components<Leader>,
     retreats: &Components<FleeToBase>,
     cores: &Components<Core>,
@@ -65,9 +65,9 @@ pub fn leader1_simple_movement_system(
                     if let MovementSystems::Leader1SimpleMovement = movement.unwrap() {
                         let e = e.unwrap();
                         let pos = pos.unwrap();
-                        // find closest creep
+                        // find closest pawn
                         // TODO: optimize
-                        let mut vec = join!(&positions && &stats && &creeps)
+                        let mut vec = join!(&positions && &stats && &pawns)
                             .map(|(p, _, _)| (dist(pos, p.unwrap()), p.unwrap().clone()))
                             .collect::<Vec<_>>();
                         vec.sort_by(|e1, e2| e1.0.partial_cmp(&e2.0).unwrap());

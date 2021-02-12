@@ -14,8 +14,8 @@ const PLAY_WIDTH: u32 = 81;
 const PLAY_HEIGHT: u32 = 50;
 const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
-const CREEP_SPAWN_TICKS: u32 = 125;
-const CREEP_ATTACK_RADIUS: f32 = 2.1;
+const PAWN_SPAWN_TICKS: u32 = 125;
+const PAWN_ATTACK_RADIUS: f32 = 2.1;
 const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
 const RANGED_LEADER_ATTACK_RADIUS: f32 = 21.0;
 const AOE_RADIUS: f32 = 4.0;
@@ -218,7 +218,7 @@ fn main() -> BError {
         update_mouse_events_system,
         update_collision_resource_system,
         handle_action_points_system,
-        creep_spawner_system,
+        pawn_spawner_system,
         simple_movement_system,
         ai_pathing_system,
         ai_movement_system,
@@ -259,7 +259,7 @@ fn main() -> BError {
         leader_teleport_system,
         root_system,
         respawn_leader_driver,
-        spawn_creep_system,
+        spawn_pawn_system,
         spawn_leader_system,
         game_stats_updater_system,
     );
@@ -313,7 +313,7 @@ fn main() -> BError {
     /*register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
     Name, SpriteIndex, StatSet<Stats>, EffectorSet<Effectors>,
     SkillSet<Skills>, Inventory<Items, (), ()>, Point, SimpleMovement,
-    AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
+    AiPath, AiDestination, Pawn, Player, CollisionMap, PawnSpawner, Collision,
     ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);*/
 
     // TODO reenable
@@ -403,12 +403,12 @@ fn main() -> BError {
             Barrack,
             default_stats.clone(),
         );
-        // Creep spawners
+        // Pawn spawners
         centity!(
             world,
             Point::new(x, y + 1),
-            CreepSpawner(0, CREEP_SPAWN_TICKS),
-            //CreepSpawner(0, 2))
+            PawnSpawner(0, PAWN_SPAWN_TICKS),
+            //PawnSpawner(0, 2))
             Team::Other,
         );
     }
@@ -430,11 +430,11 @@ fn main() -> BError {
             default_stats.clone(),
             LineOfSight::new(15),
         );
-        // Creep spawners
+        // Pawn spawners
         centity!(
             world,
             Point::new(x, y - 1),
-            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            PawnSpawner(0, PAWN_SPAWN_TICKS),
             Team::Me,
             LineOfSight::new(15),
         );

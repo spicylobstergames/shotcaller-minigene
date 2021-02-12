@@ -12,8 +12,8 @@ pub fn nature_summon_system(
             let pos = positions.get(ev.0).unwrap();
             let team = teams.get(ev.0).unwrap();
 
-            //@TODO: spawn an actual treant creep
-            game_events.push(GameEvent::SpawnCreep(*pos, *team));
+            //@TODO: spawn an actual treant pawn
+            game_events.push(GameEvent::SpawnPawn(*pos, *team));
         }
     }
     Ok(())

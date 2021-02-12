@@ -1,12 +1,12 @@
 use crate::*;
 
-/// Spawns a creep using the provided event.
-pub fn spawn_creep_system(
+/// Spawns a pawn using the provided event.
+pub fn spawn_pawn_system(
     game_events: &Vec<GameEvent>,
     stat_def: &StatDefinitions<Stats>,
     entities: &mut Entities,
     positions: &mut Components<Point>,
-    creeps: &mut Components<Creep>,
+    pawns: &mut Components<Pawn>,
     simple_movements: &mut Components<MovementSystems>,
     proximity_attacks: &mut Components<ProximityAttackSystems>,
     stats: &mut Components<StatSet<Stats>>,
@@ -16,32 +16,32 @@ pub fn spawn_creep_system(
     sights: &mut Components<LineOfSight>,
 ) -> SystemResult {
     for ev in game_events.iter() {
-        if let GameEvent::SpawnCreep(pos, team) = ev {
-            let creep = entities.create();
-            positions.insert(creep, pos.clone());
-            creeps.insert(creep, Creep);
-            simple_movements.insert(creep, MovementSystems::SimpleMovement);
-            teams.insert(creep, *team);
-            stats.insert(creep, stat_def.to_statset());
+        if let GameEvent::SpawnPawn(pos, team) = ev {
+            let pawn = entities.create();
+            positions.insert(pawn, pos.clone());
+            pawns.insert(pawn, Pawn);
+            simple_movements.insert(pawn, MovementSystems::SimpleMovement);
+            teams.insert(pawn, *team);
+            stats.insert(pawn, stat_def.to_statset());
             proximity_attacks.insert(
-                creep,
-                ProximityAttackSystems::SimpleProximityAttack(CREEP_ATTACK_RADIUS),
+                pawn,
+                ProximityAttackSystems::SimpleProximityAttack(PAWN_ATTACK_RADIUS),
             );
             let bg = if *team == Team::Me {
-                sights.insert(creep, LineOfSight::new(5));
+                sights.insert(pawn, LineOfSight::new(5));
                 RGBA::named(GREEN)
             } else {
                 RGBA::named(RED)
             };
             sprites.insert(
-                creep,
+                pawn,
                 Sprite {
                     glyph: to_cp437('c'),
                     fg: RGBA::named(YELLOW),
                     bg,
                 },
             );
-            sprite_indices.insert(creep, SpriteIndex(9));
+            sprite_indices.insert(pawn, SpriteIndex(9));
         }
     }
     Ok(())
