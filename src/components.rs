@@ -77,3 +77,11 @@ pub struct LineOfSight {
     /// The limit of the unit vision.
     pub range: i32,
 }
+
+
+/// Order queue component for micro-control (and maybe bots)
+pub struct OrderQueue {
+    /// List of orders for a unit.
+    pub orders: Vec<UnitOrder>
+}
+

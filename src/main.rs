@@ -151,6 +151,7 @@ mod resources;
 mod states;
 mod systems;
 mod utils;
+mod unit_orders;
 pub use self::components::*;
 pub use self::events::*;
 pub use self::ids::*;
@@ -160,6 +161,7 @@ pub use self::resources::*;
 pub use self::states::*;
 pub use self::systems::*;
 pub use self::utils::*;
+pub use self::unit_orders::*;
 
 // Bridge between bracket-lib and minigene
 struct State {

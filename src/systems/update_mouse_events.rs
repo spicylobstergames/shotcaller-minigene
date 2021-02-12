@@ -5,6 +5,8 @@ pub fn update_mouse_events_system(
     mouse: &Mouse,
     entities: &Entities,
     selectables: &Components<MouseSelectable>,
+    creeps: &Components<Creep>,
+    leaders: &Components<Leader>,
     clickables: &Components<MouseClickable>,
     hoverables: &Components<MouseHoverable>,
     pos: &Components<Point>,
@@ -14,7 +16,15 @@ pub fn update_mouse_events_system(
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntitySelected(e.unwrap()));
-            //TODO: some additional checks to distinguish between units and any entity.
+        }
+    }
+    for (e, _, pos) in join!(&entities && &creeps && &pos) {
+        if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
+            mouse_events.push(MouseEvent::UnitSelected(e.unwrap()));
+        }
+    }
+    for (e, _, pos) in join!(&entities && &leaders && &pos) {
+        if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::UnitSelected(e.unwrap()));
         }
     }
