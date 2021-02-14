@@ -55,7 +55,7 @@ pub enum GameMode {
     /// Default gamemode
     Shotcaller,
     /// Gamemode where player directly controls individual units (aka. traditional RTS controls).
-    MircoInput
+    MircoInput,
 }
 
 impl Default for GameMode {
@@ -68,13 +68,11 @@ impl Default for GameMode {
 #[derive(Clone, new)]
 pub struct SelectedUnits {
     /// Vector of all selected Entities
-    pub units: Vec<Entity>
-} 
+    pub units: Vec<Entity>,
+}
 
 impl Default for SelectedUnits {
     fn default() -> Self {
-        SelectedUnits{
-            units: vec![],
-        }
+        SelectedUnits { units: vec![] }
     }
 }

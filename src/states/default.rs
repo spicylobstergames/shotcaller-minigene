@@ -5,12 +5,7 @@ pub struct DefaultState;
 
 #[allow(unused_variables)]
 impl minigene::State for DefaultState {
-    fn update(
-        &mut self,
-        world: &mut World,
-        dispatcher: &mut Dispatcher,
-        ctx: &mut BTerm,
-    ) -> Trans {
+    fn update(&mut self, world: &mut World, dispatcher: &mut Dispatcher, ctx: &mut BTerm) -> Trans {
         #[cfg(not(feature = "headless"))]
         {
             ctx.set_active_console(0);
@@ -58,5 +53,5 @@ impl minigene::State for DefaultState {
         }
 
         Trans::None
-    }  
+    }
 }

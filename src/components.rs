@@ -78,10 +78,9 @@ pub struct LineOfSight {
     pub range: i32,
 }
 
-
 /// Order queue component for micro-control (and maybe bots)
 pub struct OrderQueue {
     /// List of orders for a unit.
-    pub orders: Vec<UnitOrder>
+    // TODO: Use vecdeque to optimize. But currently this might be considered overoptimization.
+    pub orders: Vec<UnitOrder>,
 }
-

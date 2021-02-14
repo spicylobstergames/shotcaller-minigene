@@ -150,8 +150,8 @@ mod render_map;
 mod resources;
 mod states;
 mod systems;
-mod utils;
 mod unit_orders;
+mod utils;
 pub use self::components::*;
 pub use self::events::*;
 pub use self::ids::*;
@@ -160,8 +160,8 @@ pub use self::render_map::*;
 pub use self::resources::*;
 pub use self::states::*;
 pub use self::systems::*;
-pub use self::utils::*;
 pub use self::unit_orders::*;
+pub use self::utils::*;
 
 // Bridge between bracket-lib and minigene
 struct State {
@@ -222,6 +222,7 @@ fn main() -> BError {
         handle_action_points_system,
         creep_spawner_system,
         simple_movement_system,
+        mmove_order_system,
         ai_pathing_system,
         ai_movement_system,
         toggle_game_speed_system,
@@ -266,6 +267,7 @@ fn main() -> BError {
         spawn_creep_system,
         spawn_leader_system,
         game_stats_updater_system,
+        order_completion_check_system,
     );
     // Remove old events at the end of the frame.
     dispatcher = dispatcher.add(

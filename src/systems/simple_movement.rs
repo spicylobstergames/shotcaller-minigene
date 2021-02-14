@@ -11,14 +11,13 @@ pub fn simple_movement_system(
     targets: &mut Components<AiDestination>,
     paths: &mut Components<AiPath>,
 ) -> SystemResult {
+    // This system should not run if current gamemode is micro input:
+    match gamemode {
+        GameMode::Shotcaller => {}
+        GameMode::MircoInput => return Ok(()),
+    }
+
     for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {
-
-        // This system should not run if current gamemode is micro input:
-        match gamemode {
-            GameMode::Shotcaller => {},
-            GameMode::MircoInput => return Ok(()),
-        }
-
         // find closest in other team
         // TODO: optimize
         // TODO: fix assumption that if you have a movement and team you have stats
