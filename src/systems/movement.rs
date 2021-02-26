@@ -2,14 +2,13 @@ use crate::*;
 
 /// Moves the entity to next point on AIPath, provided we have enough action points to do so.
 pub fn movement_system(
-    entities: &Entities, // for action points
+    entities: &Entities,
     global_map: &Option<CollisionResource>,
     positions: &mut Components<Point>,
-    stats: &mut Components<StatSet<Stats>>, // for action points
+    stats: &mut Components<StatSet<Stats>>,
     paths: &mut Components<AiPath>,
-)-> SystemResult {
-
-    'query: for (e, pos, path) in join!(&entities && &mut positions && &mut paths){
+) -> SystemResult {
+    'query: for (e, pos, path) in join!(&entities && &mut positions && &mut paths) {
         if stats
             .get(e.unwrap())
             .unwrap()
@@ -17,13 +16,12 @@ pub fn movement_system(
             .get(&Stats::ActionPoints)
             .unwrap()
             .value
-            < ACTION_POINT_MOVE_COST{
-                continue 'query;
-            }
-        // Copied from minigene/src/systems/ai_movement.rs:
+            < ACTION_POINT_MOVE_COST
+        {
+            continue 'query;
+        }
         let pos = pos.unwrap();
         let path = path.unwrap();
-        // If target is reachable and there are steps to do:
         if path.path.success && path.path.steps.len() > 1 {
             let dest = path.path.steps.remove(1);
             let (x, y) = global_map.as_ref().unwrap().map.position_of(dest as u32);
@@ -32,7 +30,7 @@ pub fn movement_system(
                 y as i32 + global_map.as_ref().unwrap().position.y,
             );
 
-            // Update action points usage:
+            // Update action points usage after unit has moved
             stats
                 .get_mut(e.unwrap())
                 .unwrap()

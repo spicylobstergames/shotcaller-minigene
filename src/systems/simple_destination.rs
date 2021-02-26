@@ -18,21 +18,22 @@ pub fn simple_destination_system(
             .get(&Stats::ActionPoints)
             .unwrap()
             .value
-            < ACTION_POINT_MOVE_COST{
-                continue 'query;
-            }
-            let closest = find_closest_in_other_team(
-                team.unwrap(),
-                pos.unwrap(),
-                &teams,
-                &positions,
-                &stats,
-                &entities,
-            );
-            if let Some((_, c)) = closest {
-                targets.insert(e.unwrap(), AiDestination::new(c.clone()));
-            }
+            < ACTION_POINT_MOVE_COST
+        {
+            continue 'query;
         }
+        let closest = find_closest_in_other_team(
+            team.unwrap(),
+            pos.unwrap(),
+            &teams,
+            &positions,
+            &stats,
+            &entities,
+        );
+        if let Some((_, c)) = closest {
+            targets.insert(e.unwrap(), AiDestination::new(c.clone()));
+        }
+    }
 
     Ok(())
 }
