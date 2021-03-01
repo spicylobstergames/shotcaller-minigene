@@ -219,13 +219,13 @@ fn main() -> BError {
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
-        simple_movement_system,
+        simple_destination_system,
         ai_pathing_system,
-        ai_movement_system,
+        movement_system,
         toggle_game_speed_system,
         win_condition_system,
-        //leader1_simple_movement_system, // TODO re-enable
-        //leader2_simple_movement_system, // TODO re-enable
+        //leader1_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
+        //leader2_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
         tower_ai_system,
         proximity_attack_system,
         //leader1_proximity_attack_system, // TODO re-enable
