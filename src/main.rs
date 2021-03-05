@@ -221,15 +221,15 @@ fn main() -> BError {
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
-        simple_movement_system,
         mmove_order_system,
+        simple_destination_system,
         ai_pathing_system,
-        ai_movement_system,
+        movement_system,
         toggle_game_speed_system,
         toggle_game_mode_system,
         win_condition_system,
-        //leader1_simple_movement_system, // TODO re-enable
-        //leader2_simple_movement_system, // TODO re-enable
+        //leader1_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
+        //leader2_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
         tower_ai_system,
         proximity_attack_system,
         //leader1_proximity_attack_system, // TODO re-enable
@@ -242,7 +242,7 @@ fn main() -> BError {
         apply_effector_system::<Stats, Effectors>,
         remove_outdated_effector_system::<Effectors>,
         nature_summon_system,
-        bear_spawner_system,
+        elephant_spawner_system,
         savagery_system,
         battle_hunger_system,
         air_corrosion_system,
@@ -497,7 +497,7 @@ fn main() -> BError {
         Leaders::Generic1,
         Leaders::Generic2,
         Leaders::TreePersonLeader,
-        Leaders::BearPersonLeader,
+        Leaders::Raja,
         Leaders::AxePersonLeader,
         Leaders::CentaurPersonLeader,
         Leaders::Celsus,

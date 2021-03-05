@@ -127,7 +127,7 @@ pub fn spawn_leader_system(
                     // retreats.insert(leader, FleeToBase(0.0));
                     // is_caught.insert(leader, IsCaught(false));
                 }
-                Leaders::BearPersonLeader => {
+                Leaders::Raja => {
                     sprites.insert(
                         leader,
                         Sprite {
