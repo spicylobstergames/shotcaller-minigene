@@ -49,6 +49,8 @@ impl minigene::State for DefaultState {
             if let Ok(mut m) = world.get_mut::<Mouse>() {
                 m.pos = ctx.mouse_pos();
                 m.left_click = ctx.left_click;
+                // TODO: there is no variable ctx.right_click. Use rltk::Input::is_mouse_button_pressed(2)
+                //m.right_click = ctx.right_click;
             }
         }
 

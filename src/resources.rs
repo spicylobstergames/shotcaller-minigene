@@ -47,6 +47,8 @@ pub struct Mouse {
     pub pos: (i32, i32),
     /// The left button was clicked
     pub left_click: bool,
+    // /// The right button was clicked
+    // pub right_click: bool,
 }
 
 /// Current gamemode. Used to disable/enable specific systems

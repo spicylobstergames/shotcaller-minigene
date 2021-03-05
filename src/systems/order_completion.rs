@@ -21,24 +21,26 @@ pub fn order_completion_check_system(
 
         let orders = orders.unwrap();
 
-        match orders.orders[0] {
-            UnitOrder::MovetoPoint(trg_pt) => {
-                if positions.get(e.unwrap()).unwrap() == &trg_pt {
-                    is_completed = true;
-                }
-            }
-            UnitOrder::MovetoUnit(trg_entity) => {
-                // Assume that unit with this order has position component
-                let own_pos = positions.get(e.unwrap()).unwrap();
-                // Target entity might be dead, so can't assume it has position entity.
-                let trg_pos = positions.get(trg_entity);
-                if Some(own_pos) == trg_pos {
-                    // Unit should be in melee distance to make order completed
-                    if dist(own_pos, trg_pos.unwrap()) <= MELEE_LEADER_ATTACK_RADIUS {
+        if orders.orders.len() > 0 {
+            match orders.orders[0] {
+                UnitOrder::MovetoPoint(trg_pt) => {
+                    if positions.get(e.unwrap()).unwrap() == &trg_pt {
                         is_completed = true;
                     }
-                } else {
-                    is_completed = true;
+                }
+                UnitOrder::MovetoUnit(trg_entity) => {
+                    // Assume that unit with this order has position component
+                    let own_pos = positions.get(e.unwrap()).unwrap();
+                    // Target entity might be dead, so can't assume it has position entity.
+                    let trg_pos = positions.get(trg_entity);
+                    if Some(own_pos) == trg_pos {
+                        // Unit should be in melee distance to make order completed
+                        if dist(own_pos, trg_pos.unwrap()) <= MELEE_LEADER_ATTACK_RADIUS {
+                            is_completed = true;
+                        }
+                    } else {
+                        is_completed = true;
+                    }
                 }
             }
         }

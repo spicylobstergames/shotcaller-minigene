@@ -5,9 +5,7 @@ pub fn mmove_order_system(
     entities: &Entities,
     gamemode: &GameMode,
     order_queue: &Components<OrderQueue>,
-    stats: &mut Components<StatSet<Stats>>,
     targets: &mut Components<AiDestination>,
-    paths: &mut Components<AiPath>,
 ) -> SystemResult {
     // This system should not run if current gamemode is shotcaller
     match gamemode {
@@ -17,28 +15,14 @@ pub fn mmove_order_system(
 
     for (e, orders) in join!(&entities && &order_queue) {
         // Current order is moveto point
-        if let UnitOrder::MovetoPoint(trg_pt) = orders.unwrap().orders[0] {
-            //Copied from simple_movement.rs:
-            if stats
-                .get(e.unwrap())
-                .unwrap()
-                .stats
-                .get(&Stats::ActionPoints)
-                .unwrap()
-                .value
-                >= ACTION_POINT_MOVE_COST
-            {
-                stats
-                    .get_mut(e.unwrap())
-                    .unwrap()
-                    .stats
-                    .get_mut(&Stats::ActionPoints)
-                    .unwrap()
-                    .value -= ACTION_POINT_MOVE_COST;
-                targets.insert(e.unwrap(), AiDestination::new(trg_pt));
-            } else {
-                targets.remove(e.unwrap());
-                paths.remove(e.unwrap());
+        let oq = orders.unwrap();
+        if oq.orders.len() > 0 {
+            if let UnitOrder::MovetoPoint(trg_pt) = oq.orders[0] {
+                if let Some(curr_trg) = targets.get(e.unwrap()) {
+                    if curr_trg.target != trg_pt {
+                        targets.insert(e.unwrap(), AiDestination::new(trg_pt.clone()));
+                    }
+                }
             }
         }
     }

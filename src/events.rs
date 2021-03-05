@@ -53,6 +53,6 @@ pub enum MouseEvent {
     EntityClicked(Entity),
     /// A hoverable entity was hovered anywhere in the game.
     EntityHovered(Entity),
-    // /// A point on a map was clicked.
-    // PointClicked(Point),
+    /// A point on a map was clicked.
+    PositionClicked(Point),
 }

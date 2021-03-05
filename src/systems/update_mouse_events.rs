@@ -13,6 +13,10 @@ pub fn update_mouse_events_system(
     mouse_events: &mut Vec<MouseEvent>,
 ) -> SystemResult {
     mouse_events.clear();
+    // Just location of click:
+    if mouse.left_click {
+        mouse_events.push(MouseEvent::PositionClicked(Point::new(mouse.pos.0, mouse.pos.1)));
+    }
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntitySelected(e.unwrap()));
