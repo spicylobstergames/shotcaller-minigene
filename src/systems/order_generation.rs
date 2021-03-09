@@ -6,6 +6,7 @@ pub fn order_generation_system(
     gamemode: &GameMode,
     mouse_events: &Vec<MouseEvent>,
     selected_units: &SelectedUnits,
+    input_state: &InputState,
     order_queue: &mut Components<OrderQueue>,
 ) -> SystemResult {
 
@@ -17,13 +18,19 @@ pub fn order_generation_system(
 
     for ev in mouse_events.iter() {
         if let MouseEvent::PositionClicked(pos) = ev {
-            for e in selected_units.units.iter() {
-                // order_queue.insert(e, UnitOrder::MovetoPoint(pos));
-                if let Some(oq) = order_queue.get_mut(*e) {
-                    oq.orders = vec![(UnitOrder::MovetoPoint(*pos))];
-                }
-                else {
-                    order_queue.insert(*e, OrderQueue{orders: vec![UnitOrder::MovetoPoint(*pos)]});
+            match input_state {
+                InputState::Default => {},
+                // M-Move needs to be ordered explicitly now 
+                InputState::MMove => {
+                    for e in selected_units.units.iter() {
+                        // order_queue.insert(e, UnitOrder::MovetoPoint(pos));
+                        if let Some(oq) = order_queue.get_mut(*e) {
+                            oq.orders = vec![(UnitOrder::MovetoPoint(*pos))];
+                        }
+                        else {
+                            order_queue.insert(*e, OrderQueue{orders: vec![UnitOrder::MovetoPoint(*pos)]});
+                        }
+                    }
                 }
             }
         }
