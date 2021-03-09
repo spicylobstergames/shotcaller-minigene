@@ -66,6 +66,21 @@ impl Default for GameMode {
     }
 }
 
+/// State of UI for micro-input
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum InputState {
+    /// Default state
+    Default,
+    /// State when next input is to be considered M-Move target
+    MMove,
+}
+
+impl Default for InputState {
+    fn default() -> Self {
+        InputState::Default
+    }
+}
+
 /// Stores units that were selected by the player
 #[derive(Clone, new)]
 pub struct SelectedUnits {

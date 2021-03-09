@@ -13,3 +13,5 @@
 13: MenuSelect
 115: SpeedToggle
 105: GameModeToggle
+77: MMove
+27: ResetInputState

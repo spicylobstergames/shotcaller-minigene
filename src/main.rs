@@ -218,6 +218,7 @@ fn main() -> BError {
         combine_collision_system,
         input_driver::<InputEvent>,
         update_mouse_events_system,
+        update_input_state_system, // should run before all other input systems
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
@@ -308,6 +309,7 @@ fn main() -> BError {
     world.initialize::<TeamLeaders>();
     world.initialize::<GameMode>();
     world.initialize::<SelectedUnits>();
+    world.initialize::<InputState>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
