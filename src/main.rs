@@ -261,6 +261,7 @@ fn main() -> BError {
         respawn_leader_driver,
         spawn_creep_system,
         spawn_leader_system,
+        spawn_leader_system2,
         game_stats_updater_system,
     );
     // Remove old events at the end of the frame.

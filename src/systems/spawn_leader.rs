@@ -7,7 +7,7 @@ pub fn spawn_leader_system(
     team_leaders: &TeamLeaders,
     leader_defs: &LeaderDefinitions,
     entities: &mut Entities,
-    positions: &mut Components<Point>,
+    // positions: &mut Components<Point>,
     leaders: &mut Components<Leader>,
     // retreats: &mut Components<FleeToBase>,
     // is_caught: &mut Components<IsCaught>,
@@ -25,9 +25,9 @@ pub fn spawn_leader_system(
     effectors: &mut Components<EffectorSet<Effectors>>,
 ) -> SystemResult {
     for ev in game_events.iter() {
-        if let GameEvent::SpawnLeader(pos, id) = ev {
+        if let GameEvent::SpawnLeader(_pos, id) = ev {
             let leader = entities.create();
-            positions.insert(leader, pos.clone());
+            // positions.insert(leader, pos.clone());
             leaders.insert(leader, Leader(*id));
             let team = if *id < 5 { Team::Me } else { Team::Other };
             teams.insert(leader, team);
@@ -260,6 +260,29 @@ pub fn spawn_leader_system(
                     // leader1_proximity_attacks.insert(leader, Leader1ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
                     // retreats.insert(leader, FleeToBase(0.0));
                     // is_caught.insert(leader, IsCaught(false));
+                }
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Split of spawn_leader_system, because too many arguments.
+pub fn spawn_leader_system2(
+    game_events: &Vec<GameEvent>,
+    leaders: &Components<Leader>,
+    entities: &Entities,
+    positions: &mut Components<Point>,
+) -> SystemResult {
+    // Only runs if there was SpawnLeader GameEvent.
+    for ev in game_events.iter() {
+        if let GameEvent::SpawnLeader(pos, id0) = ev {
+            // Assume that leader with this ID has been created. Find it:
+            for (e, l) in join!(&entities && &leaders) {
+                let Leader(id) = l.unwrap();
+                if id0 == id {
+                    // Add whatever components need to be added:
+                    positions.insert(e.unwrap(), pos.clone());
                 }
             }
         }
