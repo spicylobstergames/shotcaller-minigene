@@ -14,27 +14,31 @@ pub fn update_mouse_events_system(
 ) -> SystemResult {
     mouse_events.clear();
     // Just location of click:
-    if mouse.left_click {
-        mouse_events.push(MouseEvent::PositionClicked(Point::new(mouse.pos.0, mouse.pos.1)));
-    }
+    let mut click_contains_entity = false;
+    
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntitySelected(e.unwrap()));
+            click_contains_entity = true;
         }
     }
     for (e, _, pos) in join!(&entities && &creeps && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::UnitSelected(e.unwrap()));
+            click_contains_entity = true;
         }
     }
     for (e, _, pos) in join!(&entities && &leaders && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::UnitSelected(e.unwrap()));
+            click_contains_entity = true;
         }
     }
     for (e, _, pos) in join!(&entities && &clickables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntityClicked(e.unwrap()));
+            click_contains_entity = true;
+
         }
     }
     for (e, _, pos) in join!(&entities && &hoverables && &pos) {
@@ -42,5 +46,14 @@ pub fn update_mouse_events_system(
             mouse_events.push(MouseEvent::EntityHovered(e.unwrap()));
         }
     }
+
+    if mouse.left_click {
+        mouse_events.push(
+            MouseEvent::PositionClicked{
+                pos: Point::new(mouse.pos.0, mouse.pos.1),
+                contains_entity: click_contains_entity,    
+            });
+    }
+
     Ok(())
 }
