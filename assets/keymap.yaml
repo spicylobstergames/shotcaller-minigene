@@ -15,4 +15,6 @@
 105: GameModeToggle
 77: MMove
 109: MMove
+72: HoldPos
+104: HoldPos
 27: ResetInputState

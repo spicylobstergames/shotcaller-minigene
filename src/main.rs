@@ -224,6 +224,7 @@ fn main() -> BError {
         creep_spawner_system,
         order_generation_system,
         mmove_order_system,
+        holdpos_order_system,
         simple_destination_system,
         ai_pathing_system,
         movement_system,

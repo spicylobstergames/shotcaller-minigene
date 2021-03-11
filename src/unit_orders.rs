@@ -6,4 +6,6 @@ pub enum UnitOrder {
     MovetoPoint(Point),
     /// Go to or follow an entity.
     MovetoUnit(Entity),
+    /// Don't move. Whatever happens, don't move. Even if you are being killed, don't move!
+    HoldPosition,
 }

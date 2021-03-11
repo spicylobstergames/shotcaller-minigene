@@ -5,6 +5,7 @@ pub fn order_generation_system(
     // entities: &Entities,
     gamemode: &GameMode,
     mouse_events: &Vec<MouseEvent>,
+    input_events: &Vec<InputEvent>,
     selected_units: &SelectedUnits,
     input_state: &InputState,
     order_queue: &mut Components<OrderQueue>,
@@ -35,6 +36,24 @@ pub fn order_generation_system(
                     }
                 }
             }
+        }
+    }
+
+    // Some orers are generated without mouse
+    for ev in input_events.iter() {
+        match ev {
+            InputEvent::HoldPos => {
+                // currently HoldPosition order works in any input state
+                for e in selected_units.units.iter() {
+                    if let Some(oq) = order_queue.get_mut(*e) {
+                        oq.orders = vec![(UnitOrder::HoldPosition)];
+                    }
+                    else {
+                        order_queue.insert(*e, OrderQueue{orders: vec![UnitOrder::HoldPosition]});
+                    }
+                }
+            },
+            _ => {}
         }
     }
 

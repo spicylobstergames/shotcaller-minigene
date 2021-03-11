@@ -41,6 +41,9 @@ pub fn order_completion_check_system(
                     } else {
                         is_completed = true;
                     }
+                },
+                UnitOrder::HoldPosition => {
+                    // This order only expires on death.
                 }
             }
         }
