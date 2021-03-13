@@ -15,7 +15,7 @@ pub enum InputEvent {
     ZoomToggle,
     GameModeToggle,
     Teleport(u8),
-    
+
     /// Key to reset input state to default (default key Esc)
     ResetInputState,
     /// Key (default M) responsibe for M-move order was pressed
@@ -61,7 +61,7 @@ pub enum MouseEvent {
     /// A hoverable entity was hovered anywhere in the game.
     EntityHovered(Entity),
     /// A point on a map was clicked.
-    PositionClicked{
+    PositionClicked {
         /// Position of the click
         pos: Point,
         /// Does that position contain entity (or is it an empty point)

@@ -9,7 +9,6 @@ pub fn holdpos_order_system(
     targets: &mut Components<AiDestination>,
     paths: &mut Components<AiPath>,
 ) -> SystemResult {
-
     // This system should not run if current gamemode is shotcaller
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
@@ -33,7 +32,6 @@ pub fn holdpos_order_system(
             }
         }
     }
-    
 
     Ok(())
 }

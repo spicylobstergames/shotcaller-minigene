@@ -15,7 +15,7 @@ pub fn update_mouse_events_system(
     mouse_events.clear();
     // Just location of click:
     let mut click_contains_entity = false;
-    
+
     for (e, _, pos) in join!(&entities && &selectables && &pos) {
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntitySelected(e.unwrap()));
@@ -38,7 +38,6 @@ pub fn update_mouse_events_system(
         if mouse.pos == (pos.unwrap().x, pos.unwrap().y) && mouse.left_click {
             mouse_events.push(MouseEvent::EntityClicked(e.unwrap()));
             click_contains_entity = true;
-
         }
     }
     for (e, _, pos) in join!(&entities && &hoverables && &pos) {
@@ -48,11 +47,10 @@ pub fn update_mouse_events_system(
     }
 
     if mouse.left_click {
-        mouse_events.push(
-            MouseEvent::PositionClicked{
-                pos: Point::new(mouse.pos.0, mouse.pos.1),
-                contains_entity: click_contains_entity,    
-            });
+        mouse_events.push(MouseEvent::PositionClicked {
+            pos: Point::new(mouse.pos.0, mouse.pos.1),
+            contains_entity: click_contains_entity,
+        });
     }
 
     Ok(())

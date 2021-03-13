@@ -7,7 +7,6 @@ pub fn update_input_state_system(
     // context: &BTerm,
     input_state: &mut InputState,
 ) -> SystemResult {
-
     // Only relevant for micro-input game mode
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
@@ -18,14 +17,13 @@ pub fn update_input_state_system(
         match k {
             InputEvent::ResetInputState => {
                 *input_state = InputState::Default;
-            },
+            }
             InputEvent::MMove => {
                 *input_state = InputState::MMove;
-            },
+            }
             _ => {}
         }
     }
-
 
     Ok(())
 }
