@@ -31,10 +31,8 @@ pub fn order_generation_system(
                         if let Some(oq) = order_queue.get_mut(*e) {
                             oq.orders = vec![(UnitOrder::MovetoPoint(*pos))];
                         } else {
-                            order_queue.insert(
-                                *e,
-                                OrderQueue::new(vec![UnitOrder::MovetoPoint(*pos)]),
-                            );
+                            order_queue
+                                .insert(*e, OrderQueue::new(vec![UnitOrder::MovetoPoint(*pos)]));
                         }
                     }
                 }
@@ -51,10 +49,17 @@ pub fn order_generation_system(
                     if let Some(oq) = order_queue.get_mut(*e) {
                         oq.orders = vec![(UnitOrder::HoldPosition)];
                     } else {
-                        order_queue.insert(
-                            *e,
-                            OrderQueue::new( vec![UnitOrder::HoldPosition]),
-                        );
+                        order_queue.insert(*e, OrderQueue::new(vec![UnitOrder::HoldPosition]));
+                    }
+                }
+            }
+            InputEvent::StopOrder => {
+                for e in selected_units.units.iter() {
+                    // clears order queue
+                    if let Some(oq) = order_queue.get_mut(*e) {
+                        oq.orders = vec![];
+                    } else {
+                        order_queue.insert(*e, OrderQueue::new(vec![]));
                     }
                 }
             }

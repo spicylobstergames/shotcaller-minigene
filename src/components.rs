@@ -88,8 +88,6 @@ pub struct OrderQueue {
 impl OrderQueue {
     /// Better to wrap a component creation in a function
     pub fn new(orders: Vec<UnitOrder>) -> Self {
-        OrderQueue {
-            orders
-        }
+        OrderQueue { orders }
     }
 }

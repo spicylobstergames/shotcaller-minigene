@@ -4,7 +4,7 @@ use crate::*;
 pub fn update_input_state_system(
     gamemode: &GameMode,
     events: &Vec<InputEvent>,
-    // context: &BTerm,
+    // mouse_events: &Vec<MouseEvent>,
     input_state: &mut InputState,
 ) -> SystemResult {
     // Only relevant for micro-input game mode
@@ -24,6 +24,20 @@ pub fn update_input_state_system(
             _ => {}
         }
     }
+
+    // Commented out because it doesn't work with other input systems
+    // // mouse clicks reset Input state:
+    // // WARNING: if this system comes before order generation system, then game will not work :)
+    // if *input_state != InputState::Default {
+    //     for m in mouse_events.iter(){
+    //         match m {
+    //             MouseEvent::PositionClicked{..} => {
+    //                 *input_state = InputState::Default;
+    //             },
+    //             _ => {}
+    //         }
+    //     }
+    // }
 
     Ok(())
 }
