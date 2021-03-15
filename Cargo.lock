@@ -199,9 +199,9 @@ checksum = "bed57e2090563b83ba8f83366628ce535a7584c9afa4c9fc0612a03925c6df58"
 
 [[package]]
 name = "byteorder"
-version = "1.4.2"
+version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae44d1a3d5a19df61dd0c8beb138458ac2a53a7ac09eba97d55592540004306b"
+checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
 
 [[package]]
 name = "calloop"
@@ -481,7 +481,7 @@ checksum = "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
 ]
 
 [[package]]
@@ -492,7 +492,7 @@ checksum = "3418329ca0ad70234b9735dc4ceed10af4df60eff9c8e7b06cb5e520d92c3535"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
 ]
 
 [[package]]
@@ -561,9 +561,9 @@ checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
 name = "entity_component"
-version = "0.100.0"
+version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0088937c2444e3f54e0a84853428c8eb62459f17e05c8e9090b565e463e2104c"
+checksum = "2e51ccf9eaae53b0bb521e84876eaf79e9e3be1b9685641928794853f3206334"
 dependencies = [
  "bitset-core",
  "itertools",
@@ -1012,8 +1012,8 @@ dependencies = [
 
 [[package]]
 name = "minigene"
-version = "0.3.0"
-source = "git+https://github.com/jojolepro/minigene?branch=master#73b4c1ba6bcc16bd5baec45f4a7848d65e367194"
+version = "0.4.0"
+source = "git+https://github.com/jojolepro/minigene?branch=master#0e83b8646f94bf52082f9010a40d559875c659af"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",
@@ -1021,7 +1021,7 @@ dependencies = [
  "game_clock",
  "game_features",
  "hibitset",
- "plank_ecs",
+ "planck_ecs",
  "pushdown-automaton-macro",
  "rayon",
  "spin_sleep",
@@ -1284,7 +1284,7 @@ dependencies = [
  "proc-macro-crate",
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
 ]
 
 [[package]]
@@ -1397,10 +1397,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
 
 [[package]]
-name = "plank_ecs"
-version = "0.1.0"
+name = "planck_ecs"
+version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fa09dca04433f3e6963c46958e91432b9f5feaf59fa792336a92c56ab2abac9"
+checksum = "d6e73e7483b4f0f5833b436633494acf3f0cfb798ea99a24c8d3f00398749760"
 dependencies = [
  "entity_component",
  "world_dispatcher",
@@ -1596,21 +1596,20 @@ checksum = "41cc0f7e4d5d4544e8861606a285bb08d3e70712ccc7d2b84d7c0ccfaf4b05ce"
 
 [[package]]
 name = "regex"
-version = "1.4.3"
+version = "1.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d9251239e129e16308e70d853559389de218ac275b515068abc96829d05b948a"
+checksum = "957056ecddbeba1b26965114e191d2e8589ce74db242b6ea25fc4062427a5c19"
 dependencies = [
  "aho-corasick",
  "memchr",
  "regex-syntax",
- "thread_local",
 ]
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.22"
+version = "0.6.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5eb417147ba9860a96cfe72a0b93bf88fee1744b5636ec99ab20c1aa9376581"
+checksum = "24d5f089152e60f62d28b835fbff2cd2e8dc0baf1ac13343bef92ab7eed84548"
 
 [[package]]
 name = "roman"
@@ -1677,22 +1676,22 @@ checksum = "a0eddf2e8f50ced781f288c19f18621fa72a3779e3cb58dbf23b07469b0abeb4"
 
 [[package]]
 name = "serde"
-version = "1.0.123"
+version = "1.0.124"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92d5161132722baa40d802cc70b15262b98258453e85e5d1d365c757c73869ae"
+checksum = "bd761ff957cb2a45fbb9ab3da6512de9de55872866160b23c25f1a841e99d29f"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.123"
+version = "1.0.124"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9391c295d64fc0abb2c556bad848f33cb8296276b1ad2677d1ae1ace4f258f31"
+checksum = "1800f7693e94e186f5e25a28291ae1570da908aff7d97a095dec1e56ff99069b"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
 ]
 
 [[package]]
@@ -1851,22 +1850,13 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.61"
+version = "1.0.64"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed22b90a0e734a23a7610f4283ac9e5acfb96cbb30dfefa540d66f866f1c09c5"
+checksum = "3fd9d1e9976102a03c542daa2eff1b43f9d72306342f3f8b3ed5fb8908195d6f"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.9",
  "unicode-xid 0.2.1",
-]
-
-[[package]]
-name = "thread_local"
-version = "1.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8018d24e04c95ac8790716a5987d0fec4f8b27249ffa0f7d33f1369bdfb88cbd"
-dependencies = [
- "once_cell",
 ]
 
 [[package]]
@@ -1967,7 +1957,7 @@ dependencies = [
  "log",
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
  "wasm-bindgen-shared",
 ]
 
@@ -2001,7 +1991,7 @@ checksum = "cc053ec74d454df287b9374ee8abb36ffd5acb95ba87da3ba5b7d3fe20eb401e"
 dependencies = [
  "proc-macro2 1.0.24",
  "quote 1.0.9",
- "syn 1.0.61",
+ "syn 1.0.64",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -2200,11 +2190,10 @@ dependencies = [
 
 [[package]]
 name = "world_dispatcher"
-version = "0.100.1"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6252a4102733d083b492dc6e790ea178406ffef5d8ee10cb911e030b24297bd"
+checksum = "7355c778ad0c0650612b3c0daff9d218f1bed5b9cbbcd7dd39be2b79ed066863"
 dependencies = [
- "derive-new",
  "downcast-rs",
 ]
 

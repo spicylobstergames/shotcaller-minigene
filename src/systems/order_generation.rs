@@ -33,9 +33,7 @@ pub fn order_generation_system(
                         } else {
                             order_queue.insert(
                                 *e,
-                                OrderQueue {
-                                    orders: vec![UnitOrder::MovetoPoint(*pos)],
-                                },
+                                OrderQueue::new(vec![UnitOrder::MovetoPoint(*pos)]),
                             );
                         }
                     }
@@ -55,9 +53,7 @@ pub fn order_generation_system(
                     } else {
                         order_queue.insert(
                             *e,
-                            OrderQueue {
-                                orders: vec![UnitOrder::HoldPosition],
-                            },
+                            OrderQueue::new( vec![UnitOrder::HoldPosition]),
                         );
                     }
                 }

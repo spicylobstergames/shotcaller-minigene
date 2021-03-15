@@ -84,3 +84,12 @@ pub struct OrderQueue {
     // TODO: Use vecdeque to optimize. But currently this might be considered overoptimization.
     pub orders: Vec<UnitOrder>,
 }
+
+impl OrderQueue {
+    /// Better to wrap a component creation in a function
+    pub fn new(orders: Vec<UnitOrder>) -> Self {
+        OrderQueue {
+            orders
+        }
+    }
+}

@@ -7,6 +7,7 @@ pub fn spawn_creep_system(
     entities: &mut Entities,
     positions: &mut Components<Point>,
     creeps: &mut Components<Creep>,
+    order_queue: &mut Components<OrderQueue>,
     simple_movements: &mut Components<SimpleMovement>,
     proximity_attacks: &mut Components<ProximityAttack>,
     stats: &mut Components<StatSet<Stats>>,
@@ -30,6 +31,13 @@ pub fn spawn_creep_system(
             } else {
                 RGBA::named(RED)
             };
+
+            // Spawn with Hold position order. To stop leaders when game mode is changed to micro-input.
+            order_queue.insert(
+                creep,
+                OrderQueue::new(vec![UnitOrder::HoldPosition])
+            );
+            
             sprites.insert(
                 creep,
                 Sprite {
