@@ -79,10 +79,14 @@ pub fn control_group_system(
             if let Some(e) = leader_e {
                 selected_units.units = vec![e];
                 // find the summons and companions:
-                for (e0, c) in join!(&entities && &companions) {
-                    if let Some(Companion::Elephant(summon_e)) = c {
-                        if e == e0.unwrap() {
-                            selected_units.units.push(summon_e.clone());
+                let summon = companions.get(e);
+                if let Some(summon) = summon {
+                    // TODO: enum for summons doesn't generalize well.
+                    // If new summons are added to the game this function will have to be updated.
+                    // Someone someday should probably review summon code
+                    match summon {
+                        Companion::Elephant(elephand_id) => {
+                            selected_units.units.push(elephand_id.clone());
                         }
                     }
                 }
