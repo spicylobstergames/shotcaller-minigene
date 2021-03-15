@@ -21,20 +21,24 @@ pub fn unit_selection_system(
 
     'events: for ev in mouse_events.iter() {
         match ev {
-            MouseEvent::UnitSelected(e) => {
-                // Don't select the unit twice:
-                if !selected_units.units.iter().any(|&x| x == *e) {
-                    selected_units.units.push(e.clone());
+            MouseEvent::PositionClicked {
+                pos: _,
+                entities: Some(entities),
+            } => {
+                for e in entities {
+                    if selected_units.units.iter().all(|&x| x != *e) {
+                        selected_units.units.push(e.clone());
 
-                    // Only select one unit in a frame.
-                    // This is here because sometimes units stack and I don't want to select 5 units with a single click.
-                    // TODO: this doesn't work, multiple units still get selected. Maybe I just need to click faster :)
-                    break 'events;
+                        // Only select one unit in a frame.
+                        // This is here because sometimes units stack and I don't want to select 5 units with a single click.
+                        // TODO: this doesn't work, multiple units still get selected. Maybe I just need to click faster :)
+                        break 'events;
+                    }
                 }
             }
             MouseEvent::PositionClicked {
                 pos: _,
-                contains_entity: false,
+                entities: None,
             } => {
                 // Empty space was clicked. Deselect all
                 selected_units.units = vec![];
@@ -42,12 +46,13 @@ pub fn unit_selection_system(
             _ => {}
         }
 
-        if let MouseEvent::UnitSelected(e) = ev {
-            // Don't select the unit twice:
-            if !selected_units.units.iter().any(|&x| x == *e) {
-                selected_units.units.push(e.clone());
-            }
-        }
+        // if let MouseEvent::UnitSelected(e) = ev {
+        //     // Don't select the unit twice:
+        //     if !selected_units.units.iter().any(|&x| x == *e) {
+        //         selected_units.units.push(e.clone());
+        //     }
+        // }
     }
+
     Ok(())
 }

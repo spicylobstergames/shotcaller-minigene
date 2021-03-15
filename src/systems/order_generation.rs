@@ -17,11 +17,7 @@ pub fn order_generation_system(
     }
 
     for ev in mouse_events.iter() {
-        if let MouseEvent::PositionClicked {
-            pos,
-            contains_entity: _,
-        } = ev
-        {
+        if let MouseEvent::PositionClicked { pos, entities: _ } = ev {
             match input_state {
                 InputState::Default => {}
                 // M-Move needs to be ordered explicitly now

@@ -84,7 +84,7 @@ impl Default for InputState {
 }
 
 /// Stores units that were selected by the player
-#[derive(Clone, new)]
+#[derive(Clone, Debug, new)]
 pub struct SelectedUnits {
     /// Vector of all selected Entities
     pub units: Vec<Entity>,
