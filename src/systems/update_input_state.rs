@@ -21,6 +21,9 @@ pub fn update_input_state_system(
             InputEvent::MMove => {
                 *input_state = InputState::MMove;
             }
+            InputEvent::AMove => {
+                *input_state = InputState::AMove;
+            }
             _ => {}
         }
     }

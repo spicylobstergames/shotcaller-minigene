@@ -20,6 +20,8 @@ pub enum InputEvent {
     ResetInputState,
     /// Key (default M) responsibe for M-move order was pressed
     MMove,
+    /// A move order. (Defaut key A)
+    AMove,
     /// Key (default M) responsibe for HoldPosition order was pressed
     HoldPos,
     /// Clear unit's order Queue. Default key S

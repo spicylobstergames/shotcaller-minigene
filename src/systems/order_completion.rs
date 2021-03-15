@@ -28,6 +28,12 @@ pub fn order_completion_check_system(
                         is_completed = true;
                     }
                 }
+                UnitOrder::AMovetoPoint(trg_pt) => {
+                    // yes this was copy-pasted
+                    if positions.get(e.unwrap()).unwrap() == &trg_pt {
+                        is_completed = true;
+                    }
+                }
                 UnitOrder::MovetoUnit(trg_entity) => {
                     // Assume that unit with this order has position component
                     let own_pos = positions.get(e.unwrap()).unwrap();

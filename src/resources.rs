@@ -73,6 +73,8 @@ pub enum InputState {
     Default,
     /// State when next input is to be considered M-Move target
     MMove,
+    /// State when next input is to be considered A-Move target
+    AMove,
 }
 
 impl Default for InputState {

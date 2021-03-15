@@ -36,6 +36,16 @@ pub fn order_generation_system(
                         }
                     }
                 }
+                InputState::AMove => {
+                    for e in selected_units.units.iter() {
+                        if let Some(oq) = order_queue.get_mut(*e) {
+                            oq.orders = vec![(UnitOrder::AMovetoPoint(*pos))];
+                        } else {
+                            order_queue
+                                .insert(*e, OrderQueue::new(vec![UnitOrder::AMovetoPoint(*pos)]));
+                        }
+                    }
+                }
             }
         }
     }

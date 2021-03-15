@@ -1,6 +1,7 @@
 mod additional_attack;
 mod additional_defense;
 mod air_corrosion;
+mod amove_order;
 mod aoe_damage;
 mod back_endurance;
 mod battle_hunger;
@@ -51,6 +52,7 @@ mod update_win_condition;
 pub use self::additional_attack::*;
 pub use self::additional_defense::*;
 pub use self::air_corrosion::*;
+pub use self::amove_order::*;
 pub use self::aoe_damage::*;
 pub use self::back_endurance::*;
 pub use self::battle_hunger::*;

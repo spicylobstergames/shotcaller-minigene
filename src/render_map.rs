@@ -95,8 +95,9 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         let is_txt = match *input_state {
             InputState::Default => "Default",
             InputState::MMove => "Move",
+            InputState::AMove => "Attack",
         };
-        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 11, "IS: ");
+        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 11, "InputState: ");
         ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 10, format!("{:.2}", is_txt));
 
         let game_stats = world.get::<GameStats>().unwrap();
