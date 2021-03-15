@@ -20,6 +20,7 @@ pub enum Companion {
     /// A elephant companion
     Elephant(Entity),
 }
+
 /// Tags a tower projectile.
 pub struct TowerProjectile;
 /// Tags a core.

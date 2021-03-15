@@ -2,11 +2,11 @@
 104: MenuWest
 106: MenuSouth
 107: MenuNorth
-49:
+113:
   Teleport: 1
-50:
+119:
   Teleport: 2
-51:
+101:
   Teleport: 3
 108: MenuEast
 113: MenuCancel
@@ -21,3 +21,13 @@
 # 83: StopOrder
 115: StopOrder
 27: ResetInputState
+49: 
+  AutoSelect: 0
+50:
+  AutoSelect: 1
+51:
+  AutoSelect: 2
+52:
+  AutoSelect: 3
+53:
+  AutoSelect: 4

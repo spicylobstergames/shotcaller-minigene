@@ -16,6 +16,9 @@ pub enum InputEvent {
     GameModeToggle,
     Teleport(u8),
 
+    /// Auto control group:
+    AutoSelect(u8),
+
     /// Key to reset input state to default (default key Esc)
     ResetInputState,
     /// Key (default M) responsibe for M-move order was pressed

@@ -220,6 +220,7 @@ fn main() -> BError {
         update_mouse_events_system,
         order_generation_system,
         unit_selection_system,
+        control_group_system,
         update_input_state_system, // should run before all other input systems
         update_collision_resource_system,
         handle_action_points_system,
