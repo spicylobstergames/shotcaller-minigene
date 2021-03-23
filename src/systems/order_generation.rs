@@ -55,34 +55,6 @@ pub fn order_generation_system(
                 }
             }
         }
-
-        // if let MouseEvent::PositionClicked { pos, entities: _ } = ev {
-        //     match input_state {
-        //         InputState::Default => {}
-        //         // M-Move needs to be ordered explicitly now
-        //         InputState::MMove => {
-        //             for e in selected_units.units.iter() {
-        //                 // order_queue.insert(e, UnitOrder::MovetoPoint(pos));
-        //                 if let Some(oq) = order_queue.get_mut(*e) {
-        //                     oq.orders = vec![(UnitOrder::MovetoPoint(*pos))];
-        //                 } else {
-        //                     order_queue
-        //                         .insert(*e, OrderQueue::new(vec![UnitOrder::MovetoPoint(*pos)]));
-        //                 }
-        //             }
-        //         }
-        //         InputState::AMove => {
-        //             for e in selected_units.units.iter() {
-        //                 if let Some(oq) = order_queue.get_mut(*e) {
-        //                     oq.orders = vec![(UnitOrder::AMovetoPoint(*pos))];
-        //                 } else {
-        //                     order_queue
-        //                         .insert(*e, OrderQueue::new(vec![UnitOrder::AMovetoPoint(*pos)]));
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     // Some orers are generated without mouse

@@ -51,7 +51,12 @@ pub fn unit_selection_system(
     // Deselect dead entities:
     for ev in game_events.iter() {
         if let GameEvent::KillEntity(e) = ev {
-            selected_units.units = selected_units.units.clone().into_iter().filter(|x| x != e).collect();
+            selected_units.units = selected_units
+                .units
+                .clone()
+                .into_iter()
+                .filter(|x| x != e)
+                .collect();
         }
     }
 

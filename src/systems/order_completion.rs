@@ -6,9 +6,6 @@ pub fn order_completion_check_system(
     gamemode: &GameMode,
     positions: &Components<Point>,
     order_queue: &mut Components<OrderQueue>,
-    // stats: &mut Components<StatSet<Stats>>,
-    // targets: &mut Components<AiDestination>,
-    // paths: &mut Components<AiPath>,
 ) -> SystemResult {
     // This system should not run if current gamemode is shotcaller
     match gamemode {
