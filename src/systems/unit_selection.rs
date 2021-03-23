@@ -5,6 +5,7 @@ pub fn unit_selection_system(
     gamemode: &GameMode,
     input_state: &InputState,
     mouse_events: &Vec<MouseEvent>,
+    game_events: &Vec<GameEvent>,
     selected_units: &mut SelectedUnits,
 ) -> SystemResult {
     // Only run in MicroInput game mode
@@ -44,6 +45,13 @@ pub fn unit_selection_system(
                 selected_units.units = vec![];
             }
             _ => {}
+        }
+    }
+
+    // Deselect dead entities:
+    for ev in game_events.iter() {
+        if let GameEvent::KillEntity(e) = ev {
+            selected_units.units = selected_units.units.clone().into_iter().filter(|x| x != e).collect();
         }
     }
 

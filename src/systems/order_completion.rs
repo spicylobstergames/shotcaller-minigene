@@ -45,6 +45,7 @@ pub fn order_completion_check_system(
                             is_completed = true;
                         }
                     } else {
+                        // Should be true if entity no longer exists. Eg. is dead.
                         is_completed = true;
                     }
                 }
