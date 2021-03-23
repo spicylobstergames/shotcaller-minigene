@@ -12,7 +12,7 @@ pub fn render<'a>(ctx: &mut BTerm) {
 /// Creates the map background 2d sprite entities.
 pub fn create_map_bg<'a>(world: &mut World) {
     let mut i = 0;
-    for s in MAP {
+    for s in MAP_STRING.iter() {
         let mut j = 0;
         for c in s.chars() {
             if c == '#' {
