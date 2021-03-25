@@ -16,14 +16,21 @@ pub fn amove_order_system(
         GameMode::MircoInput => {}
     }
 
-    // TODO: should be defined in data files.
-    let aggro_range = 7.0;
-
     for (e, orders, pos, team) in join!(&entities && &order_queue && &positions && &teams) {
         // Current order is a-move
         let oq = orders.unwrap();
         if oq.orders.len() > 0 {
             if let UnitOrder::AMovetoPoint(trg_pt) = oq.orders[0] {
+                // find aggro range:
+                let aggro_range = stats
+                    .get(e.unwrap())
+                    .unwrap()
+                    .stats
+                    .get(&Stats::AggroRange)
+                    .unwrap()
+                    .value
+                    .clone() as f32;
+
                 // decide between violence and travel:
                 let closest = find_closest_in_other_team(
                     team.unwrap(),

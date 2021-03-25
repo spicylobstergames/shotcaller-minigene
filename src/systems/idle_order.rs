@@ -17,13 +17,20 @@ pub fn idle_order_system(
         GameMode::MircoInput => {}
     }
 
-    // TODO: should be defined in data files.
-    let aggro_range = 7.0;
-
     for (e, orders, pos, team) in join!(&entities && &order_queue && &positions && &teams) {
         // Current order is moveto point
         let oq = orders.unwrap();
         if oq.orders.len() == 0 {
+            // find aggro range:
+            let aggro_range = stats
+                .get(e.unwrap())
+                .unwrap()
+                .stats
+                .get(&Stats::AggroRange)
+                .unwrap()
+                .value
+                .clone() as f32;
+
             // find closest enemy
             let closest = find_closest_in_other_team(
                 team.unwrap(),
