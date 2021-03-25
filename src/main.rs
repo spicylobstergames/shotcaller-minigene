@@ -314,6 +314,7 @@ fn main() -> BError {
     world.initialize::<GameMode>();
     world.initialize::<SelectedUnits>();
     world.initialize::<InputState>();
+    world.initialize::<RandomNG>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),

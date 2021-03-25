@@ -58,7 +58,8 @@ pub fn spawn_leader_system(
             };
 
             // Spawn with Hold position order. To stop leaders when game mode is changed to micro-input.
-            order_queue.insert(leader, OrderQueue::new(vec![UnitOrder::HoldPosition]));
+            // order_queue.insert(leader, OrderQueue::new(vec![UnitOrder::HoldPosition]));
+            order_queue.insert(leader, OrderQueue::new(vec![]));
 
             skillsets.insert(
                 leader,

@@ -8,6 +8,7 @@ pub fn idle_order_system(
     teams: &Components<Team>,
     positions: &Components<Point>,
     stats: &Components<StatSet<Stats>>,
+    rng: &mut RandomNG,
     targets: &mut Components<AiDestination>,
     paths: &mut Components<AiPath>,
 ) -> SystemResult {
@@ -17,7 +18,7 @@ pub fn idle_order_system(
         GameMode::MircoInput => {}
     }
 
-    for (e, orders, pos, team) in join!(&entities && &order_queue && &positions && &teams) {
+    'query: for (e, orders, pos, team) in join!(&entities && &order_queue && &positions && &teams) {
         // Current order is moveto point
         let oq = orders.unwrap();
         if oq.orders.len() == 0 {
@@ -41,17 +42,32 @@ pub fn idle_order_system(
                 &entities,
             );
 
+            // Attack enemies withing aggro range
             if let Some((_, c)) = closest {
                 if dist(&c, pos.unwrap()) <= aggro_range {
                     // set destination to closest enemy
                     targets.insert(e.unwrap(), AiDestination::new(c.clone()));
-                } else {
-                    // stay in place
-                    targets.insert(e.unwrap(), AiDestination::new(pos.unwrap().clone()));
-                    // TODO: I don't like this part. But it is here because if AIDestination == Current position,
-                    // then minigene doesn't run pathfinding (meaning that old path doesn't get edited)
-                    paths.remove(e.unwrap());
+                    continue 'query;
+                } 
+            // Else move if stacked with other units:
+            // TODO: optimise. Currently it performs grid search. If performance too bad, then just comment out.
+            for (e1, pos1) in join!(&entities && &positions){
+                if e1.unwrap() != e.unwrap() && pos.unwrap() == pos1.unwrap() {
+                    // choose random adjacent tile as a destination to unstack entities:
+                    let trg_pos = Point::new(
+                        pos.unwrap().x - (rng.rng.rand_range(0..3) as i32) + 1,
+                        pos.unwrap().y - (rng.rng.rand_range(0..3) as i32) + 1,
+                    );
+                    targets.insert(e.unwrap(), AiDestination::new(trg_pos));
+                    continue 'query;
                 }
+            }
+            // If no previous conditions apply, then stay in place
+            targets.insert(e.unwrap(), AiDestination::new(pos.unwrap().clone()));
+            // TODO: I don't like this part. But it is here because if AIDestination == Current position,
+            // then minigene doesn't run pathfinding (meaning that old path doesn't get edited)
+            paths.remove(e.unwrap());
+                
             }
         }
     }
