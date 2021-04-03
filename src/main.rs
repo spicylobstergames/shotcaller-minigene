@@ -465,6 +465,7 @@ fn main() -> BError {
     });
     *world.get_mut::<_>().unwrap() = input_to_move_camera;
 
+    world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
 
     create_map_bg(&mut world);
 
