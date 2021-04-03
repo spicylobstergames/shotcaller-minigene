@@ -16,27 +16,13 @@ impl minigene::State for DefaultState {
                 ctx.cls();
             }
 
-            // create fake smaller camera to avoid rendering through the
-            // UI at the right side of the screen.
-            let mut tweaked_cam = world.get::<Camera>().unwrap().clone();
-            tweaked_cam.screen_position.x = tweaked_cam.position.x;
-            tweaked_cam.screen_position.y = tweaked_cam.position.y;
-            tweaked_cam.size.x -= tweaked_cam.position.x;
-            tweaked_cam.size.y -= tweaked_cam.position.y;
-            if tweaked_cam.size.x < 0 {
-                tweaked_cam.size.x = 0;
-            }
-            if tweaked_cam.size.y < 0 {
-                tweaked_cam.size.y = 0;
-            }
-
             #[cfg(not(feature = "opengl"))]
             {
                 ctx.set_active_console(0);
                 render(ctx);
                 render_ascii(
                     ctx,
-                    &tweaked_cam,
+                    &*world.get().unwrap(),
                     &*world.get().unwrap(),
                     &*world.get().unwrap(),
                     &*world.get().unwrap(),
@@ -47,7 +33,7 @@ impl minigene::State for DefaultState {
                 ctx.set_active_console(1);
                 render_sprites(
                     ctx,
-                    &tweaked_cam,
+                    &*world.get().unwrap(),
                     &*world.get().unwrap(),
                     &*world.get().unwrap(),
                     Some(&*world.get().unwrap()),
