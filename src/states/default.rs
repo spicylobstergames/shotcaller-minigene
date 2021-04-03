@@ -18,10 +18,9 @@ impl minigene::State for DefaultState {
 
             // create fake smaller camera to avoid rendering through the
             // UI at the right side of the screen.
-            let cur_cam = world.get::<Camera>().unwrap();
-            let mut tweaked_cam = cur_cam.clone();
-            tweaked_cam.size.x -= cur_cam.position.x;
-            tweaked_cam.size.y -= cur_cam.position.y;
+            let mut tweaked_cam = world.get::<Camera>().unwrap().clone();
+            tweaked_cam.size.x -= tweaked_cam.position.x;
+            tweaked_cam.size.y -= tweaked_cam.position.y;
 
             #[cfg(not(feature = "opengl"))]
             {
