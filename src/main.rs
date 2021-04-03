@@ -9,8 +9,8 @@ extern crate lazy_static;
 
 use minigene::*;
 use rand::{seq::SliceRandom, thread_rng, Rng};
-use std::collections::HashMap;
 use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 
 add_wasm_support!();
 
@@ -44,7 +44,11 @@ const TOWER_OFFSET: i32 = 32;
 const MAP: &[u8; 4100] = include_bytes!("../assets/map.txt");
 
 lazy_static! {
-    static ref MAP_STRING: Vec<String> = String::from_utf8(MAP.to_vec()).unwrap().split("\n").map(|s| s.to_string()).collect::<Vec<_>>();
+    static ref MAP_STRING: Vec<String> = String::from_utf8(MAP.to_vec())
+        .unwrap()
+        .split("\n")
+        .map(|s| s.to_string())
+        .collect::<Vec<_>>();
 }
 
 mod components;
@@ -250,18 +254,18 @@ fn main() -> BError {
     let default_stats = stat_defs.to_statset();
     *world.get_mut().unwrap() = stat_defs;
 
-	for (i,s) in MAP_STRING.iter().enumerate() {
-    	for (j, c) in s.chars().enumerate() {
-        	if c != '#' && c != '0' {
-            	let team = if c.is_uppercase() {
-                	Team::Me
-            	} else {
-                	Team::Other
-            	};
-            	let position = Point::new(i as u32, j as u32);
-        	}
-    	}
-	}
+    for (i, s) in MAP_STRING.iter().enumerate() {
+        for (j, c) in s.chars().enumerate() {
+            if c != '#' && c != '0' {
+                let team = if c.is_uppercase() {
+                    Team::Me
+                } else {
+                    Team::Other
+                };
+                let position = Point::new(i as u32, j as u32);
+            }
+        }
+    }
     // Create cores
     centity!(
         world,
@@ -447,22 +451,34 @@ fn main() -> BError {
     }
 
     let mut input_to_move_camera = HashMap::<_, _, RandomState>::default();
-    input_to_move_camera.insert(InputEvent::CameraNorth, MoveCameraEvent {
-        direction: Direction::North,
-        distance: 1,
-    });
-    input_to_move_camera.insert(InputEvent::CameraSouth, MoveCameraEvent {
-        direction: Direction::South,
-        distance: 1,
-    });
-    input_to_move_camera.insert(InputEvent::CameraEast, MoveCameraEvent {
-        direction: Direction::East,
-        distance: 1,
-    });
-    input_to_move_camera.insert(InputEvent::CameraWest, MoveCameraEvent {
-        direction: Direction::West,
-        distance: 1,
-    });
+    input_to_move_camera.insert(
+        InputEvent::CameraNorth,
+        MoveCameraEvent {
+            direction: Direction::North,
+            distance: 1,
+        },
+    );
+    input_to_move_camera.insert(
+        InputEvent::CameraSouth,
+        MoveCameraEvent {
+            direction: Direction::South,
+            distance: 1,
+        },
+    );
+    input_to_move_camera.insert(
+        InputEvent::CameraEast,
+        MoveCameraEvent {
+            direction: Direction::East,
+            distance: 1,
+        },
+    );
+    input_to_move_camera.insert(
+        InputEvent::CameraWest,
+        MoveCameraEvent {
+            direction: Direction::West,
+            distance: 1,
+        },
+    );
     *world.get_mut::<_>().unwrap() = input_to_move_camera;
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
