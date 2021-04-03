@@ -13,6 +13,10 @@ pub enum InputEvent {
     MenuCancel,
     SpeedToggle,
     ZoomToggle,
+    CameraNorth,
+    CameraSouth,
+    CameraEast,
+    CameraWest,
     Teleport(u8),
 }
 

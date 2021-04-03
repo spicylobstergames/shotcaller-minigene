@@ -3,8 +3,14 @@ use crate::*;
 /// Renders the background map on the terminal.
 pub fn render<'a>(ctx: &mut BTerm) {
     let mut i = 0;
-    for s in MAP {
-        ctx.print(0, i, s);
+    for s in MAP_STRING.iter() {
+        for (j, c) in s.chars().enumerate() {
+            if c == '#' {
+                ctx.print(j, i, "#");
+            } else {
+                ctx.print(j, i, "0");
+            }
+        }
         i = i + 1;
     }
 }

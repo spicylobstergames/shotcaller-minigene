@@ -12,3 +12,7 @@
 113: MenuCancel
 13: MenuSelect
 115: SpeedToggle
+72: CameraWest
+74: CameraSouth
+75: CameraNorth
+76: CameraEast

@@ -10,6 +10,7 @@ extern crate lazy_static;
 use minigene::*;
 use rand::{seq::SliceRandom, thread_rng, Rng};
 use std::collections::HashMap;
+use std::collections::hash_map::RandomState;
 
 add_wasm_support!();
 
@@ -166,6 +167,8 @@ fn main() -> BError {
         spawn_creep_system,
         spawn_leader_system,
         game_stats_updater_system,
+        event_retrigger_system::<InputEvent, MoveCameraEvent>,
+        move_camera_system,
     );
     // Remove old events at the end of the frame.
     dispatcher = dispatcher.add(
@@ -247,6 +250,18 @@ fn main() -> BError {
     let default_stats = stat_defs.to_statset();
     *world.get_mut().unwrap() = stat_defs;
 
+	for (i,s) in MAP_STRING.iter().enumerate() {
+    	for (j, c) in s.chars().enumerate() {
+        	if c != '#' && c != '0' {
+            	let team = if c.is_uppercase() {
+                	Team::Me
+            	} else {
+                	Team::Other
+            	};
+            	let position = Point::new(i as u32, j as u32);
+        	}
+    	}
+	}
     // Create cores
     centity!(
         world,
@@ -430,6 +445,26 @@ fn main() -> BError {
             ));
         }
     }
+
+    let mut input_to_move_camera = HashMap::<_, _, RandomState>::default();
+    input_to_move_camera.insert(InputEvent::CameraNorth, MoveCameraEvent {
+        direction: Direction::North,
+        distance: 1,
+    });
+    input_to_move_camera.insert(InputEvent::CameraSouth, MoveCameraEvent {
+        direction: Direction::South,
+        distance: 1,
+    });
+    input_to_move_camera.insert(InputEvent::CameraEast, MoveCameraEvent {
+        direction: Direction::East,
+        distance: 1,
+    });
+    input_to_move_camera.insert(InputEvent::CameraWest, MoveCameraEvent {
+        direction: Direction::West,
+        distance: 1,
+    });
+    *world.get_mut::<_>().unwrap() = input_to_move_camera;
+
 
     create_map_bg(&mut world);
 
