@@ -14,6 +14,10 @@ pub enum InputEvent {
     SpeedToggle,
     ZoomToggle,
     GameModeToggle,
+    CameraNorth,
+    CameraSouth,
+    CameraEast,
+    CameraWest,
     Teleport(u8),
 
     /// Auto control group:

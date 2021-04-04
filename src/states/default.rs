@@ -15,6 +15,7 @@ impl minigene::State for DefaultState {
                 ctx.set_active_console(1);
                 ctx.cls();
             }
+
             #[cfg(not(feature = "opengl"))]
             {
                 ctx.set_active_console(0);
