@@ -18,6 +18,10 @@ const PLAY_WIDTH: u32 = 81;
 const PLAY_HEIGHT: u32 = 50;
 const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
+//const MAP_SIZE_X: u32 = 324;
+//const MAP_SIZE_Y: u32 = 200;
+const MAP_SIZE_X: u32 = 81;
+const MAP_SIZE_Y: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 125;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
 const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
@@ -42,6 +46,7 @@ const BARRACK_HEIGHT_FROM_EDGE: i32 = 3;
 const TOWER_OFFSET: i32 = 32;
 
 const MAP: &[u8; 4100] = include_bytes!("../assets/map.txt");
+//const MAP: &[u8; 65000] = include_bytes!("../assets/map4x.txt");
 
 lazy_static! {
     static ref MAP_STRING: Vec<String> = String::from_utf8(MAP.to_vec())
@@ -212,7 +217,7 @@ fn main() -> BError {
     world.initialize::<TeamLeaders>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
-        CollisionMap::new(PLAY_WIDTH, PLAY_HEIGHT),
+        CollisionMap::new(MAP_SIZE_X, MAP_SIZE_Y),
         Point::new(0, 0),
     ));
 
