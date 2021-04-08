@@ -170,6 +170,8 @@ fn main() -> BError {
         kill_entity_system,
         goto_straight_system,
         select_leader_system,
+        select_shelf_item_system,
+        item_purchasing_system,
         leader_teleport_system,
         root_system,
         respawn_leader_driver,
@@ -212,7 +214,6 @@ fn main() -> BError {
     world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
-    world.initialize::<Components<LineOfSight>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
 
