@@ -79,13 +79,21 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         let hm = world.get::<HashMap<char, InputEvent>>().unwrap();
         let mut keybinds = hm.iter().collect::<Vec<_>>();
         keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
+        let mut offset = 0;
         for (idx, (k, v)) in keybinds.iter().enumerate() {
+            match v {
+                InputEvent::AutoSelect(..) => {
+                    offset += 1;
+                    continue;
+                }
+                _ => {}
+            }
             if **k as u32 == 13 {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Enter:{:?}", v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("Enter:{:?}", v));
             } else if **k as u32 == 27 {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Esc:{:?}", v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("Esc:{:?}", v));
             } else {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("{}:{:?}", k, v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("{}:{:?}", k, v));
             }
         }
 

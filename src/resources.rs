@@ -100,13 +100,13 @@ impl Default for SelectedUnits {
 #[derive(Clone, Debug, new)]
 pub struct RandomNG {
     /// rng
-    pub rng: oorandom::Rand32
+    pub rng: oorandom::Rand32,
 }
 
 impl Default for RandomNG {
     fn default() -> Self {
-        RandomNG{
-            rng: oorandom::Rand32::new(1)
+        RandomNG {
+            rng: oorandom::Rand32::new(1),
         }
     }
 }
