@@ -3,8 +3,14 @@ use crate::*;
 /// Renders the background map on the terminal.
 pub fn render<'a>(ctx: &mut BTerm) {
     let mut i = 0;
-    for s in MAP {
-        ctx.print(0, i, s);
+    for s in MAP_STRING.iter() {
+        for (j, c) in s.chars().enumerate() {
+            if c == '#' {
+                ctx.print(j, i, "#");
+            } else {
+                ctx.print(j, i, "0");
+            }
+        }
         i = i + 1;
     }
 }
@@ -12,7 +18,7 @@ pub fn render<'a>(ctx: &mut BTerm) {
 /// Creates the map background 2d sprite entities.
 pub fn create_map_bg<'a>(world: &mut World) {
     let mut i = 0;
-    for s in MAP {
+    for s in MAP_STRING.iter() {
         let mut j = 0;
         for c in s.chars() {
             if c == '#' {

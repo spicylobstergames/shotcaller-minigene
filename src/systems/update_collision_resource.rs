@@ -9,7 +9,7 @@ pub fn update_collision_resource_system(
 ) -> SystemResult {
     let global_map = global_map.as_mut().unwrap();
     for j in 0..(PLAY_HEIGHT as usize) {
-        MAP[j].char_indices().for_each(|(i, c)| {
+        MAP_STRING[j].char_indices().for_each(|(i, c)| {
             if c == '#' {
                 global_map.map.set(i as u32, j as u32);
             } else {

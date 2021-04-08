@@ -1,7 +1,7 @@
 use crate::*;
 
-/// Spawn a bear companion at a specific location
-pub fn bear_spawner_system(
+/// Spawn an elephant companion at a specific location
+pub fn elephant_spawner_system(
     events: &Vec<SkillTriggerEvent<Skills>>,
     stat_def: &StatDefinitions<Stats>,
     teams: &mut Components<Team>,
@@ -15,31 +15,31 @@ pub fn bear_spawner_system(
     sprite_indices: &mut Components<SpriteIndex>,
 ) -> SystemResult {
     for ev in events.iter() {
-        if ev.1 == Skills::BearSummon {
+        if ev.1 == Skills::ElephantSummon {
             let pos = positions.get(ev.0).unwrap().clone();
             let team = teams.get_mut(ev.0).unwrap().clone();
 
-            let bear = entities.create();
-            positions.insert(bear, pos.clone());
-            companions.insert(ev.0, Companion::Bear(bear));
-            simple_movements.insert(bear, SimpleMovement);
-            teams.insert(bear, team);
-            stats.insert(bear, stat_def.to_statset());
-            proximity_attacks.insert(bear, ProximityAttack::new(CREEP_ATTACK_RADIUS));
+            let elephant = entities.create();
+            positions.insert(elephant, pos.clone());
+            companions.insert(ev.0, Companion::Elephant(elephant));
+            simple_movements.insert(elephant, SimpleMovement);
+            teams.insert(elephant, team);
+            stats.insert(elephant, stat_def.to_statset());
+            proximity_attacks.insert(elephant, ProximityAttack::new(CREEP_ATTACK_RADIUS));
             let bg = if team == Team::Me {
                 RGBA::named(GREEN)
             } else {
                 RGBA::named(RED)
             };
             sprites.insert(
-                bear,
+                elephant,
                 Sprite {
                     glyph: to_cp437('c'),
                     fg: RGBA::named(YELLOW),
                     bg,
                 },
             );
-            sprite_indices.insert(bear, SpriteIndex(15));
+            sprite_indices.insert(elephant, SpriteIndex(15));
         }
     }
     Ok(())
