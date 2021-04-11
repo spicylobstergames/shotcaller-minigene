@@ -20,8 +20,10 @@ const SCREEN_WIDTH: u32 = 100;
 const SCREEN_HEIGHT: u32 = 50;
 //const MAP_SIZE_X: u32 = 324;
 //const MAP_SIZE_Y: u32 = 200;
-const MAP_SIZE_X: u32 = 81;
-const MAP_SIZE_Y: u32 = 50;
+const MAP_SIZE_X: u32 = 162;
+const MAP_SIZE_Y: u32 = 100;
+//const MAP_SIZE_X: u32 = 81;
+//const MAP_SIZE_Y: u32 = 50;
 const CREEP_SPAWN_TICKS: u32 = 125;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
 const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
@@ -45,7 +47,8 @@ const BARRACK_OFFSET: i32 = 32;
 const BARRACK_HEIGHT_FROM_EDGE: i32 = 3;
 const TOWER_OFFSET: i32 = 32;
 
-const MAP: &[u8; 4100] = include_bytes!("../assets/map.txt");
+//const MAP: &[u8; 4100] = include_bytes!("../assets/map.txt");
+const MAP: &[u8; 16300] = include_bytes!("../assets/map2x.txt");
 //const MAP: &[u8; 65000] = include_bytes!("../assets/map4x.txt");
 
 lazy_static! {
