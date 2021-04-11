@@ -29,6 +29,10 @@ pub struct TeamLeaders {
 #[derive(Clone, Default, new)]
 pub struct SelectedLeader(pub u8);
 
+/// The selected item in the user interface.
+#[derive(Clone, Default, Debug, new)]
+pub struct SelectedItem(pub Option<ShelfItem>);
+
 /// The statistics of this game.
 #[derive(Clone, Default)]
 pub struct GameStats {

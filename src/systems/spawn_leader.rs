@@ -69,6 +69,10 @@ pub fn spawn_leader_system(
 
             effectors.insert(leader, EffectorSet::<Effectors>::default());
 
+            // let mut inv =  Inventory::new_fixed(4);
+            // inv.insert(ItemInstance::new(Items::Coffee, 1));
+            // inventories.insert(leader, inv);
+
             match leader_id {
                 Leaders::Generic1 => {
                     sprites.insert(
