@@ -33,13 +33,7 @@ pub fn update_mouse_events_system(
     }
 
     if mouse.left_click {
-        for (e, _, pos) in join!(&entities && &creeps && &pos) {
-            if mouse.pos == (pos.unwrap().x, pos.unwrap().y) {
-                click_contained_entities.push(e.unwrap());
-            }
-        }
-
-        for (e, _, pos) in join!(&entities && &leaders && &pos) {
+        for (_, _, e, pos) in join!(&creeps || &leaders && &entities && &pos) {
             if mouse.pos == (pos.unwrap().x, pos.unwrap().y) {
                 click_contained_entities.push(e.unwrap());
             }

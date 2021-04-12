@@ -51,12 +51,12 @@ pub struct Mouse {
     // pub right_click: bool,
 }
 
-/// Current gamemode. Used to disable/enable specific systems
+/// Current game mode. Used to disable/enable specific systems
 #[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
 pub enum GameMode {
-    /// Default gamemode
+    /// Default game mode
     Shotcaller,
-    /// Gamemode where player directly controls individual units (aka. traditional RTS controls).
+    /// Game mode where player directly controls individual units (aka. traditional RTS controls).
     MircoInput,
 }
 

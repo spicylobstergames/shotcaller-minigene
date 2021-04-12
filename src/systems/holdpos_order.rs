@@ -21,7 +21,7 @@ pub fn holdpos_order_system(
         if oq.orders.len() > 0 {
             if let UnitOrder::HoldPosition = oq.orders[0] {
                 if let Some(curr_trg) = targets.get(e.unwrap()) {
-                    // Movement desitnation should be the current position
+                    // Movement destination should be the current position
                     if curr_trg.target != *pos.unwrap() {
                         targets.insert(e.unwrap(), AiDestination::new(pos.unwrap().clone()));
                         // TODO: I don't like this part. But it is here because if AIDestination == Current position,

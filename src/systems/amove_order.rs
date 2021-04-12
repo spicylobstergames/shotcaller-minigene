@@ -1,6 +1,6 @@
 use crate::*;
 
-/// Moves the entity with M-move order towards the destination, provided we have enough action points to do so.
+/// Moves the entity with A-move order towards the destination, but if enemy entity is in aggresion range, then moves towards enemy instead.
 pub fn amove_order_system(
     entities: &Entities,
     gamemode: &GameMode,

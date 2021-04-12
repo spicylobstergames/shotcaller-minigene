@@ -90,6 +90,8 @@ pub struct OrderQueue {
 impl OrderQueue {
     /// Better to wrap a component creation in a function
     pub fn new(orders: Vec<UnitOrder>) -> Self {
-        OrderQueue { orders: VecDeque::from(orders)  }
+        OrderQueue {
+            orders: VecDeque::from(orders),
+        }
     }
 }

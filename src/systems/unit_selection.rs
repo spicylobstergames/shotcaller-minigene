@@ -63,7 +63,7 @@ pub fn unit_selection_system(
     Ok(())
 }
 
-/// Auto-control groups. Press buttons 1-5 to select correspondoing leaders and their summons.
+/// Auto-control groups. Press buttons 1-5 to select corresponding leaders and their summons.
 pub fn control_group_system(
     gamemode: &GameMode,
     events: &Vec<InputEvent>,
@@ -98,8 +98,8 @@ pub fn control_group_system(
                     // If new summons are added to the game this function will have to be updated.
                     // Someone someday should probably review summon code
                     match summon {
-                        Companion::Elephant(elephand_id) => {
-                            selected_units.units.push(elephand_id.clone());
+                        Companion::Elephant(elephant_id) => {
+                            selected_units.units.push(elephant_id.clone());
                         }
                     }
                 }

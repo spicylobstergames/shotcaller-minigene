@@ -18,13 +18,14 @@ pub fn idle_order_system(
         GameMode::MircoInput => {}
     }
 
-    'query: for (e, orders, pos, team) in join!(&entities && &order_queue && &positions && &teams) {
+    'query: for (e, orders, pos, team, stts) in
+        join!(&entities && &order_queue && &positions && &teams && &stats)
+    {
         // Current order is moveto point
         let oq = orders.unwrap();
         if oq.orders.len() == 0 {
             // find aggro range:
-            let aggro_range = stats
-                .get(e.unwrap())
+            let aggro_range = stts
                 .unwrap()
                 .stats
                 .get(&Stats::AggroRange)
@@ -42,7 +43,7 @@ pub fn idle_order_system(
                 &entities,
             );
 
-            // Attack enemies withing aggro range
+            // Attack enemies within aggro range
             if let Some((_, c)) = closest {
                 if dist(&c, pos.unwrap()) <= aggro_range {
                     // set destination to closest enemy
