@@ -1,4 +1,5 @@
 use crate::*;
+pub use std::collections::VecDeque;
 
 /// Tags this entity as a `Tower`.
 pub struct Tower;
@@ -83,12 +84,12 @@ pub struct LineOfSight {
 pub struct OrderQueue {
     /// List of orders for a unit.
     // TODO: Use vecdeque to optimize. But currently this might be considered overoptimization.
-    pub orders: Vec<UnitOrder>,
+    pub orders: VecDeque<UnitOrder>,
 }
 
 impl OrderQueue {
     /// Better to wrap a component creation in a function
     pub fn new(orders: Vec<UnitOrder>) -> Self {
-        OrderQueue { orders }
+        OrderQueue { orders: VecDeque::from(orders)  }
     }
 }

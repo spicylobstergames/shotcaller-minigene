@@ -54,7 +54,7 @@ pub fn order_completion_check_system(
 
         // If order done, then remove the current order
         if is_completed {
-            orders.orders.pop();
+            orders.orders.pop_front();
         }
     }
 
