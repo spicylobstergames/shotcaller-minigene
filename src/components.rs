@@ -56,6 +56,8 @@ pub struct MouseSelectable;
 pub struct MouseClickable;
 /// Identifies mouse hoverable entities
 pub struct MouseHoverable;
+/// Tags a button for buying items.
+pub struct BuyButton;
 /// Tags an arbitrary entity spawner. Unused.
 pub struct Spawner<F: Fn(&mut World)> {
     /// The spawning function.
@@ -94,3 +96,6 @@ impl OrderQueue {
         }
     }
 }
+/// Items available to buy
+#[derive(PartialEq, Eq, Copy, Clone, Debug)]
+pub struct ShelfItem(pub Items, pub i32);
