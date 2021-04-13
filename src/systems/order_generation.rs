@@ -26,8 +26,10 @@ pub fn order_generation_system(
                             oq.orders.clear();
                             oq.orders.push_back(UnitOrder::MovetoPoint(*pos));
                         } else {
-                            order_queue
-                                .insert(*e, OrderQueue::new(vec![UnitOrder::MovetoPoint(*pos)]));
+                            order_queue.insert(
+                                *e,
+                                OrderQueue::from_vec(vec![UnitOrder::MovetoPoint(*pos)]),
+                            );
                         }
                     }
                 }
@@ -40,7 +42,7 @@ pub fn order_generation_system(
                         } else {
                             order_queue.insert(
                                 *e,
-                                OrderQueue::new(vec![UnitOrder::MovetoUnit(trg_e[0].clone())]),
+                                OrderQueue::from_vec(vec![UnitOrder::MovetoUnit(trg_e[0].clone())]),
                             );
                         }
                     }
@@ -51,8 +53,10 @@ pub fn order_generation_system(
                             oq.orders.clear();
                             oq.orders.push_back(UnitOrder::AMovetoPoint(*pos));
                         } else {
-                            order_queue
-                                .insert(*e, OrderQueue::new(vec![UnitOrder::AMovetoPoint(*pos)]));
+                            order_queue.insert(
+                                *e,
+                                OrderQueue::from_vec(vec![UnitOrder::AMovetoPoint(*pos)]),
+                            );
                         }
                     }
                 }
@@ -70,7 +74,7 @@ pub fn order_generation_system(
                         oq.orders.clear();
                         oq.orders.push_back(UnitOrder::HoldPosition);
                     } else {
-                        order_queue.insert(*e, OrderQueue::new(vec![UnitOrder::HoldPosition]));
+                        order_queue.insert(*e, OrderQueue::from_vec(vec![UnitOrder::HoldPosition]));
                     }
                 }
             }
@@ -80,7 +84,7 @@ pub fn order_generation_system(
                     if let Some(oq) = order_queue.get_mut(*e) {
                         oq.orders.clear();
                     } else {
-                        order_queue.insert(*e, OrderQueue::new(vec![]));
+                        order_queue.insert(*e, OrderQueue::new());
                     }
                 }
             }

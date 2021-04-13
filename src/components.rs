@@ -89,8 +89,15 @@ pub struct OrderQueue {
 }
 
 impl OrderQueue {
-    /// Better to wrap a component creation in a function
-    pub fn new(orders: Vec<UnitOrder>) -> Self {
+    /// Create an empty OrderQueue
+    pub fn new() -> Self {
+        OrderQueue {
+            orders: VecDeque::new(),
+        }
+    }
+
+    /// Create OrderQueue with pre-existing vector of orders
+    pub fn from_vec(orders: Vec<UnitOrder>) -> Self {
         OrderQueue {
             orders: VecDeque::from(orders),
         }
