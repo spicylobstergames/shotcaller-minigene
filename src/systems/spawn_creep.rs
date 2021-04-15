@@ -34,7 +34,7 @@ pub fn spawn_creep_system(
 
             // Spawn with Hold position order. To stop leaders when game mode is changed to micro-input.
             // order_queue.insert(creep, OrderQueue::new(vec![UnitOrder::HoldPosition]));
-            order_queue.insert(creep, OrderQueue::new(vec![]));
+            order_queue.insert(creep, OrderQueue::new());
 
             sprites.insert(
                 creep,

@@ -89,13 +89,22 @@ pub struct OrderQueue {
 }
 
 impl OrderQueue {
-    /// Better to wrap a component creation in a function
-    pub fn new(orders: Vec<UnitOrder>) -> Self {
+    /// Create an empty OrderQueue
+    pub fn new() -> Self {
+        OrderQueue {
+            orders: VecDeque::new(),
+        }
+    }
+}
+
+impl From<Vec<UnitOrder>> for OrderQueue {
+    fn from(orders: Vec<UnitOrder>) -> Self {
         OrderQueue {
             orders: VecDeque::from(orders),
         }
     }
 }
+
 /// Items available to buy
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub struct ShelfItem(pub Items, pub i32);
