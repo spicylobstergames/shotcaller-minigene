@@ -95,14 +95,16 @@ impl OrderQueue {
             orders: VecDeque::new(),
         }
     }
+}
 
-    /// Create OrderQueue with pre-existing vector of orders
-    pub fn from_vec(orders: Vec<UnitOrder>) -> Self {
+impl From<Vec<UnitOrder>> for OrderQueue {
+    fn from(orders: Vec<UnitOrder>) -> Self {
         OrderQueue {
             orders: VecDeque::from(orders),
         }
     }
 }
+
 /// Items available to buy
 #[derive(PartialEq, Eq, Copy, Clone, Debug)]
 pub struct ShelfItem(pub Items, pub i32);
