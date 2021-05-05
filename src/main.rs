@@ -40,12 +40,12 @@ const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
 const ACTION_POINT_MOVE_COST: f64 = 100.0;
 //const ACTION_POINT_ATTACK_COST: f64 = 50.0;
-const LEADER_SPAWN_POINT_ME: (i32, i32) = (PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 11);
-const LEADER_SPAWN_POINT_OTHER: (i32, i32) = (PLAY_WIDTH as i32 / 2, 11);
+const LEADER_SPAWN_POINT_ME: (i32, i32) = (PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 22);
+const LEADER_SPAWN_POINT_OTHER: (i32, i32) = (PLAY_WIDTH as i32 / 2, 22);
 
-const BARRACK_OFFSET: i32 = 32;
-const BARRACK_HEIGHT_FROM_EDGE: i32 = 3;
-const TOWER_OFFSET: i32 = 32;
+const BARRACK_OFFSET: i32 = 64;
+const BARRACK_HEIGHT_FROM_EDGE: i32 = 6;
+const TOWER_OFFSET: i32 = 64;
 
 //const MAP: &[u8; 4100] = include_bytes!("../assets/map.txt");
 const MAP: &[u8; 16300] = include_bytes!("../assets/map2x.txt");
@@ -401,7 +401,6 @@ fn main() -> BError {
     }
 
     // Spawn leaders
-    // TODO: optimize
     let mut rng = thread_rng();
     let mut leaders_vec = vec![
         Leaders::Generic1,
