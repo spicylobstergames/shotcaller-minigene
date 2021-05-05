@@ -24,7 +24,7 @@ const MAP_SIZE_X: u32 = 162;
 const MAP_SIZE_Y: u32 = 100;
 //const MAP_SIZE_X: u32 = 81;
 //const MAP_SIZE_Y: u32 = 50;
-const CREEP_SPAWN_TICKS: u32 = 125;
+const CREEP_SPAWN_TICKS: f32 = 125.0;
 const CREEP_ATTACK_RADIUS: f32 = 2.1;
 const MELEE_LEADER_ATTACK_RADIUS: f32 = 2.1;
 const RANGED_LEADER_ATTACK_RADIUS: f32 = 21.0;
@@ -341,7 +341,7 @@ fn main() -> BError {
         centity!(
             world,
             Point::new(x, y + 1),
-            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            CreepSpawner(0.0, CREEP_SPAWN_TICKS),
             //CreepSpawner(0, 2))
             Team::Other,
         );
@@ -368,7 +368,7 @@ fn main() -> BError {
         centity!(
             world,
             Point::new(x, y - 1),
-            CreepSpawner(0, CREEP_SPAWN_TICKS),
+            CreepSpawner(0.0, CREEP_SPAWN_TICKS),
             Team::Me,
             LineOfSight::new(15),
         );
