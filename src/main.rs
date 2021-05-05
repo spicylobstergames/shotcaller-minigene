@@ -417,7 +417,7 @@ fn main() -> BError {
     }
 
     // Spawn leaders
-    let mut rng = thread_rng();
+    let mut rng = world.get_mut::<RandomNG>().unwrap();
     let mut leaders_vec = vec![
         Leaders::Generic1,
         Leaders::Generic2,
@@ -432,28 +432,14 @@ fn main() -> BError {
     ];
 
     let mut team_leaders = TeamLeaders::new(vec![], vec![]);
-    let mut me_number = 0;
-    let mut other_number = 0;
 
-    leaders_vec.shuffle(&mut rng);
-
-    for leader in leaders_vec {
-        if rng.gen_range(1, 3) == 1 {
-            if me_number < 5 {
-                team_leaders.me.push(leader);
-                me_number += 1;
-            } else if other_number < 5 {
-                team_leaders.other.push(leader);
-                other_number += 1;
-            }
+    for i in 0..10 {
+        let select = rng.rng.rand_range(0..leaders_vec.len() as u32) as usize;
+        let leader = leaders_vec.swap_remove(select);
+        if i < 5 {
+            team_leaders.me.push(leader);
         } else {
-            if other_number < 5 {
-                team_leaders.other.push(leader);
-                other_number += 1;
-            } else if me_number < 5 {
-                team_leaders.me.push(leader);
-                me_number += 1;
-            }
+            team_leaders.other.push(leader);
         }
     }
 
