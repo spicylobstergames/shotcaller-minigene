@@ -2,6 +2,7 @@ use crate::*;
 
 /// Periodically generates events to spawn creeps.
 pub fn creep_spawner_system(
+    time: &Time,
     positions: &mut Components<Point>,
     spawners: &mut Components<CreepSpawner>,
     teams: &mut Components<Team>,
@@ -9,7 +10,7 @@ pub fn creep_spawner_system(
 ) -> SystemResult {
     for (pos, mut spawner, team) in join!(&positions && &mut spawners && &teams) {
         let spawner = spawner.as_mut().unwrap();
-        if spawner.0 == 0 {
+        if spawner.0 <= 0.0 {
             spawner.0 = spawner.1;
             // spawn
             game_events.push(GameEvent::SpawnCreep(
@@ -17,7 +18,7 @@ pub fn creep_spawner_system(
                 team.unwrap().clone(),
             ));
         }
-        spawner.0 -= 1;
+        spawner.0 -= time.delta_time().as_secs_f32();
     }
     Ok(())
 }

@@ -47,7 +47,7 @@ pub struct SpellSteal(pub bool);
 /// Tags a creep.
 pub struct Creep;
 /// Tags a creep spawner. Contains the delay in ticks between spawns.
-pub struct CreepSpawner(pub u32, pub u32);
+pub struct CreepSpawner(pub f32, pub f32);
 /// Tags a base.
 pub struct Base;
 /// Identifies mouse selectable entities

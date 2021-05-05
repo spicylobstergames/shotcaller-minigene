@@ -4,6 +4,7 @@ use crate::*;
 pub fn toggle_game_speed_system(events: &Vec<InputEvent>, speed: &mut GameSpeed) -> SystemResult {
     for k in events.iter() {
         if k == &InputEvent::SpeedToggle {
+            println!("toggle speed!");
             if speed.0 == 1.0 {
                 // TODO toggle back to 2.0
                 //speed.0 = 2.0;
