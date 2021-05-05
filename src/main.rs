@@ -8,7 +8,6 @@ extern crate serde;
 extern crate lazy_static;
 
 use minigene::*;
-use rand::{seq::SliceRandom, thread_rng, Rng};
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 
