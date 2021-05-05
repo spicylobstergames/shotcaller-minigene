@@ -14,8 +14,9 @@ pub fn leader_teleport_system(
                 let pos = pos.as_mut().unwrap();
                 if leader.unwrap().0 == selected_leader {
                     // teleport to n
-                    let x = PLAY_WIDTH as i32 / 2 + BARRACK_OFFSET * (n as i32 - 2);
-                    let y = PLAY_HEIGHT as i32 - 1 - BARRACK_HEIGHT_FROM_EDGE;
+                    // TODO get those positions from a map struct.
+                    let x = MAP_SIZE_X as i32 / 2 + BARRACK_OFFSET * (n as i32 - 2);
+                    let y = MAP_SIZE_Y as i32 - 1 - BARRACK_HEIGHT_FROM_EDGE;
                     pos.x = x;
                     pos.y = y;
                 }
