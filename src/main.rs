@@ -40,8 +40,8 @@ const TOWER_PROJECTILE_EXPLOSION_RADIUS: f32 = 2.1;
 const TARGET_FPS: f32 = 20.0;
 const ACTION_POINT_MOVE_COST: f64 = 100.0;
 //const ACTION_POINT_ATTACK_COST: f64 = 50.0;
-const LEADER_SPAWN_POINT_ME: (i32, i32) = (PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 22);
-const LEADER_SPAWN_POINT_OTHER: (i32, i32) = (PLAY_WIDTH as i32 / 2, 22);
+const LEADER_SPAWN_POINT_ME: (i32, i32) = (MAP_SIZE_X as i32 / 2, MAP_SIZE_Y as i32 - 22);
+const LEADER_SPAWN_POINT_OTHER: (i32, i32) = (MAP_SIZE_X as i32 / 2, 22);
 
 const BARRACK_OFFSET: i32 = 64;
 const BARRACK_HEIGHT_FROM_EDGE: i32 = 6;
@@ -294,7 +294,7 @@ fn main() -> BError {
     // Create cores
     centity!(
         world,
-        Point::new(PLAY_WIDTH as i32 / 2, 1),
+        Point::new(MAP_SIZE_X as i32 / 2, 1),
         Sprite {
             glyph: to_cp437('C'),
             fg: RGBA::named(BLUE),
@@ -308,7 +308,7 @@ fn main() -> BError {
 
     centity!(
         world,
-        Point::new(PLAY_WIDTH as i32 / 2, PLAY_HEIGHT as i32 - 2),
+        Point::new(MAP_SIZE_X as i32 / 2, MAP_SIZE_Y as i32 - 2),
         Sprite {
             glyph: to_cp437('C'),
             fg: RGBA::named(BLUE),
@@ -322,7 +322,7 @@ fn main() -> BError {
 
     // Create barracks
     for i in -1..=1 {
-        let x = PLAY_WIDTH as i32 / 2 + BARRACK_OFFSET * i as i32;
+        let x = MAP_SIZE_X as i32 / 2 + BARRACK_OFFSET * i as i32;
         let y = BARRACK_HEIGHT_FROM_EDGE;
         centity!(
             world,
@@ -348,8 +348,8 @@ fn main() -> BError {
     }
 
     for i in -1..=1 {
-        let x = PLAY_WIDTH as i32 / 2 + BARRACK_OFFSET * i;
-        let y = PLAY_HEIGHT as i32 - 1 - BARRACK_HEIGHT_FROM_EDGE;
+        let x = MAP_SIZE_X as i32 / 2 + BARRACK_OFFSET * i;
+        let y = MAP_SIZE_Y as i32 - 1 - BARRACK_HEIGHT_FROM_EDGE;
         centity!(
             world,
             Point::new(x, y),
@@ -380,8 +380,8 @@ fn main() -> BError {
             centity!(
                 world,
                 Point::new(
-                    PLAY_WIDTH as i32 / 2 + TOWER_OFFSET * i,
-                    PLAY_HEIGHT as i32 * j / 6,
+                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
+                    MAP_SIZE_Y as i32 * j / 6,
                 ),
                 Sprite {
                     glyph: to_cp437('T'),
@@ -400,8 +400,8 @@ fn main() -> BError {
             centity!(
                 world,
                 Point::new(
-                    PLAY_WIDTH as i32 / 2 + TOWER_OFFSET * i,
-                    PLAY_HEIGHT as i32 - 1 - PLAY_HEIGHT as i32 * j / 6,
+                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
+                    MAP_SIZE_Y as i32 - 1 - PLAY_HEIGHT as i32 * j / 6,
                 ),
                 Sprite {
                     glyph: to_cp437('T'),
