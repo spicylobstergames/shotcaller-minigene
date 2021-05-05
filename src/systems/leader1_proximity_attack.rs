@@ -1,6 +1,4 @@
 use crate::*;
-use rand::thread_rng;
-use rand::Rng;
 
 /// Attacks entities that are close to this leader.
 pub fn leader1_proximity_attack_system(
@@ -12,9 +10,9 @@ pub fn leader1_proximity_attack_system(
     stats: &mut Components<StatSet<Stats>>,
     is_caught: &mut Components<IsCaught>,
     game_events: &mut Vec<GameEvent>,
+    rng: &mut RandomNG,
 ) -> SystemResult {
     let mut v = vec![];
-    let mut rng = thread_rng();
     for (e, _proximity, stat, pos, team) in
         join!(&entities && &proximity_attacks && &stats && &positions && &teams)
     {
@@ -44,7 +42,7 @@ pub fn leader1_proximity_attack_system(
         let closest = vec.into_iter().next().map(|(_d, p)| p);
         if let Some(_) = closest {
             // 5% chance of leaders getting caught
-            if rng.gen_range(1, 21) == 1 {
+            if rng.rng.rand_range(1..21) == 1 {
                 caught.as_mut().unwrap().0 = true;
             }
         }
