@@ -416,31 +416,34 @@ fn main() -> BError {
     }
 
     // Spawn leaders
-    let mut rng = world.get_mut::<RandomNG>().unwrap();
-    let mut leaders_vec = vec![
-        Leaders::Generic1,
-        Leaders::Generic2,
-        Leaders::TreePersonLeader,
-        Leaders::Raja,
-        Leaders::AxePersonLeader,
-        Leaders::CentaurPersonLeader,
-        Leaders::Celsus,
-        Leaders::Erno,
-        Leaders::SoulsCollector,
-        Leaders::BristlebackPersonLeader,
-    ];
+    let team_leaders = {
+        let mut rng = world.get_mut::<RandomNG>().unwrap();
+        let mut leaders_vec = vec![
+            Leaders::Generic1,
+            Leaders::Generic2,
+            Leaders::TreePersonLeader,
+            Leaders::Raja,
+            Leaders::AxePersonLeader,
+            Leaders::CentaurPersonLeader,
+            Leaders::Celsus,
+            Leaders::Erno,
+            Leaders::SoulsCollector,
+            Leaders::BristlebackPersonLeader,
+        ];
 
-    let mut team_leaders = TeamLeaders::new(vec![], vec![]);
+        let mut team_leaders = TeamLeaders::new(vec![], vec![]);
 
-    for i in 0..10 {
-        let select = rng.rng.rand_range(0..leaders_vec.len() as u32) as usize;
-        let leader = leaders_vec.swap_remove(select);
-        if i < 5 {
-            team_leaders.me.push(leader);
-        } else {
-            team_leaders.other.push(leader);
+        for i in 0..10 {
+            let select = rng.rng.rand_range(0..leaders_vec.len() as u32) as usize;
+            let leader = leaders_vec.swap_remove(select);
+            if i < 5 {
+                team_leaders.me.push(leader);
+            } else {
+                team_leaders.other.push(leader);
+            }
         }
-    }
+        team_leaders
+    };
 
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
 
