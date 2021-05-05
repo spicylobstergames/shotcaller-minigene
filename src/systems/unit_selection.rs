@@ -11,7 +11,7 @@ pub fn unit_selection_system(
     // Only run in MicroInput game mode
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
-        GameMode::MircoInput => {}
+        GameMode::MicroInput => {}
     }
 
     // Units should be selected only in default InputState
@@ -74,7 +74,7 @@ pub fn control_group_system(
 ) -> SystemResult {
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
-        GameMode::MircoInput => {}
+        GameMode::MicroInput => {}
     }
 
     for k in events.iter() {

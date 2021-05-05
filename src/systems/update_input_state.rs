@@ -10,7 +10,7 @@ pub fn update_input_state_system(
     // Only relevant for micro-input game mode
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
-        GameMode::MircoInput => {}
+        GameMode::MicroInput => {}
     }
 
     for k in events.iter() {

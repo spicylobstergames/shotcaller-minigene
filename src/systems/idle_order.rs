@@ -15,7 +15,7 @@ pub fn idle_order_system(
     // This system should not run if current gamemode is shotcaller
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
-        GameMode::MircoInput => {}
+        GameMode::MicroInput => {}
     }
 
     'query: for (e, orders, pos, team, stts) in

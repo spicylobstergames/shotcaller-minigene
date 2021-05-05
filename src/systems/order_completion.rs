@@ -10,7 +10,7 @@ pub fn order_completion_check_system(
     // This system should not run if current gamemode is shotcaller
     match gamemode {
         GameMode::Shotcaller => return Ok(()),
-        GameMode::MircoInput => {}
+        GameMode::MicroInput => {}
     }
 
     for (e, orders) in join!(&entities && &mut order_queue) {

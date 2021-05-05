@@ -13,7 +13,7 @@ pub fn simple_destination_system(
     // This system should not run if current gamemode is micro input:
     match gamemode {
         GameMode::Shotcaller => {}
-        GameMode::MircoInput => return Ok(()),
+        GameMode::MicroInput => return Ok(()),
     }
 
     'query: for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {

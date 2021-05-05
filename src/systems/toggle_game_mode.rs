@@ -5,7 +5,7 @@ pub fn toggle_game_mode_system(events: &Vec<InputEvent>, mode: &mut GameMode) ->
     for k in events.iter() {
         if k == &InputEvent::GameModeToggle {
             if mode == &GameMode::Shotcaller {
-                *mode = GameMode::MircoInput;
+                *mode = GameMode::MicroInput;
             } else {
                 *mode = GameMode::Shotcaller;
             }

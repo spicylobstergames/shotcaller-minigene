@@ -61,7 +61,7 @@ pub enum GameMode {
     /// Default game mode
     Shotcaller,
     /// Game mode where player directly controls individual units (aka. traditional RTS controls).
-    MircoInput,
+    MicroInput,
 }
 
 impl Default for GameMode {
