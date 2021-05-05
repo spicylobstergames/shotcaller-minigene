@@ -51,4 +51,66 @@ pub struct Mouse {
     pub pos: (i32, i32),
     /// The left button was clicked
     pub left_click: bool,
+    // /// The right button was clicked
+    // pub right_click: bool,
+}
+
+/// Current game mode. Used to disable/enable specific systems
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum GameMode {
+    /// Default game mode
+    Shotcaller,
+    /// Game mode where player directly controls individual units (aka. traditional RTS controls).
+    MircoInput,
+}
+
+impl Default for GameMode {
+    fn default() -> Self {
+        GameMode::Shotcaller
+    }
+}
+
+/// State of UI for micro-input
+#[derive(PartialEq, Eq, Hash, Copy, Clone, Debug)]
+pub enum InputState {
+    /// Default state
+    Default,
+    /// State when next input is to be considered M-Move target
+    MMove,
+    /// State when next input is to be considered A-Move target
+    AMove,
+}
+
+impl Default for InputState {
+    fn default() -> Self {
+        InputState::Default
+    }
+}
+
+/// Stores units that were selected by the player
+#[derive(Clone, Debug, new)]
+pub struct SelectedUnits {
+    /// Vector of all selected Entities
+    pub units: Vec<Entity>,
+}
+
+impl Default for SelectedUnits {
+    fn default() -> Self {
+        SelectedUnits { units: vec![] }
+    }
+}
+
+/// Random number generator to be used in this game
+#[derive(Clone, Debug, new)]
+pub struct RandomNG {
+    /// rng
+    pub rng: oorandom::Rand32,
+}
+
+impl Default for RandomNG {
+    fn default() -> Self {
+        RandomNG {
+            rng: oorandom::Rand32::new(1),
+        }
+    }
 }

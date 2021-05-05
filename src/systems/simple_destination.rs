@@ -4,11 +4,18 @@ use crate::*;
 pub fn simple_destination_system(
     entities: &Entities,
     simple_movements: &Components<SimpleMovement>,
+    gamemode: &GameMode,
     teams: &Components<Team>,
     positions: &Components<Point>,
     stats: &mut Components<StatSet<Stats>>,
     targets: &mut Components<AiDestination>,
 ) -> SystemResult {
+    // This system should not run if current gamemode is micro input:
+    match gamemode {
+        GameMode::Shotcaller => {}
+        GameMode::MircoInput => return Ok(()),
+    }
+
     'query: for (e, _, team, pos) in join!(&entities && &simple_movements && &teams && &positions) {
         // For optimisation purposes runs only if unit has action points to move on this frame
         if stats

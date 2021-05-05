@@ -67,6 +67,7 @@ mod render_map;
 mod resources;
 mod states;
 mod systems;
+mod unit_orders;
 mod utils;
 pub use self::components::*;
 pub use self::events::*;
@@ -76,6 +77,7 @@ pub use self::render_map::*;
 pub use self::resources::*;
 pub use self::states::*;
 pub use self::systems::*;
+pub use self::unit_orders::*;
 pub use self::utils::*;
 
 // Bridge between bracket-lib and minigene
@@ -133,13 +135,22 @@ fn main() -> BError {
         combine_collision_system,
         input_driver::<InputEvent>,
         update_mouse_events_system,
+        order_generation_system,
+        unit_selection_system,
+        control_group_system,
+        update_input_state_system, // should run before all other input systems
         update_collision_resource_system,
         handle_action_points_system,
         creep_spawner_system,
+        idle_order_system,
+        mmove_order_system,
+        amove_order_system,
+        holdpos_order_system,
         simple_destination_system,
         ai_pathing_system,
         movement_system,
         toggle_game_speed_system,
+        toggle_game_mode_system,
         win_condition_system,
         //leader1_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
         //leader2_simple_movement_system, // TODO re-enable & rewrite like simple_destination_system
@@ -181,6 +192,7 @@ fn main() -> BError {
         spawn_creep_system,
         spawn_leader_system,
         game_stats_updater_system,
+        order_completion_check_system,
         event_retrigger_system::<InputEvent, MoveCameraEvent>,
         move_camera_system,
     );
@@ -219,6 +231,10 @@ fn main() -> BError {
     world.initialize::<Components<Core>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
+    world.initialize::<GameMode>();
+    world.initialize::<SelectedUnits>();
+    world.initialize::<InputState>();
+    world.initialize::<RandomNG>();
 
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(MAP_SIZE_X, MAP_SIZE_Y),

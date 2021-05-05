@@ -79,15 +79,40 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
         let hm = world.get::<HashMap<char, InputEvent>>().unwrap();
         let mut keybinds = hm.iter().collect::<Vec<_>>();
         keybinds.sort_by(|t1, t2| format!("{:?}", t1.1).cmp(&format!("{:?}", t2.1)));
+        let mut offset = 0;
         for (idx, (k, v)) in keybinds.iter().enumerate() {
+            match v {
+                InputEvent::AutoSelect(..) => {
+                    offset += 1;
+                    continue;
+                }
+                _ => {}
+            }
             if **k as u32 == 13 {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Enter:{:?}", v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("Enter:{:?}", v));
             } else if **k as u32 == 27 {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("Esc:{:?}", v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("Esc:{:?}", v));
             } else {
-                ctx.print(PLAY_WIDTH + 1, 18 + idx, format!("{}:{:?}", k, v));
+                ctx.print(PLAY_WIDTH + 1, 18 + idx - offset, format!("{}:{:?}", k, v));
             }
         }
+
+        let selected_units = world.get::<SelectedUnits>().unwrap();
+        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 9, "Selected Units");
+        ctx.print(
+            PLAY_WIDTH + 1,
+            SCREEN_HEIGHT - 8,
+            format!("{:.2}", selected_units.units.len()),
+        );
+
+        let input_state = world.get::<InputState>().unwrap();
+        let is_txt = match *input_state {
+            InputState::Default => "Default",
+            InputState::MMove => "Move",
+            InputState::AMove => "Attack",
+        };
+        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 11, "InputState: ");
+        ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 10, format!("{:.2}", is_txt));
 
         let game_stats = world.get::<GameStats>().unwrap();
         ctx.print(PLAY_WIDTH + 1, SCREEN_HEIGHT - 7, "Total Damage");
@@ -109,4 +134,9 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
             format!("{}", game_stats.earned_gold),
         );
     }
+}
+/// Renders a cursor at mouse position
+pub fn render_cursor(world: &mut World, ctx: &mut BTerm) {
+    let mouse = world.get::<Mouse>().unwrap();
+    ctx.print(mouse.pos.0, mouse.pos.1, format!(">"));
 }

@@ -5,6 +5,7 @@ pub enum Stats {
     Health,
     Defense,
     Attack,
+    AggroRange,
     Mana,
     AttackSpeed,
     EnemiesAround,

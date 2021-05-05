@@ -1,4 +1,5 @@
 use crate::*;
+pub use std::collections::VecDeque;
 
 /// Tags this entity as a `Tower`.
 pub struct Tower;
@@ -20,6 +21,7 @@ pub enum Companion {
     /// A elephant companion
     Elephant(Entity),
 }
+
 /// Tags a tower projectile.
 pub struct TowerProjectile;
 /// Tags a core.
@@ -78,6 +80,29 @@ pub enum Team {
 pub struct LineOfSight {
     /// The limit of the unit vision.
     pub range: i32,
+}
+
+/// Order queue component for micro-control (and maybe bots)
+pub struct OrderQueue {
+    /// List of orders for a unit.
+    pub orders: VecDeque<UnitOrder>,
+}
+
+impl OrderQueue {
+    /// Create an empty OrderQueue
+    pub fn new() -> Self {
+        OrderQueue {
+            orders: VecDeque::new(),
+        }
+    }
+}
+
+impl From<Vec<UnitOrder>> for OrderQueue {
+    fn from(orders: Vec<UnitOrder>) -> Self {
+        OrderQueue {
+            orders: VecDeque::from(orders),
+        }
+    }
 }
 
 /// Items available to buy

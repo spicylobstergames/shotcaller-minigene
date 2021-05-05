@@ -14,6 +14,7 @@ pub fn spawn_leader_system(
     spell_steals: &mut Components<SpellSteal>,
     simple_movements: &mut Components<SimpleMovement>,
     proximity_attacks: &mut Components<ProximityAttack>,
+    order_queue: &mut Components<OrderQueue>,
     // leader1_simple_movements: &mut Components<Leader1SimpleMovement>,
     // leader2_simple_movements: &mut Components<Leader2SimpleMovement>,
     // leader1_proximity_attacks: &mut Components<Leader1ProximityAttack>,
@@ -55,6 +56,10 @@ pub fn spawn_leader_system(
                     "Leader ID is higher than 9, or there isn't enough leaders in the other team!",
                 )
             };
+
+            // Spawn with Hold position order. To stop leaders when game mode is changed to micro-input.
+            // order_queue.insert(leader, OrderQueue::new(vec![UnitOrder::HoldPosition]));
+            order_queue.insert(leader, OrderQueue::new());
 
             skillsets.insert(
                 leader,
