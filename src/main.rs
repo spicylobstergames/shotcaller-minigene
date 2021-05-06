@@ -263,6 +263,7 @@ fn main() -> BError {
     world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
     world.initialize::<Components<Core>>();
+    world.initialize::<Components<RenderTarget>>();
     world.initialize::<Viewshed>();
     world.initialize::<TeamLeaders>();
     world.initialize::<GameMode>();

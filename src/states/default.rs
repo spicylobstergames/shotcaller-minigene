@@ -36,6 +36,7 @@ impl minigene::State for DefaultState {
                     &*world.get().unwrap(),
                     &*world.get().unwrap(),
                     &*world.get().unwrap(),
+                    &*world.get().unwrap(),
                     Some(&*world.get().unwrap()),
                 );
             }
