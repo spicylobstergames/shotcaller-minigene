@@ -44,7 +44,7 @@ pub fn spawn_creep_system(
                     bg,
                 },
             );
-            sprite_indices.insert(creep, SpriteIndex(9));
+            sprite_indices.insert(creep, SpriteIndex(TileMapping::Creep.into()));
         }
     }
     Ok(())

@@ -39,7 +39,7 @@ pub fn elephant_spawner_system(
                     bg,
                 },
             );
-            sprite_indices.insert(elephant, SpriteIndex(15));
+            sprite_indices.insert(elephant, SpriteIndex(TileMapping::Elephant1.into()));
         }
     }
     Ok(())

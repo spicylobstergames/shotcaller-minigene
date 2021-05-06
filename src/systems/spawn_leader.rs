@@ -88,7 +88,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(6));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::FatMan1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -107,7 +107,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(5));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::FatMan2.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -126,7 +126,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(55));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::Tree1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -145,7 +145,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(4));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::SwordMan1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -164,7 +164,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(8));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::Axe1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -183,7 +183,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(16));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::Lance1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));
@@ -202,7 +202,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(7));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::Lance3.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -221,7 +221,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(7));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::Archer1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -241,7 +241,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(19));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::SwordSmallMan1.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(RANGED_LEADER_ATTACK_RADIUS));
@@ -260,7 +260,7 @@ pub fn spawn_leader_system(
                             bg,
                         },
                     );
-                    sprite_indices.insert(leader, SpriteIndex(14));
+                    sprite_indices.insert(leader, SpriteIndex(TileMapping::SwordMan2.into()));
                     simple_movements.insert(leader, SimpleMovement);
                     proximity_attacks
                         .insert(leader, ProximityAttack::new(MELEE_LEADER_ATTACK_RADIUS));

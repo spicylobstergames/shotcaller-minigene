@@ -48,7 +48,7 @@ pub fn tower_ai_system(
                 },
             )
             .unwrap();
-        sprite_indices.insert(n, SpriteIndex(85)).unwrap();
+        sprite_indices.insert(n, SpriteIndex(TileMapping::Fireball.into())).unwrap();
         goto_positions
             .insert(n, GotoStraight::new(target.clone(), 1.0))
             .unwrap();

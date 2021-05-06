@@ -119,6 +119,7 @@ fn main() -> BError {
     #[cfg(feature = "wasm")]
     add_embed!(
         "../assets/tilemap/colored_tilemap_packed.png",
+        "../assets/tilemap/new.png",
         "../assets/skill_defs.yaml",
         "../assets/effector_defs.yaml",
         "../assets/keymap.yaml",
@@ -210,12 +211,45 @@ fn main() -> BError {
     );
 
     let dispatcher = dispatcher.build(&mut world);
-    let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
-    for j in 0..10 {
+    //let mut spritesheet = SpriteSheet::new("assets/tilemap/colored_tilemap_packed.png");
+    let mut spritesheet = SpriteSheet::new("assets/tilemap/new.png");
+    let img = vec![
+        (0, 0, 56, 40), // 0, elephant 1
+        (0, 40, 56, 40), // 1, elephant 2
+        (0, 80, 56, 40), // 2, elephant 3
+        (0, 120, 40, 32), // 3, fat man 1
+        (0, 152, 40, 32), // 4, fat man 2
+        (0, 184, 40, 32), // 5, fat man 3
+        (0, 216, 32, 32), // 6, sword man 1
+        (0, 248, 32, 32), // 7, sword man 2
+        (0, 280, 32, 32), // 8, sword man 3
+        (0, 312, 32, 32), // 9, archer 1
+        (0, 344, 32, 32), // 10, archer 2
+        (0, 376, 32, 32), // 11, archer 3
+        (0, 408, 40, 32), // 12, axe 1
+        (0, 440, 40, 32), // 13, axe 2
+        (0, 472, 40, 32), // 14, axe 3
+        (0, 504, 32, 32), // 15, lance 1
+        (0, 536, 32, 32), // 16, lance 2
+        (0, 568, 32, 32), // 17, lance 3
+        (0, 600, 24, 24), // 18, sword small man 1
+        (0, 624, 24, 24), // 19, sword small man 2
+        (0, 648, 24, 24), // 20, sword small man 3
+        (0, 672, 32, 32), // 21, beer
+        (88, 864, 8, 8), // 22, forest
+        (0, 704, 96, 120), // 23, core
+        (96, 746, 32, 32), // 24, tower1
+        (96, 768, 32, 32), // 25, tower2, 78y
+        (128, 768, 54, 56), // 26, barracks
+    ];
+    for v in img {
+        spritesheet = spritesheet.add_sprite(Rect::with_size(v.0, 872 - v.2 - v.1, v.2, v.3));
+    }
+    /*for j in 0..10 {
         for i in 0..10 {
             spritesheet = spritesheet.add_sprite(Rect::with_size(i * 8, (9 - j) * 8, 8, 8));
         }
-    }
+    }*/
     let (mut world, mut dispatcher, mut context) = mini_init(
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
@@ -299,7 +333,7 @@ fn main() -> BError {
             fg: RGBA::named(BLUE),
             bg: RGBA::named(RED),
         },
-        SpriteIndex(66),
+        SpriteIndex(TileMapping::Core.into()),
         Team::Other,
         Core,
         default_stats.clone(),
@@ -313,7 +347,7 @@ fn main() -> BError {
             fg: RGBA::named(BLUE),
             bg: RGBA::named(GREEN),
         },
-        SpriteIndex(66),
+        SpriteIndex(TileMapping::Core.into()),
         Team::Me,
         Core,
         default_stats.clone(),
@@ -331,7 +365,7 @@ fn main() -> BError {
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(RED),
             },
-            SpriteIndex(69),
+            SpriteIndex(TileMapping::Barrack.into()),
             Team::Other,
             Barrack,
             default_stats.clone(),
@@ -357,7 +391,7 @@ fn main() -> BError {
                 fg: RGBA::named(YELLOW),
                 bg: RGBA::named(GREEN),
             },
-            SpriteIndex(69),
+            SpriteIndex(TileMapping::Barrack.into()),
             Team::Me,
             Barrack,
             default_stats.clone(),
@@ -387,9 +421,22 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(RED),
                 },
-                SpriteIndex(80),
+                SpriteIndex(TileMapping::Tower1.into()),
                 Team::Other,
                 default_stats.clone(),
+            );
+            centity!(
+                world,
+                Point::new(
+                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
+                    MAP_SIZE_Y as i32 * j / 6 + 1,
+                ),
+                Sprite {
+                    glyph: to_cp437('T'),
+                    fg: RGBA::named(GREEN),
+                    bg: RGBA::named(RED),
+                },
+                SpriteIndex(TileMapping::Tower2.into()),
             );
         }
     }
@@ -407,10 +454,23 @@ fn main() -> BError {
                     fg: RGBA::named(GREEN),
                     bg: RGBA::named(GREEN),
                 },
-                SpriteIndex(80),
+                SpriteIndex(TileMapping::Tower1.into()),
                 Team::Me,
                 default_stats.clone(),
                 LineOfSight::new(6),
+            );
+            centity!(
+                world,
+                Point::new(
+                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
+                    MAP_SIZE_Y as i32 - PLAY_HEIGHT as i32 * j / 6,
+                ),
+                Sprite {
+                    glyph: to_cp437('T'),
+                    fg: RGBA::named(GREEN),
+                    bg: RGBA::named(RED),
+                },
+                SpriteIndex(TileMapping::Tower2.into()),
             );
         }
     }
