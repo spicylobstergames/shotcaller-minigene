@@ -1134,7 +1134,7 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.4.0"
-source = "git+https://github.com/jojolepro/minigene?branch=master#03ca107ede38967c59ee33c87fb47a09e53b6600"
+source = "git+https://github.com/jojolepro/minigene?branch=master#530ac256ecc9e96343406bc22053f54f4309a910"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",

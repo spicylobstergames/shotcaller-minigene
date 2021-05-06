@@ -271,6 +271,9 @@ fn main() -> BError {
     world.initialize::<InputState>();
     world.initialize::<RandomNG>();
 
+    create_map_bg(&mut world);
+
+
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(MAP_SIZE_X, MAP_SIZE_Y),
         Point::new(0, 0),
@@ -556,8 +559,6 @@ fn main() -> BError {
     *world.get_mut::<_>().unwrap() = input_to_move_camera;
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
-
-    create_map_bg(&mut world);
 
     let gs = State {
         world,
