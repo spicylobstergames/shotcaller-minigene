@@ -22,7 +22,7 @@ pub fn create_map_bg<'a>(world: &mut World) {
         let mut j = 0;
         for c in s.chars() {
             if c == '#' {
-                centity!(world, SpriteIndex(TileMapping::Forest.into()), Point::new(j, i),);
+                centity!(world, SpriteIndex(TileMapping::Tree1.into()), Point::new(j, i),);
             }
             j = j + 1;
         }

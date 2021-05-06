@@ -162,9 +162,9 @@ impl Into<usize> for TileMapping {
             TileMapping::Barrack => 26,
             TileMapping::Tower1 => 24,
             TileMapping::Tower2 => 25,
+            TileMapping::Tree1 => 27,
             // TODO
             TileMapping::Creep => 19,
-            TileMapping::Tree1 => 12,
             TileMapping::Fireball => 0,
         }
     }

@@ -241,6 +241,7 @@ fn main() -> BError {
         (96, 746, 32, 32), // 24, tower1
         (96, 768, 32, 32), // 25, tower2, 78y
         (128, 768, 54, 56), // 26, barracks
+        (127, 723, 33, 37), // 27, tree
     ];
     for v in img {
         spritesheet = spritesheet.add_sprite(Rect::with_size(v.0, 872 - v.2 - v.1, v.2, v.3));
