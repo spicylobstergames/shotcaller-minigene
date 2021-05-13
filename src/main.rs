@@ -273,7 +273,6 @@ fn main() -> BError {
 
     create_map_bg(&mut world);
 
-
     *world.get_mut::<Option<CollisionResource>>().unwrap() = Some(CollisionResource::new(
         CollisionMap::new(MAP_SIZE_X, MAP_SIZE_Y),
         Point::new(0, 0),
