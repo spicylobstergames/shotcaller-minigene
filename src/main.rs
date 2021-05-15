@@ -274,7 +274,7 @@ fn main() -> BError {
     world.initialize::<GameMode>();
     world.initialize::<SelectedUnits>();
     world.initialize::<InputState>();
-    world.initialize::<RandomNG>();
+    world.initialize::<RNG>();
 
     create_map_bg(&mut world);
 
@@ -486,7 +486,7 @@ fn main() -> BError {
 
     // Spawn leaders
     let team_leaders = {
-        let mut rng = world.get_mut::<RandomNG>().unwrap();
+        let mut rng = world.get_mut::<RNG>().unwrap();
         let mut leaders_vec = vec![
             Leaders::Generic1,
             Leaders::Generic2,
@@ -564,6 +564,9 @@ fn main() -> BError {
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
 
+    let mut nakama = nakama::get_client();
+    nakama::connect(&mut nakama);
+    nakama::get_match(&mut nakama);
 
     let gs = State {
         world,

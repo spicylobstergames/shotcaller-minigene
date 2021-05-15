@@ -8,7 +8,7 @@ pub fn idle_order_system(
     teams: &Components<Team>,
     positions: &Components<Point>,
     stats: &Components<StatSet<Stats>>,
-    rng: &mut RandomNG,
+    rng: &mut RNG,
     targets: &mut Components<AiDestination>,
     paths: &mut Components<AiPath>,
 ) -> SystemResult {

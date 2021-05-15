@@ -99,18 +99,3 @@ impl Default for SelectedUnits {
         SelectedUnits { units: vec![] }
     }
 }
-
-/// Random number generator to be used in this game
-#[derive(Clone, Debug, new)]
-pub struct RandomNG {
-    /// rng
-    pub rng: oorandom::Rand32,
-}
-
-impl Default for RandomNG {
-    fn default() -> Self {
-        RandomNG {
-            rng: oorandom::Rand32::new(1),
-        }
-    }
-}

@@ -10,7 +10,7 @@ pub fn leader1_proximity_attack_system(
     stats: &mut Components<StatSet<Stats>>,
     is_caught: &mut Components<IsCaught>,
     game_events: &mut Vec<GameEvent>,
-    rng: &mut RandomNG,
+    rng: &mut RNG,
 ) -> SystemResult {
     let mut v = vec![];
     for (e, _proximity, stat, pos, team) in
