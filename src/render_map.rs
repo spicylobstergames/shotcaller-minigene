@@ -21,9 +21,17 @@ pub fn create_map_bg<'a>(world: &mut World) {
     for s in MAP_STRING.iter() {
         let mut j = 0;
         for c in s.chars() {
-            centity!(world, SpriteIndex(TileMapping::Forest.into()), Point::new(j, i),);
+            centity!(
+                world,
+                SpriteIndex(TileMapping::Forest.into()),
+                Point::new(j, i),
+            );
             if c == '#' {
-                centity!(world, SpriteIndex(TileMapping::Tree1.into()), Point::new(j, i),);
+                centity!(
+                    world,
+                    SpriteIndex(TileMapping::Tree1.into()),
+                    Point::new(j, i),
+                );
             }
             j = j + 1;
         }

@@ -1,7 +1,12 @@
-use nanoserde::*;
 use crate::*;
+use nanoserde::*;
 pub fn get_client() -> ApiClient {
-    let mut nakama = ApiClient::new("xITSpxZegnWc", "shotcaller.us-east1.nakamacloud.io", 443, "https");
+    let mut nakama = ApiClient::new(
+        "xITSpxZegnWc",
+        "shotcaller.us-east1.nakamacloud.io",
+        443,
+        "https",
+    );
     while nakama.in_progress() {
         nakama.tick();
         println!("Creating nakama client connection.");
@@ -24,8 +29,16 @@ pub fn check_error(nakama: &mut ApiClient) {
 }
 pub fn get_match(nakama: &mut ApiClient) {
     let mut matchmaker = Matchmaker::new();
-    matchmaker.min(2).max(2).add_string_property("engine", "minigene_matchmaking")
-        .add_query_item(&QueryItemBuilder::new("engine").required().term("minigene_matchmaking").build());
+    matchmaker
+        .min(2)
+        .max(2)
+        .add_string_property("engine", "minigene_matchmaking")
+        .add_query_item(
+            &QueryItemBuilder::new("engine")
+                .required()
+                .term("minigene_matchmaking")
+                .build(),
+        );
     nakama.socket_add_matchmaker(&matchmaker);
     let mut token = nakama.matchmaker_token.clone();
     while token.is_none() {
@@ -45,15 +58,15 @@ pub fn get_match(nakama: &mut ApiClient) {
 
 #[derive(Clone, Debug, SerBin, DeBin)]
 pub enum NetworkEvent {
-    PlayerJoin {id: String, username: String},
-    PlayerLeave {id: String},
-    TeleportEntity {id: String, point: u32},
+    PlayerJoin { id: String, username: String },
+    PlayerLeave { id: String },
+    TeleportEntity { id: String, point: u32 },
 }
 
 impl NetworkEvent {
     pub fn op_code(&self) -> i32 {
         match *self {
-            NetworkEvent::TeleportEntity{id: _, point: _} => 0,
+            NetworkEvent::TeleportEntity { id: _, point: _ } => 0,
             _ => -1,
         }
     }
@@ -63,18 +76,27 @@ pub fn receive_events(nakama: &mut ApiClient) -> Vec<NetworkEvent> {
     let mut evs = vec![];
     while let Some(event) = nakama.try_recv() {
         match event {
-            Event::Presence {joins, leaves} => {
+            Event::Presence { joins, leaves } => {
                 //leaver.session_id
                 //join.session_id
                 //join.username
                 for join in joins {
-                    evs.push(NetworkEvent::PlayerJoin{id: join.session_id, username: join.username});
+                    evs.push(NetworkEvent::PlayerJoin {
+                        id: join.session_id,
+                        username: join.username,
+                    });
                 }
                 for leave in leaves {
-                    evs.push(NetworkEvent::PlayerLeave{id: leave.session_id});
+                    evs.push(NetworkEvent::PlayerLeave {
+                        id: leave.session_id,
+                    });
                 }
-            },
-            Event::MatchData {user_id, opcode, data} => {
+            }
+            Event::MatchData {
+                user_id,
+                opcode,
+                data,
+            } => {
                 if let Ok(deser) = DeBin::deserialize_bin(&data) {
                     evs.push(deser);
                 }
@@ -97,35 +119,35 @@ pub fn send_event(nakama: &mut ApiClient, ev: NetworkEvent) {
     nakama.socket_send(-1, &ev);
     nakama.tick();
 }
-    /*let mut nakama = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
-    nakama.register("email", "password", "username");
-    nakama.authenticate("email", "password");
-    nakama.authenticated();
-    nakama.username().unwrap();
+/*let mut nakama = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
+nakama.register("email", "password", "username");
+nakama.authenticate("email", "password");
+nakama.authenticated();
+nakama.username().unwrap();
 
-    let mut matchmaker = Matchmaker::new();
-    matchmaker.min(2).max(2).add_string_property("engine", "minigene_matchmaking")
-        .add_query_item(&QueryItemBuilder::new("engine").required().term("minigene_matchmaking").build());
-    nakama.socket_add_matchmaker(&matchmaker);
+let mut matchmaker = Matchmaker::new();
+matchmaker.min(2).max(2).add_string_property("engine", "minigene_matchmaking")
+    .add_query_item(&QueryItemBuilder::new("engine").required().term("minigene_matchmaking").build());
+nakama.socket_add_matchmaker(&matchmaker);
 
-    let token = nakama.matchmaker_token.clone();
-    if token.is_some() {
-        nakama.socket_join_match_by_token(&token.unwrap());
-    }
-    if nakama.match_id().is_some() {
-        // start game here
-    }
-    //nakama.socket_send(opcode, &data);
-    while let Some(event) = nakama.try_recv() {
-        match event {
-            Event::Presence {joins, leaves} => {
-                //leaver.session_id
-                //join.session_id
-                //join.username
-            },
-            Event::MatchData {user_id, opcode, data} => {
-                //DeBin::deserialize_bin(&data).expect("Failed to deser received data");
-            }
+let token = nakama.matchmaker_token.clone();
+if token.is_some() {
+    nakama.socket_join_match_by_token(&token.unwrap());
+}
+if nakama.match_id().is_some() {
+    // start game here
+}
+//nakama.socket_send(opcode, &data);
+while let Some(event) = nakama.try_recv() {
+    match event {
+        Event::Presence {joins, leaves} => {
+            //leaver.session_id
+            //join.session_id
+            //join.username
+        },
+        Event::MatchData {user_id, opcode, data} => {
+            //DeBin::deserialize_bin(&data).expect("Failed to deser received data");
         }
     }
-    //nakama.tick();*/
+}
+//nakama.tick();*/
