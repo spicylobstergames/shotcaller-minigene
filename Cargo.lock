@@ -99,7 +99,7 @@ checksum = "0d8c1fef690941d3e7788d328517591fecc684c084084702d6ff1641e993699a"
 [[package]]
 name = "bracket-algorithm-traits"
 version = "0.8.2"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "bracket-geometry",
  "smallvec",
@@ -108,7 +108,7 @@ dependencies = [
 [[package]]
 name = "bracket-color"
 version = "0.8.2"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "byteorder",
  "lazy_static",
@@ -119,7 +119,7 @@ dependencies = [
 [[package]]
 name = "bracket-geometry"
 version = "0.8.2"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "serde",
  "ultraviolet",
@@ -128,7 +128,7 @@ dependencies = [
 [[package]]
 name = "bracket-lib"
 version = "0.8.2"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "bracket-algorithm-traits",
  "bracket-color",
@@ -142,7 +142,7 @@ dependencies = [
 [[package]]
 name = "bracket-noise"
 version = "0.8.2"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "bracket-random",
 ]
@@ -150,7 +150,7 @@ dependencies = [
 [[package]]
 name = "bracket-pathfinding"
 version = "0.8.4"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "bracket-algorithm-traits",
  "bracket-geometry",
@@ -161,7 +161,7 @@ dependencies = [
 [[package]]
 name = "bracket-random"
 version = "0.8.3"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "getrandom",
  "js-sys",
@@ -176,7 +176,7 @@ dependencies = [
 [[package]]
 name = "bracket-terminal"
 version = "0.8.3"
-source = "git+https://github.com/thebracket/bracket-lib?branch=master#57aac00ee07067f9f748d0273bce95e4638f0320"
+source = "git+https://github.com/thebracket/bracket-lib?branch=master#d8c8af87173d0a26662fde108f7dc988ad3bed48"
 dependencies = [
  "anyhow",
  "bracket-color",
@@ -810,8 +810,9 @@ checksum = "d2a5965eaebe8a8f628a11960683b95be2cad194bb0cc173d00d8f7bfb2b6884"
 
 [[package]]
 name = "game_features"
-version = "0.5.0"
-source = "git+https://github.com/jojolepro/game_features#afec6a93d873125d581e842632c1be7372e7c948"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8192401e786aab96b2e1ea0291dcc6cf798c5e4cbe8aaa3cf11f7e27b5419f62"
 dependencies = [
  "derivative",
  "derive-new",
@@ -1191,7 +1192,7 @@ dependencies = [
 [[package]]
 name = "minigene"
 version = "0.4.0"
-source = "git+https://github.com/jojolepro/minigene?branch=master#530ac256ecc9e96343406bc22053f54f4309a910"
+source = "git+https://github.com/jojolepro/minigene?branch=master#3f7df8199644dc0ddf110edb695aef5e339da335"
 dependencies = [
  "bracket-lib",
  "crossterm 0.18.2",
@@ -1199,6 +1200,7 @@ dependencies = [
  "game_clock",
  "game_features",
  "hibitset",
+ "oorandom",
  "planck_ecs",
  "pushdown-automaton-macro",
  "rayon",
@@ -1550,6 +1552,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af8b08b04175473088b46763e51ee54da5f9a164bc162f615b91bc179dbf15a3"
 
 [[package]]
+name = "oorandom"
+version = "11.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0ab1bc2a289d34bd04a330323ac98a1b4bc82c9d9fcb1e66b63caa84da26b575"
+
+[[package]]
 name = "openssl"
 version = "0.10.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1645,9 +1653,9 @@ checksum = "3831453b3449ceb48b6d9c7ad7c96d5ea673e9b470a1dc578c2ce6521230884c"
 
 [[package]]
 name = "planck_ecs"
-version = "1.1.2"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e596816a546811eca2f751e827602c156ad0ff536700232c745b424e36230c3e"
+checksum = "c41235221b3cfb0369edbfee18192503b889e4567175b8a3d3f32f8fa062a7a4"
 dependencies = [
  "atomic_refcell_try",
  "entity_component",
@@ -2650,9 +2658,9 @@ dependencies = [
 
 [[package]]
 name = "world_dispatcher"
-version = "1.1.2"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7918aa3f50395838a682b925aee23a7454f89aa24d3e8783d920d54b45be5507"
+checksum = "e85084d923923fbe2b15d4c1f75785a4dea78ab120e212e888a949775c56f874"
 dependencies = [
  "atomic_refcell_try",
  "downcast-rs",
