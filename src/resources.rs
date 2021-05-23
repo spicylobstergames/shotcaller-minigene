@@ -1,4 +1,5 @@
 use crate::*;
+use nanoserde::*;
 
 /// The winner of this game.
 #[allow(missing_docs)]
@@ -17,7 +18,7 @@ impl Default for Winner {
 }
 
 /// The selected leaders in each team.
-#[derive(Clone, Default, new)]
+#[derive(Clone, Default, new, SerBin, DeBin, Debug)]
 pub struct TeamLeaders {
     /// The leaders in my team.
     pub me: Vec<Leaders>,

@@ -1,5 +1,7 @@
 use crate::*;
+use std::collections::BTreeSet;
 use nanoserde::*;
+
 pub fn get_client() -> ApiClient {
     let mut nakama = ApiClient::new(
         "xITSpxZegnWc",
@@ -59,6 +61,7 @@ pub fn get_match(nakama: &mut ApiClient) {
 #[derive(Clone, Debug, SerBin, DeBin)]
 pub enum NetworkEvent {
     PlayerJoin { id: String, username: String },
+    Leaders(TeamLeaders),
     PlayerLeave { id: String },
     TeleportEntity { id: String, point: u32 },
 }
@@ -118,6 +121,16 @@ pub fn send_event(nakama: &mut ApiClient, ev: NetworkEvent) {
     //nakama.socket_send(ev.op_code(), &ev);
     nakama.socket_send(-1, &ev);
     nakama.tick();
+}
+
+
+pub fn is_host(nakama: &ApiClient, remote_players: &BTreeSet<String>) -> bool {
+    // no other players connected
+    if remote_players.len() == 0 {
+        return true;
+    }
+
+    *nakama.session_id.as_ref().unwrap() < *remote_players.iter().next().unwrap()
 }
 /*let mut nakama = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
 nakama.register("email", "password", "username");

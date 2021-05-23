@@ -1,3 +1,5 @@
+use nanoserde::*;
+
 /// The different stats ids.
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
@@ -83,7 +85,7 @@ pub enum Effectors {
 
 /// The different leader ids.
 #[allow(missing_docs)]
-#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Copy, Clone, Debug, SerBin, DeBin)]
 pub enum Leaders {
     Generic1,
     Generic2,

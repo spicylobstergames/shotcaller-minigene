@@ -14,8 +14,6 @@ use std::collections::HashMap;
 use nakama_rs::api_client::{ApiClient, Event};
 use nakama_rs::matchmaker::{Matchmaker, QueryItemBuilder};
 
-mod nakama;
-
 add_wasm_support!();
 
 const PLAY_WIDTH: u32 = 81;
@@ -73,6 +71,8 @@ mod states;
 mod systems;
 mod unit_orders;
 mod utils;
+mod nakama;
+use nakama::*;
 pub use self::components::*;
 pub use self::events::*;
 pub use self::ids::*;
@@ -484,8 +484,12 @@ fn main() -> BError {
         }
     }
 
-    // Spawn leaders
-    let team_leaders = {
+    let mut nakama = nakama::get_client();
+    nakama::connect(&mut nakama);
+    nakama::get_match(&mut nakama);
+
+    let team_leaders = if nakama::is_host(&nakama, &world.get::<_>().unwrap()) {
+        // generate and send leaders.
         let mut rng = world.get_mut::<RNG>().unwrap();
         let mut leaders_vec = vec![
             Leaders::Generic1,
@@ -511,7 +515,21 @@ fn main() -> BError {
                 team_leaders.other.push(leader);
             }
         }
+        nakama::send_event(&mut nakama, NetworkEvent::Leaders(team_leaders.clone()));
+        // TODO send leaders
         team_leaders
+    } else {
+        // receive leaders.
+        let mut leaders = None;
+        while leaders.is_none() {
+            for ev in nakama::receive_events(&mut nakama) {
+                match ev {
+                    NetworkEvent::Leaders(l) => leaders = Some(l),
+                    _ => {},
+                }
+            }
+        }
+        leaders.unwrap()
     };
 
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
@@ -563,10 +581,6 @@ fn main() -> BError {
     *world.get_mut::<_>().unwrap() = input_to_move_camera;
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
-
-    let mut nakama = nakama::get_client();
-    nakama::connect(&mut nakama);
-    nakama::get_match(&mut nakama);
 
     let gs = State {
         world,
