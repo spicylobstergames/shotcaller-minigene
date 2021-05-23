@@ -1,6 +1,6 @@
 use crate::*;
-use std::collections::BTreeSet;
 use nanoserde::*;
+use std::collections::BTreeSet;
 
 pub fn get_client() -> ApiClient {
     let mut nakama = ApiClient::new(
@@ -122,7 +122,6 @@ pub fn send_event(nakama: &mut ApiClient, ev: NetworkEvent) {
     nakama.socket_send(-1, &ev);
     nakama.tick();
 }
-
 
 pub fn is_host(nakama: &ApiClient, remote_players: &BTreeSet<String>) -> bool {
     // no other players connected

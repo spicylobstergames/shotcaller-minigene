@@ -65,14 +65,13 @@ mod components;
 mod events;
 mod ids;
 mod leaders;
+mod nakama;
 mod render_map;
 mod resources;
 mod states;
 mod systems;
 mod unit_orders;
 mod utils;
-mod nakama;
-use nakama::*;
 pub use self::components::*;
 pub use self::events::*;
 pub use self::ids::*;
@@ -83,6 +82,7 @@ pub use self::states::*;
 pub use self::systems::*;
 pub use self::unit_orders::*;
 pub use self::utils::*;
+use nakama::*;
 
 // Bridge between bracket-lib and minigene
 struct State {
@@ -525,7 +525,7 @@ fn main() -> BError {
             for ev in nakama::receive_events(&mut nakama) {
                 match ev {
                     NetworkEvent::Leaders(l) => leaders = Some(l),
-                    _ => {},
+                    _ => {}
                 }
             }
         }
