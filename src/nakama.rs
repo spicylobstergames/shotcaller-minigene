@@ -76,6 +76,7 @@ impl NetworkEvent {
 }
 
 pub fn receive_events(nakama: &mut ApiClient) -> Vec<NetworkEvent> {
+    nakama.tick();
     let mut evs = vec![];
     while let Some(event) = nakama.try_recv() {
         match event {
