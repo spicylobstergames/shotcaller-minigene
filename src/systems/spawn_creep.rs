@@ -15,9 +15,10 @@ pub fn spawn_creep_system(
     sprites: &mut Components<Sprite>,
     sprite_indices: &mut Components<SpriteIndex>,
     sights: &mut Components<LineOfSight>,
+    uuids: &mut Components<Uuid>,
 ) -> SystemResult {
     for ev in game_events.iter() {
-        if let GameEvent::SpawnCreep(pos, team) = ev {
+        if let GameEvent::SpawnCreep(pos, team, uuid_opt) = ev {
             let creep = entities.create();
             positions.insert(creep, pos.clone());
             creeps.insert(creep, Creep);
@@ -45,6 +46,11 @@ pub fn spawn_creep_system(
                 },
             );
             sprite_indices.insert(creep, SpriteIndex(TileMapping::Creep.into()));
+            if let Some(uuid) = uuid_opt {
+                uuids.insert(creep, uuid.clone());
+            } else {
+                uuids.insert(creep, Uuid::new_v4());
+            }
         }
     }
     Ok(())

@@ -16,6 +16,7 @@ pub fn creep_spawner_system(
             game_events.push(GameEvent::SpawnCreep(
                 pos.unwrap().clone(),
                 team.unwrap().clone(),
+                None,
             ));
         }
         spawner.0 -= time.delta_time().as_secs_f32();

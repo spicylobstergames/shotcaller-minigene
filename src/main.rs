@@ -8,6 +8,7 @@ extern crate serde;
 extern crate lazy_static;
 
 use minigene::*;
+use uuid::*;
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 
@@ -552,10 +553,12 @@ fn main() -> BError {
             evs.push(GameEvent::SpawnLeader(
                 Point::new(LEADER_SPAWN_POINT_ME.0, LEADER_SPAWN_POINT_ME.1),
                 i,
+                None,
             ));
             evs.push(GameEvent::SpawnLeader(
                 Point::new(LEADER_SPAWN_POINT_OTHER.0, LEADER_SPAWN_POINT_OTHER.1),
                 i + 5,
+                None,
             ));
         }
     }

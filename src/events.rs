@@ -49,11 +49,11 @@ pub enum GameEvent {
     /// A gold transfer was made.
     TransferedGold(Entity, f64),
     /// A leader died.
-    LeaderDied(u8),
+    LeaderDied(u8, Option<Uuid>),
     /// Spawn a creep at the specified position in the specified team.
-    SpawnCreep(Point, Team),
+    SpawnCreep(Point, Team, Option<Uuid>),
     /// Spawns a leader using the `TeamLeaders`' index and a position.
-    SpawnLeader(Point, u8),
+    SpawnLeader(Point, u8, Option<Uuid>),
     /// Set additional attack for an entity.
     AdditionalAttack(Entity, f64),
     /// Set additional defense for an entity.

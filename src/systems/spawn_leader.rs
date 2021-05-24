@@ -24,9 +24,10 @@ pub fn spawn_leader_system(
     sprite_indices: &mut Components<SpriteIndex>,
     skillsets: &mut Components<SkillSet<Skills>>,
     effectors: &mut Components<EffectorSet<Effectors>>,
+    uuids: &mut Components<Uuid>,
 ) -> SystemResult {
     for ev in game_events.iter() {
-        if let GameEvent::SpawnLeader(pos, id) = ev {
+        if let GameEvent::SpawnLeader(pos, id, uuid_opt) = ev {
             let leader = entities.create();
             positions.insert(leader, pos.clone());
             leaders.insert(leader, Leader(*id));
@@ -270,6 +271,11 @@ pub fn spawn_leader_system(
                     // retreats.insert(leader, FleeToBase(0.0));
                     // is_caught.insert(leader, IsCaught(false));
                 }
+            }
+            if let Some(uuid) = uuid_opt {
+                uuids.insert(leader, uuid.clone());
+            } else {
+                uuids.insert(leader, Uuid::new_v4());
             }
         }
     }
