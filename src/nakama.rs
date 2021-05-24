@@ -16,7 +16,9 @@ pub fn get_client() -> ApiClient {
     nakama
 }
 pub fn connect(nakama: &mut ApiClient) {
-    nakama.register("emale2@emale.com", "henloust", "owomyfriend2");
+    //nakama.register("emale2@emale.com", "henloust", "owomyfriend2");
+    nakama.register("emale@emale.com", "henloust", "owomyfriend");
+    //nakama.authenticate("emale2@emale.com", "owomyfriend2");
     //nakama.authenticate("emale@emale.com", "owomyfriend");
     while !nakama.authenticated() {
         nakama.tick();
@@ -151,6 +153,7 @@ pub fn is_host(nakama: &ApiClient, remote_players: &BTreeSet<String>) -> bool {
 
     *nakama.session_id.as_ref().unwrap() < *remote_players.iter().next().unwrap()
 }
+
 /*let mut nakama = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
 nakama.register("email", "password", "username");
 nakama.authenticate("email", "password");
