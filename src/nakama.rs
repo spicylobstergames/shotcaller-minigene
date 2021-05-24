@@ -119,12 +119,19 @@ pub fn receive_events(nakama: &mut ApiClient) -> Vec<NetworkEvent> {
     evs
 }
 
-pub fn network_player_manager_system(evs: &Vec<NetworkEvent>, players: &mut BTreeSet<String>) -> SystemResult {
+pub fn network_player_manager_system(
+    evs: &Vec<NetworkEvent>,
+    players: &mut BTreeSet<String>,
+) -> SystemResult {
     for ev in evs {
         match ev {
-            NetworkEvent::PlayerJoin{ id, username: _ } => {players.insert(id.clone());},
-            NetworkEvent::PlayerLeave{ id } => {players.remove(id);},
-            _ => {},
+            NetworkEvent::PlayerJoin { id, username: _ } => {
+                players.insert(id.clone());
+            }
+            NetworkEvent::PlayerLeave { id } => {
+                players.remove(id);
+            }
+            _ => {}
         }
     }
     Ok(())
