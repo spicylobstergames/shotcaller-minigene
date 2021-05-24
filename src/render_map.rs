@@ -69,7 +69,7 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
             ctx.print(PLAY_WIDTH + 1, i + 4, format!(" {}", name));
         }
         ctx.print(PLAY_WIDTH + 1, 10, "Enemy Team");
-        for (i, key) in world.get::<TeamLeaders>().unwrap().me.iter().enumerate() {
+        for (i, key) in world.get::<TeamLeaders>().unwrap().other.iter().enumerate() {
             let name = world
                 .get::<LeaderDefinitions>()
                 .unwrap()
@@ -78,7 +78,7 @@ pub fn render_ui(world: &mut World, ctx: &mut BTerm) {
                 .unwrap()
                 .name
                 .clone();
-            ctx.print(PLAY_WIDTH + 1, i + 11, format!(" Leader {}", name));
+            ctx.print(PLAY_WIDTH + 1, i + 11, format!(" {}", name));
         }
 
         ctx.print(PLAY_WIDTH + 1, selected + 4, ">");

@@ -488,6 +488,7 @@ fn main() -> BError {
     let mut nakama = nakama::get_client();
     nakama::connect(&mut nakama);
     nakama::get_match(&mut nakama);
+    std::thread::sleep_ms(500);
     *world.get_mut::<_>().unwrap() = nakama::receive_events(&mut nakama);
     let mut sys = nakama::network_player_manager_system.system();
     sys.initialize(&mut world);
@@ -521,10 +522,11 @@ fn main() -> BError {
                 team_leaders.other.push(leader);
             }
         }
+        println!("Sending leaders");
         nakama::send_event(&mut nakama, NetworkEvent::Leaders(team_leaders.clone()));
-        // TODO send leaders
         team_leaders
     } else {
+        println!("Waiting for leaders.");
         // receive leaders.
         let mut leaders = None;
         while leaders.is_none() {
@@ -535,12 +537,13 @@ fn main() -> BError {
                 }
             }
         }
-        leaders.unwrap()
+        println!("Received leaders!");
+        let mut leaders = leaders.unwrap();
+        std::mem::swap(&mut leaders.me, &mut leaders.other);
+        leaders
     };
 
     *world.get_mut::<TeamLeaders>().unwrap() = team_leaders;
-
-    panic!("ready to go!");
 
     {
         let mut evs = world.get_mut::<Vec<GameEvent>>();
