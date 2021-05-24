@@ -16,8 +16,8 @@ pub fn get_client() -> ApiClient {
     nakama
 }
 pub fn connect(nakama: &mut ApiClient) {
-    nakama.register("emale2@emale.com", "henloust", "owomyfriend2");
-    //nakama.register("emale@emale.com", "henloust", "owomyfriend");
+    //nakama.register("emale2@emale.com", "henloust", "owomyfriend2");
+    nakama.register("emale@emale.com", "henloust", "owomyfriend");
     //nakama.authenticate("emale2@emale.com", "owomyfriend2");
     //nakama.authenticate("emale@emale.com", "owomyfriend");
     while !nakama.authenticated() {
