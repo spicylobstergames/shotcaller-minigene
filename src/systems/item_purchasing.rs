@@ -22,7 +22,9 @@ pub fn item_purchasing_system(
                             && st.stats.get(&Stats::Gold).unwrap().value >= (shelf_item.1 as f64)
                         {
                             st.stats.get_mut(&Stats::Gold).unwrap().value -= shelf_item.1 as f64;
-                            if let Err(e) = inv.insert(ItemInstance::new(shelf_item.0, 1), item_defs) {
+                            if let Err(e) =
+                                inv.insert(ItemInstance::new(shelf_item.0, 1), item_defs)
+                            {
                                 eprintln!("Item purchasing failed: {:?}", e);
                             }
                         } else {

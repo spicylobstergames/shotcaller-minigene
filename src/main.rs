@@ -8,9 +8,9 @@ extern crate serde;
 extern crate lazy_static;
 
 use minigene::*;
-use uuid::*;
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
+use uuid::*;
 
 use nakama_rs::api_client::{ApiClient, Event};
 use nakama_rs::matchmaker::{Matchmaker, QueryItemBuilder};
@@ -107,7 +107,12 @@ impl GameState for State {
                 }*/
                 BEvent::Character { c } => {
                     //println!("Input: {}", c);
-                    self.engine.state_data.world.get_mut::<Vec<char>>().unwrap().push(c);
+                    self.engine
+                        .state_data
+                        .world
+                        .get_mut::<Vec<char>>()
+                        .unwrap()
+                        .push(c);
                 }
                 BEvent::CloseRequested => close_requested = true,
                 _ => {}
@@ -293,8 +298,6 @@ fn main() -> BError {
     world.initialize::<Components<Sprite>>();
     world.initialize::<Components<Point>>();
     world.initialize::<Camera>();
-
-
 
     world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
@@ -624,9 +627,7 @@ fn main() -> BError {
     let post_update: PostUpdate = |_, _| {};
     let engine = Engine::new(DefaultState, gd, post_update, 60.0);
 
-    let gs = State {
-        engine,
-    };
+    let gs = State { engine };
 
     main_loop(context, gs)
 }
