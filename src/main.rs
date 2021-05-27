@@ -85,31 +85,39 @@ pub use self::unit_orders::*;
 pub use self::utils::*;
 use nakama::*;
 
-// Bridge between bracket-lib and minigene
-struct State {
+pub struct GameData {
     pub world: World,
-    pub dispatcher: Dispatcher,
-    pub state_machine: StateMachine,
-    #[cfg(not(feature = "wasm"))]
-    pub loop_helper: LoopHelper,
+    pub client_dispatcher: Dispatcher,
+    pub host_dispatcher: Dispatcher,
+}
+
+type PostUpdate = fn(&mut GameData, &Time);
+struct State {
+    pub engine: Engine<GameData, PostUpdate>,
 }
 impl GameState for State {
     fn tick(&mut self, ctx: &mut BTerm) {
-        #[cfg(not(feature = "wasm"))]
-        let delta = self.loop_helper.loop_start();
-        #[cfg(feature = "wasm")]
-        let delta = std::time::Duration::from_secs_f32(1.0 / 20.0);
-        self.world.get_mut::<Time>().unwrap().advance_frame(delta);
-        mini_frame(
-            &mut self.world,
-            &mut self.dispatcher,
-            ctx,
-            &mut self.state_machine,
-        );
-        #[cfg(not(feature = "wasm"))]
-        self.loop_helper.loop_sleep();
-        if !self.state_machine.is_running() {
+        let mut close_requested = false;
+        let mut input = INPUT.lock();
+        while let Some(ev) = input.pop() {
+            match ev {
+                /*BEvent::KeyboardInput {key, ..} => {
+                    //world.get_mut::<Vec<>>().unwrap().push(key);
+                    //println!("kb event");
+                }*/
+                BEvent::Character { c } => {
+                    //println!("Input: {}", c);
+                    self.engine.state_data.world.get_mut::<Vec<char>>().unwrap().push(c);
+                }
+                BEvent::CloseRequested => close_requested = true,
+                _ => {}
+            }
+        }
+        main_render(ctx, &mut self.engine.state_data);
+        self.engine.engine_frame(true);
+        if close_requested || !self.engine.state_machine.is_running() {
             ctx.quitting = true;
+            return;
         }
     }
 }
@@ -257,14 +265,36 @@ fn main() -> BError {
             spritesheet = spritesheet.add_sprite(Rect::with_size(i * 8, (9 - j) * 8, 8, 8));
         }
     }*/
-    let (mut world, mut dispatcher, mut context) = mini_init(
-        SCREEN_WIDTH,
-        SCREEN_HEIGHT,
-        "Shotcaller",
-        Some(spritesheet),
-        dispatcher,
-        world,
-    );
+
+    let mut context = BTermBuilder::new();
+    {
+        context = context.with_simple_console(SCREEN_WIDTH, SCREEN_HEIGHT, "terminal8x8.png");
+    }
+    #[cfg(feature = "opengl")]
+    {
+        context = context.with_sprite_sheet(spritesheet);
+        context = context.with_sprite_console(SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+    }
+    #[cfg(feature = "headless")]
+    {
+        println!("Running headlessly...");
+    }
+
+    let context = context
+        .with_font("terminal8x8.png", 8, 8)
+        .with_title("Shotcaller")
+        .with_vsync(false)
+        .with_advanced_input(true)
+        .build()
+        .expect("Failed to build BTerm context.");
+
+    world.initialize::<Vec<char>>();
+    world.initialize::<Components<MultiSprite>>();
+    world.initialize::<Components<Sprite>>();
+    world.initialize::<Components<Point>>();
+    world.initialize::<Camera>();
+
+
 
     world.initialize::<Mouse>();
     world.initialize::<Components<Barrack>>();
@@ -285,18 +315,6 @@ fn main() -> BError {
         Point::new(0, 0),
     ));
 
-    let mut state_machine = StateMachine::new(DefaultState);
-    state_machine.start(&mut world, &mut dispatcher, &mut context);
-    #[cfg(not(feature = "wasm"))]
-    let loop_helper = LoopHelper::builder().build_with_target_rate(TARGET_FPS);
-
-    /*register!(world, MultiSprite, Sprite, Team, Barrack, Tower, Core, Leader,
-    Name, SpriteIndex, StatSet<Stats>, EffectorSet<Effectors>,
-    SkillSet<Skills>, Inventory<Items, (), ()>, Point, SimpleMovement,
-    AiPath, AiDestination, Creep, Player, CollisionMap, CreepSpawner, Collision,
-    ProximityAttack, TowerProjectile, GotoStraight, GotoEntity,);*/
-
-    // TODO reenable
     let keymap: HashMap<u8, InputEvent> = load_yaml("assets/keymap.yaml");
     let keymap = keymap.into_iter().map(|(k, v)| (k as char, v)).collect();
     *world.get_mut::<HashMap<char, InputEvent>>().unwrap() = keymap;
@@ -596,12 +614,18 @@ fn main() -> BError {
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
 
-    let gs = State {
+    let host_dispatcher = DispatcherBuilder::new().build(&mut world);
+    let gd = GameData {
         world,
-        dispatcher,
-        state_machine,
-        #[cfg(not(feature = "wasm"))]
-        loop_helper,
+        client_dispatcher: dispatcher,
+        host_dispatcher,
+    };
+
+    let post_update: PostUpdate = |_, _| {};
+    let engine = Engine::new(DefaultState, gd, post_update, 60.0);
+
+    let gs = State {
+        engine,
     };
 
     main_loop(context, gs)

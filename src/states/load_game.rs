@@ -4,9 +4,9 @@ use crate::*;
 pub struct LoadGameState;
 
 #[allow(unused_variables)]
-impl minigene::State for LoadGameState {
-    fn on_start(&mut self, world: &mut World, dispatcher: &mut Dispatcher, ctx: &mut BTerm) {}
-    fn update(&mut self, world: &mut World, dispatcher: &mut Dispatcher, ctx: &mut BTerm) -> Trans {
-        Trans::None
+impl minigene::State<GameData> for LoadGameState {
+    fn on_start(&mut self, data: &mut GameData) {}
+    fn update(&mut self, data: &mut GameData) -> StateTransition<GameData> {
+        StateTransition::None
     }
 }

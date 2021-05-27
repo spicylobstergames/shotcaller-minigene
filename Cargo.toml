@@ -13,9 +13,9 @@ headless = ["minigene/headless"]
 wasm = ["wasm-bindgen", "minigene/wasm", "console_error_panic_hook", "opengl"]
 
 [dependencies]
-#minigene = { path = "../minigene", default-features = false }
+minigene = { path = "../minigene", default-features = false }
 #minigene = { git = "https://github.com/jojolepro/minigene", default-features = false, rev = "a2f5c3bca0903acae760a763152ccd45ccb53948" }
-minigene = { git = "https://github.com/jojolepro/minigene", branch = "master", default-features = false }
+#minigene = { git = "https://github.com/jojolepro/minigene", branch = "master", default-features = false }
 wasm-bindgen = { version = "0.2.68", optional = true }
 console_error_panic_hook = { version = "0.1.6", optional = true }
 serde = { version = "1.0", features = ["derive"] }
