@@ -370,7 +370,7 @@ fn main() -> BError {
         }
     }
 
-    let core_color_fg = &[
+    let core_color_fg = vec![
         RGBA::named(BLUE),
         RGBA::named(BLUE),
         RGBA::named(BLUE),
@@ -385,7 +385,7 @@ fn main() -> BError {
         RGBA::named(BLUE),
     ];
 
-    let core_color_bg_other = &[
+    let core_color_bg_other = vec![
         RGBA::named(RED),
         RGBA::named(RED),
         RGBA::named(RED),
@@ -400,7 +400,7 @@ fn main() -> BError {
         RGBA::named(RED),
     ];
 
-    let core_color_bg_me = &[
+    let core_color_bg_me = vec![
         RGBA::named(GREEN),
         RGBA::named(GREEN),
         RGBA::named(GREEN),
@@ -420,7 +420,7 @@ fn main() -> BError {
         world,
         Point::new(MAP_SIZE_X as i32 / 2, 1),
         MultiSprite {
-            ascii: "CCCCCCCCCCCC",
+            ascii: "CCCCCCCCCCCC".to_string(),
             width: 3,
             height: 4,
             fg: core_color_fg.clone(),
@@ -436,7 +436,7 @@ fn main() -> BError {
         world,
         Point::new(MAP_SIZE_X as i32 / 2, MAP_SIZE_Y as i32 - 2),
         MultiSprite {
-            ascii: "CCCCCCCCCCCC",
+            ascii: "CCCCCCCCCCCC".to_string(),
             width: 3,
             height: 4,
             fg: core_color_fg.clone(),

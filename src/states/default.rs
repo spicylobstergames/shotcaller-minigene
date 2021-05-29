@@ -31,6 +31,7 @@ pub fn main_render(ctx: &mut BTerm, data: &mut GameData) {
                 &*data.world.get().unwrap(),
                 &*data.world.get().unwrap(),
                 &*data.world.get().unwrap(),
+                &*data.world.get().unwrap(),
             );
         }
         #[cfg(feature = "opengl")]
@@ -38,6 +39,7 @@ pub fn main_render(ctx: &mut BTerm, data: &mut GameData) {
             ctx.set_active_console(1);
             render_sprites(
                 ctx,
+                &*data.world.get().unwrap(),
                 &*data.world.get().unwrap(),
                 &*data.world.get().unwrap(),
                 &*data.world.get().unwrap(),
