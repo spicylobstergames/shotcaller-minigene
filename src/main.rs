@@ -257,11 +257,23 @@ fn main() -> BError {
         (0, 648, 24, 24),   // 20, sword small man 3
         (0, 672, 32, 32),   // 21, beer
         (88, 864, 8, 8),    // 22, forest
-        (0, 704, 96, 120),  // 23, core
+        (0, 704, 96, 120),  // 23, core full
         (96, 746, 32, 32),  // 24, tower1
         (96, 768, 32, 32),  // 25, tower2, 78y
         (128, 768, 54, 56), // 26, barracks
         (127, 723, 33, 37), // 27, tree
+        (0, 704, 32, 30), // 28, core 1
+        (32, 704, 32, 30), // 29, core 2
+        (66, 704, 32, 30), // 30, core 3
+        (0, 734, 32, 30), // 31, core 4
+        (32, 734, 32, 30), // 32, core 5
+        (66, 734, 32, 30), // 33, core 6
+        (0, 764, 32, 30), // 34, core 7
+        (32, 764, 32, 30), // 35, core 8
+        (66, 764, 32, 30), // 36, core 9
+        (0, 794, 32, 30), // 37, core 10
+        (32, 794, 32, 30), // 38, core 11
+        (66, 794, 32, 30), // 39, core 12
     ];
     for v in img {
         spritesheet = spritesheet.add_sprite(Rect::with_size(v.0, 872 - v.2 - v.1, v.2, v.3));
@@ -357,16 +369,64 @@ fn main() -> BError {
             }
         }
     }
+
+    let core_color_fg = &[
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+        RGBA::named(BLUE),
+    ];
+
+    let core_color_bg_other = &[
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+        RGBA::named(RED),
+    ];
+
+    let core_color_bg_me = &[
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+        RGBA::named(GREEN),
+    ];
+
     // Create cores
     centity!(
         world,
         Point::new(MAP_SIZE_X as i32 / 2, 1),
-        Sprite {
-            glyph: to_cp437('C'),
-            fg: RGBA::named(BLUE),
-            bg: RGBA::named(RED),
+        MultiSprite {
+            ascii: "CCCCCCCCCCCC",
+            width: 3,
+            height: 4,
+            fg: core_color_fg.clone(),
+            bg: core_color_bg_other.clone(),
+            sprite_indices: vec![28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
         },
-        SpriteIndex(TileMapping::Core.into()),
         Team::Other,
         Core,
         default_stats.clone(),
@@ -375,12 +435,14 @@ fn main() -> BError {
     centity!(
         world,
         Point::new(MAP_SIZE_X as i32 / 2, MAP_SIZE_Y as i32 - 2),
-        Sprite {
-            glyph: to_cp437('C'),
-            fg: RGBA::named(BLUE),
-            bg: RGBA::named(GREEN),
+        MultiSprite {
+            ascii: "CCCCCCCCCCCC",
+            width: 3,
+            height: 4,
+            fg: core_color_fg.clone(),
+            bg: core_color_bg_me.clone(),
+            sprite_indices: vec![28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
         },
-        SpriteIndex(TileMapping::Core.into()),
         Team::Me,
         Core,
         default_stats.clone(),
