@@ -88,7 +88,8 @@ use nakama::*;
 pub struct GameData {
     pub world: World,
     pub client_dispatcher: Dispatcher,
-    pub host_dispatcher: Dispatcher,
+    pub host_network: Dispatcher,
+    pub client_network: Dispatcher,
 }
 
 type PostUpdate = fn(&mut GameData, &Time);
@@ -617,11 +618,13 @@ fn main() -> BError {
 
     world.get_mut::<Camera>().unwrap().size.x = PLAY_WIDTH as i32;
 
-    let host_dispatcher = DispatcherBuilder::new().build(&mut world);
+    let host_network = DispatcherBuilder::new().build(&mut world);
+    let client_network = DispatcherBuilder::new().build(&mut world);
     let gd = GameData {
         world,
         client_dispatcher: dispatcher,
-        host_dispatcher,
+        host_network,
+        client_network,
     };
 
     let post_update: PostUpdate = |_, _| {};
