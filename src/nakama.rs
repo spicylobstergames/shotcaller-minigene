@@ -2,7 +2,6 @@ use crate::*;
 use nanoserde::*;
 use std::collections::BTreeSet;
 
-
 pub struct NakamaApi {
     pub client: ApiClient,
 }
@@ -11,7 +10,6 @@ unsafe impl Send for NakamaApi {}
 unsafe impl Sync for NakamaApi {}
 
 impl NakamaApi {
-
     pub fn new() -> Self {
         let mut client = ApiClient::new(
             "xITSpxZegnWc",
@@ -23,10 +21,11 @@ impl NakamaApi {
             client.tick();
             println!("Creating self client connection.");
         }
-        Self {client}
+        Self { client }
     }
     pub fn connect(&mut self) {
-        self.client.register("emale2@emale.com", "henloust", "owomyfriend2");
+        self.client
+            .register("emale2@emale.com", "henloust", "owomyfriend2");
         //self.register("emale@emale.com", "henloust", "owomyfriend");
         //self.authenticate("emale2@emale.com", "owomyfriend2");
         //self.authenticate("emale@emale.com", "owomyfriend");
@@ -49,9 +48,9 @@ impl NakamaApi {
             .add_string_property("engine", "minigene_matchmaking")
             .add_query_item(
                 &QueryItemBuilder::new("engine")
-                .required()
-                .term("minigene_matchmaking")
-                .build(),
+                    .required()
+                    .term("minigene_matchmaking")
+                    .build(),
             );
         self.client.socket_add_matchmaker(&matchmaker);
         let mut token = self.client.matchmaker_token.clone();
@@ -69,7 +68,6 @@ impl NakamaApi {
         }
         println!("Joined match");
     }
-
 
     pub fn send_event(&mut self, ev: NetworkEvent) {
         //self.socket_send(ev.op_code(), &ev);
@@ -117,13 +115,13 @@ pub fn receive_events(nakama: &mut NakamaApi) -> Vec<NetworkEvent> {
                     evs.push(deser);
                 }
                 /*match opcode {
-                  0 => {
-                  if let Ok(deser) = DeBin::deserialize_bin(&data) {
-                  evs.push(deser);
-                  }
-                  },
-                  _ => {},
-                  }*/
+                0 => {
+                if let Ok(deser) = DeBin::deserialize_bin(&data) {
+                evs.push(deser);
+                }
+                },
+                _ => {},
+                }*/
                 //DeBin::deserialize_bin(&data).expect("Failed to deser received data");
             }
         }
