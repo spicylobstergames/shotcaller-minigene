@@ -260,7 +260,7 @@ fn main() -> BError {
         (0, 704, 96, 120),  // 23, core full
         (96, 746, 32, 32),  // 24, tower1
         (96, 768, 32, 32),  // 25, tower2, 78y
-        (128, 768, 54, 56), // 26, barracks
+        (128, 768, 54, 56), // 26, barracks full
         (127, 723, 33, 37), // 27, tree
         (0, 704, 32, 30),   // 28, core 1
         (32, 704, 32, 30),  // 29, core 2
@@ -511,27 +511,16 @@ fn main() -> BError {
                     MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
                     MAP_SIZE_Y as i32 * j / 6,
                 ),
-                Sprite {
-                    glyph: to_cp437('T'),
-                    fg: RGBA::named(GREEN),
-                    bg: RGBA::named(RED),
+                MultiSprite {
+                    ascii: "TT".to_string(),
+                    width: 1,
+                    height: 2,
+                    fg: vec![RGBA::named(GREEN), RGBA::named(GREEN)],
+                    bg: vec![RGBA::named(RED), RGBA::named(RED)],
+                    sprite_indices: vec![TileMapping::Tower1.into(), TileMapping::Tower2.into()],
                 },
-                SpriteIndex(TileMapping::Tower1.into()),
                 Team::Other,
                 default_stats.clone(),
-            );
-            centity!(
-                world,
-                Point::new(
-                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
-                    MAP_SIZE_Y as i32 * j / 6 + 1,
-                ),
-                Sprite {
-                    glyph: to_cp437('T'),
-                    fg: RGBA::named(GREEN),
-                    bg: RGBA::named(RED),
-                },
-                SpriteIndex(TileMapping::Tower2.into()),
             );
         }
     }
@@ -544,28 +533,17 @@ fn main() -> BError {
                     MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
                     MAP_SIZE_Y as i32 - 1 - PLAY_HEIGHT as i32 * j / 6,
                 ),
-                Sprite {
-                    glyph: to_cp437('T'),
-                    fg: RGBA::named(GREEN),
-                    bg: RGBA::named(GREEN),
+                MultiSprite {
+                    ascii: "TT".to_string(),
+                    width: 1,
+                    height: 2,
+                    fg: vec![RGBA::named(GREEN), RGBA::named(GREEN)],
+                    bg: vec![RGBA::named(BLUE), RGBA::named(BLUE)],
+                    sprite_indices: vec![TileMapping::Tower1.into(), TileMapping::Tower2.into()],
                 },
-                SpriteIndex(TileMapping::Tower1.into()),
                 Team::Me,
                 default_stats.clone(),
                 LineOfSight::new(6),
-            );
-            centity!(
-                world,
-                Point::new(
-                    MAP_SIZE_X as i32 / 2 + TOWER_OFFSET * i,
-                    MAP_SIZE_Y as i32 - PLAY_HEIGHT as i32 * j / 6,
-                ),
-                Sprite {
-                    glyph: to_cp437('T'),
-                    fg: RGBA::named(GREEN),
-                    bg: RGBA::named(RED),
-                },
-                SpriteIndex(TileMapping::Tower2.into()),
             );
         }
     }
