@@ -2,85 +2,95 @@ use crate::*;
 use nanoserde::*;
 use std::collections::BTreeSet;
 
-pub fn get_client() -> ApiClient {
-    let mut nakama = ApiClient::new(
-        "xITSpxZegnWc",
-        "shotcaller.us-east1.nakamacloud.io",
-        443,
-        "https",
-    );
-    while nakama.in_progress() {
-        nakama.tick();
-        println!("Creating nakama client connection.");
-    }
-    nakama
+
+pub struct NakamaApi {
+    pub client: ApiClient,
 }
-pub fn connect(nakama: &mut ApiClient) {
-    nakama.register("emale2@emale.com", "henloust", "owomyfriend2");
-    //nakama.register("emale@emale.com", "henloust", "owomyfriend");
-    //nakama.authenticate("emale2@emale.com", "owomyfriend2");
-    //nakama.authenticate("emale@emale.com", "owomyfriend");
-    while !nakama.authenticated() {
-        nakama.tick();
-        println!("Logging in");
-        check_error(nakama);
+
+unsafe impl Send for NakamaApi {}
+unsafe impl Sync for NakamaApi {}
+
+impl NakamaApi {
+
+    pub fn new() -> Self {
+        let mut client = ApiClient::new(
+            "xITSpxZegnWc",
+            "shotcaller.us-east1.selfcloud.io",
+            443,
+            "https",
+        );
+        while client.in_progress() {
+            client.tick();
+            println!("Creating self client connection.");
+        }
+        Self {client}
     }
-}
-pub fn check_error(nakama: &mut ApiClient) {
-    if let Some(error) = nakama.error().as_deref() {
-        panic!("Nakama error detected: {}", error);
+    pub fn connect(&mut self) {
+        self.client.register("emale2@emale.com", "henloust", "owomyfriend2");
+        //self.register("emale@emale.com", "henloust", "owomyfriend");
+        //self.authenticate("emale2@emale.com", "owomyfriend2");
+        //self.authenticate("emale@emale.com", "owomyfriend");
+        while !self.client.authenticated() {
+            self.client.tick();
+            println!("Logging in");
+            self.check_error();
+        }
     }
-}
-pub fn get_match(nakama: &mut ApiClient) {
-    let mut matchmaker = Matchmaker::new();
-    matchmaker
-        .min(2)
-        .max(2)
-        .add_string_property("engine", "minigene_matchmaking")
-        .add_query_item(
-            &QueryItemBuilder::new("engine")
+    pub fn check_error(&mut self) {
+        if let Some(error) = self.client.error().as_deref() {
+            panic!("Nakama error detected: {}", error);
+        }
+    }
+    pub fn get_match(&mut self) {
+        let mut matchmaker = Matchmaker::new();
+        matchmaker
+            .min(2)
+            .max(2)
+            .add_string_property("engine", "minigene_matchmaking")
+            .add_query_item(
+                &QueryItemBuilder::new("engine")
                 .required()
                 .term("minigene_matchmaking")
                 .build(),
-        );
-    nakama.socket_add_matchmaker(&matchmaker);
-    let mut token = nakama.matchmaker_token.clone();
-    while token.is_none() {
-        nakama.tick();
-        println!("Waiting match token");
-        check_error(nakama);
-        token = nakama.matchmaker_token.clone();
-    }
-    nakama.socket_join_match_by_token(&token.unwrap());
-    while nakama.match_id().is_none() {
-        nakama.tick();
-        println!("Joining match");
-        check_error(nakama);
-    }
-    println!("Joined match");
-}
-
-#[derive(Clone, Debug, SerBin, DeBin)]
-pub enum NetworkEvent {
-    PlayerJoin { id: String, username: String },
-    Leaders(TeamLeaders),
-    PlayerLeave { id: String },
-    TeleportEntity { id: String, point: u32 },
-}
-
-impl NetworkEvent {
-    pub fn op_code(&self) -> i32 {
-        match *self {
-            NetworkEvent::TeleportEntity { id: _, point: _ } => 0,
-            _ => -1,
+            );
+        self.client.socket_add_matchmaker(&matchmaker);
+        let mut token = self.client.matchmaker_token.clone();
+        while token.is_none() {
+            self.client.tick();
+            println!("Waiting match token");
+            self.check_error();
+            token = self.client.matchmaker_token.clone();
         }
+        self.client.socket_join_match_by_token(&token.unwrap());
+        while self.client.match_id().is_none() {
+            self.client.tick();
+            println!("Joining match");
+            self.check_error();
+        }
+        println!("Joined match");
+    }
+
+
+    pub fn send_event(&mut self, ev: NetworkEvent) {
+        //self.socket_send(ev.op_code(), &ev);
+        self.client.socket_send(-1, &ev);
+        self.client.tick();
+    }
+
+    pub fn is_host(&mut self, remote_players: &BTreeSet<String>) -> bool {
+        // no other players connected
+        if remote_players.len() == 0 {
+            return true;
+        }
+
+        *self.client.session_id.as_ref().unwrap() == *remote_players.iter().next().unwrap()
     }
 }
 
-pub fn receive_events(nakama: &mut ApiClient) -> Vec<NetworkEvent> {
-    nakama.tick();
+pub fn receive_events(nakama: &mut NakamaApi) -> Vec<NetworkEvent> {
+    nakama.client.tick();
     let mut evs = vec![];
-    while let Some(event) = nakama.try_recv() {
+    while let Some(event) = nakama.client.try_recv() {
         match event {
             Event::Presence { joins, leaves } => {
                 //leaver.session_id
@@ -107,13 +117,13 @@ pub fn receive_events(nakama: &mut ApiClient) -> Vec<NetworkEvent> {
                     evs.push(deser);
                 }
                 /*match opcode {
-                    0 => {
-                        if let Ok(deser) = DeBin::deserialize_bin(&data) {
-                            evs.push(deser);
-                        }
-                    },
-                    _ => {},
-                }*/
+                  0 => {
+                  if let Ok(deser) = DeBin::deserialize_bin(&data) {
+                  evs.push(deser);
+                  }
+                  },
+                  _ => {},
+                  }*/
                 //DeBin::deserialize_bin(&data).expect("Failed to deser received data");
             }
         }
@@ -139,50 +149,19 @@ pub fn network_player_manager_system(
     Ok(())
 }
 
-pub fn send_event(nakama: &mut ApiClient, ev: NetworkEvent) {
-    //nakama.socket_send(ev.op_code(), &ev);
-    nakama.socket_send(-1, &ev);
-    nakama.tick();
+#[derive(Clone, Debug, SerBin, DeBin)]
+pub enum NetworkEvent {
+    PlayerJoin { id: String, username: String },
+    Leaders(TeamLeaders),
+    PlayerLeave { id: String },
+    TeleportEntity { id: String, point: u32 },
 }
 
-pub fn is_host(nakama: &ApiClient, remote_players: &BTreeSet<String>) -> bool {
-    // no other players connected
-    if remote_players.len() == 0 {
-        return true;
-    }
-
-    *nakama.session_id.as_ref().unwrap() == *remote_players.iter().next().unwrap()
-}
-
-/*let mut nakama = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
-nakama.register("email", "password", "username");
-nakama.authenticate("email", "password");
-nakama.authenticated();
-nakama.username().unwrap();
-
-let mut matchmaker = Matchmaker::new();
-matchmaker.min(2).max(2).add_string_property("engine", "minigene_matchmaking")
-    .add_query_item(&QueryItemBuilder::new("engine").required().term("minigene_matchmaking").build());
-nakama.socket_add_matchmaker(&matchmaker);
-
-let token = nakama.matchmaker_token.clone();
-if token.is_some() {
-    nakama.socket_join_match_by_token(&token.unwrap());
-}
-if nakama.match_id().is_some() {
-    // start game here
-}
-//nakama.socket_send(opcode, &data);
-while let Some(event) = nakama.try_recv() {
-    match event {
-        Event::Presence {joins, leaves} => {
-            //leaver.session_id
-            //join.session_id
-            //join.username
-        },
-        Event::MatchData {user_id, opcode, data} => {
-            //DeBin::deserialize_bin(&data).expect("Failed to deser received data");
+impl NetworkEvent {
+    pub fn op_code(&self) -> i32 {
+        match *self {
+            NetworkEvent::TeleportEntity { id: _, point: _ } => 0,
+            _ => -1,
         }
     }
 }
-//nakama.tick();*/

@@ -508,9 +508,9 @@ fn main() -> BError {
         }
     }
 
-    let mut nakama = nakama::get_client();
-    nakama::connect(&mut nakama);
-    nakama::get_match(&mut nakama);
+    let mut nakama = nakama::NakamaApi::new();
+    nakama.connect();
+    nakama.get_match();
     std::thread::sleep_ms(500);
     *world.get_mut::<_>().unwrap() = nakama::receive_events(&mut nakama);
     let mut sys = nakama::network_player_manager_system.system();
@@ -518,7 +518,7 @@ fn main() -> BError {
     sys.run(&mut world).unwrap();
     world.get_mut::<Vec<NetworkEvent>>().unwrap().clear();
 
-    let team_leaders = if nakama::is_host(&nakama, &world.get::<_>().unwrap()) {
+    let team_leaders = if nakama.is_host(&world.get::<_>().unwrap()) {
         // generate and send leaders.
         let mut rng = world.get_mut::<RNG>().unwrap();
         let mut leaders_vec = vec![
@@ -546,7 +546,7 @@ fn main() -> BError {
             }
         }
         println!("Sending leaders");
-        nakama::send_event(&mut nakama, NetworkEvent::Leaders(team_leaders.clone()));
+        nakama.send_event(NetworkEvent::Leaders(team_leaders.clone()));
         team_leaders
     } else {
         println!("Waiting for leaders.");
@@ -620,6 +620,9 @@ fn main() -> BError {
 
     let host_network = DispatcherBuilder::new().build(&mut world);
     let client_network = DispatcherBuilder::new().build(&mut world);
+
+    *world.get_mut::<NakamaApi>().unwrap() = nakama;
+
     let gd = GameData {
         world,
         client_dispatcher: dispatcher,
