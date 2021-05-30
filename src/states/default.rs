@@ -6,7 +6,9 @@ pub struct DefaultState;
 #[allow(unused_variables)]
 impl minigene::State<GameData> for DefaultState {
     fn update(&mut self, data: &mut GameData) -> StateTransition<GameData> {
-        data.client_dispatcher.run_seq(&data.world).expect("Failed to run client systems.");
+        data.client_dispatcher
+            .run_seq(&data.world)
+            .expect("Failed to run client systems.");
         StateTransition::None
     }
 }

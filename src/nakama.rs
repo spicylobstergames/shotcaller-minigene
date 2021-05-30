@@ -17,12 +17,7 @@ impl NakamaApi {
             443,
             "https",
         );*/
-        let mut client = ApiClient::new(
-            "defaultkey",
-            "127.0.0.1",
-            7350,
-            "http",
-        );
+        let mut client = ApiClient::new("defaultkey", "127.0.0.1", 7350, "http");
         client.tick();
         while client.in_progress() {
             client.tick();
@@ -32,7 +27,8 @@ impl NakamaApi {
     }
     pub fn connect(&mut self) {
         self.client.tick();
-        self.client.register("emale3@emale.com", "henloust8", "owomyfriend5");
+        self.client
+            .register("emale3@emale.com", "henloust8", "owomyfriend5");
         //self.client.register("emale6@emale.com", "henloust9", "owomyfriend6");
         //self.client.register("emale@emale.com", "henloust", "owomyfriend");
         //self.client.authenticate("emale2@emale.com", "owomyfriend2");

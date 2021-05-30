@@ -663,7 +663,6 @@ fn main() -> BError {
     let host_network = DispatcherBuilder::new().build(&mut world);
     let client_network = DispatcherBuilder::new().build(&mut world);
 
-
     *world.get_mut_or_default::<NakamaApi>() = nakama;
 
     let gd = GameData {
