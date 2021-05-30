@@ -11,12 +11,19 @@ unsafe impl Sync for NakamaApi {}
 
 impl NakamaApi {
     pub fn new() -> Self {
-        let mut client = ApiClient::new(
+        /*let mut client = ApiClient::new(
             "xITSpxZegnWc",
             "shotcaller.us-east1.selfcloud.io",
             443,
             "https",
+        );*/
+        let mut client = ApiClient::new(
+            "defaultkey",
+            "127.0.0.1",
+            7350,
+            "http",
         );
+        client.tick();
         while client.in_progress() {
             client.tick();
             println!("Creating self client connection.");
@@ -24,10 +31,11 @@ impl NakamaApi {
         Self { client }
     }
     pub fn connect(&mut self) {
-        self.client
-            .register("emale2@emale.com", "henloust", "owomyfriend2");
-        //self.register("emale@emale.com", "henloust", "owomyfriend");
-        //self.authenticate("emale2@emale.com", "owomyfriend2");
+        self.client.tick();
+        self.client.register("emale3@emale.com", "henloust8", "owomyfriend5");
+        //self.client.register("emale6@emale.com", "henloust9", "owomyfriend6");
+        //self.client.register("emale@emale.com", "henloust", "owomyfriend");
+        //self.client.authenticate("emale2@emale.com", "owomyfriend2");
         //self.authenticate("emale@emale.com", "owomyfriend");
         while !self.client.authenticated() {
             self.client.tick();
@@ -82,6 +90,12 @@ impl NakamaApi {
         }
 
         *self.client.session_id.as_ref().unwrap() == *remote_players.iter().next().unwrap()
+    }
+}
+
+impl Default for NakamaApi {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

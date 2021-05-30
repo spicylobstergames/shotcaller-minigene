@@ -549,7 +549,9 @@ fn main() -> BError {
     }
 
     let mut nakama = nakama::NakamaApi::new();
+    std::thread::sleep_ms(500);
     nakama.connect();
+    std::thread::sleep_ms(500);
     nakama.get_match();
     std::thread::sleep_ms(500);
     *world.get_mut::<_>().unwrap() = nakama::receive_events(&mut nakama);
@@ -661,7 +663,8 @@ fn main() -> BError {
     let host_network = DispatcherBuilder::new().build(&mut world);
     let client_network = DispatcherBuilder::new().build(&mut world);
 
-    *world.get_mut::<NakamaApi>().unwrap() = nakama;
+
+    *world.get_mut_or_default::<NakamaApi>() = nakama;
 
     let gd = GameData {
         world,
